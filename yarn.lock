@@ -234,6 +234,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/navermaps@npm:^3":
+  version: 3.0.16
+  resolution: "@types/navermaps@npm:3.0.16"
+  checksum: dc07637480bb20eceda245a2411e8c69adf43e90de0bcb63491a6f7a5647532979a6d2aaeda18ff7f9c7029b522536727c6eba55f58c13c4c5e865f9750b212d
+  languageName: node
+  linkType: hard
+
 "@types/node@npm:^17":
   version: 17.0.42
   resolution: "@types/node@npm:17.0.42"
@@ -822,6 +829,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "dayoff@workspace:."
   dependencies:
+    "@types/navermaps": ^3
     "@types/node": ^17
     "@types/react": ^18
     "@types/react-dom": ^18
