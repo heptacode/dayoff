@@ -1,7 +1,10 @@
 module.exports = {
-  content: ['./pages/**/*.{ts,tsx}', './components/**/*.{ts,tsx}'],
+  content: ['./src/**/*.tsx'],
   theme: {
-    extend: {},
+    extend: {
+      animation: {
+        'spin-slower': 'spin 1.5s linear infinite',
+      },
+    },
   },
-  plugins: [],
 };
