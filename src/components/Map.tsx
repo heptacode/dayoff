@@ -12,7 +12,7 @@ export default function Map() {
         strategy="lazyOnload"
         onLoad={initMap}
       />
-      <div id="map" ref={mapRef} className="w-full h-screen">
+      <div ref={mapRef} className="w-full h-screen">
         <Loading />
       </div>
     </>
