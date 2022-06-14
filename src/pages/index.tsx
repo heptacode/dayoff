@@ -1,12 +1,12 @@
-import Map from '@/components/Map';
+import EventListPanel from '@/components/events/EventListPanel';
+import Map from '@/components/maps/Map';
 import { MapProvider } from '@/contexts/MapContext';
 
 export default function Home() {
   return (
-    <div>
-      <MapProvider>
-        <Map></Map>
-      </MapProvider>
-    </div>
+    <MapProvider>
+      <Map />
+      <EventListPanel />
+    </MapProvider>
   );
 }

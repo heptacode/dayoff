@@ -1,4 +1,4 @@
-import Loading from '@/components/Loading';
+import Loading from '@/components/interfaces/Loading';
 import { useMap } from '@/hooks/useMap';
 import Script from 'next/script';
 

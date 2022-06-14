@@ -1,6 +1,6 @@
-import ErrorBoundary from '@/components/ErrorBoundary';
-import ErrorOverlay from '@/components/ErrorOverlay';
-import Loading from '@/components/Loading';
+import ErrorBoundary from '@/components/interfaces/ErrorBoundary';
+import ErrorOverlay from '@/components/interfaces/ErrorOverlay';
+import Loading from '@/components/interfaces/Loading';
 import '@/styles/globals.css';
 import type { AppProps } from 'next/app';
 import { Suspense } from 'react';

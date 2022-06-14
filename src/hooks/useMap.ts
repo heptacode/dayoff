@@ -1,4 +1,4 @@
-import DotMarker from '@/components/DotMarker';
+import DotMarker from '@/components/maps/DotMarker';
 import { MapContext } from '@/contexts/MapContext';
 import { getCurrentPosition } from '@/modules/getCurrentPosition';
 import { useContext, useRef } from 'react';
