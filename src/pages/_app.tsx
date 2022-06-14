@@ -7,10 +7,12 @@ import { Suspense } from 'react';
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <ErrorBoundary fallback={<ErrorOverlay />}>
-      <Suspense fallback={<Loading />}>
-        <Component {...pageProps} />
-      </Suspense>
-    </ErrorBoundary>
+    <div className="h-screen">
+      <ErrorBoundary fallback={<ErrorOverlay />}>
+        <Suspense fallback={<Loading />}>
+          <Component {...pageProps} />
+        </Suspense>
+      </ErrorBoundary>
+    </div>
   );
 }
