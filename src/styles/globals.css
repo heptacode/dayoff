@@ -3,6 +3,10 @@
 @tailwind utilities;
 
 @layer utilities {
+  * {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  }
+
   .loading__path {
     animation: dash 1.5s ease-in-out infinite;
     stroke-linecap: round;
