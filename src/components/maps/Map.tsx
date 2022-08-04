@@ -8,7 +8,7 @@ export default function Map() {
   return (
     <>
       <Script
-        src={`https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${process.env.NEXT_PUBLIC_NCP_API_KEY_ID}`}
+        src={`https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${process.env.NEXT_PUBLIC_NCP_API_KEY_ID}&submodules=geocoder`}
         strategy="lazyOnload"
         onLoad={initMap}
       />

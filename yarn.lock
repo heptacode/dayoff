@@ -66,6 +66,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@mdi/js@npm:^6":
+  version: 6.7.96
+  resolution: "@mdi/js@npm:6.7.96"
+  checksum: 8c8f6acb8fd3f856a92ffe2405e258ee5aa84cf541fda1c0a564c9c8bbf935cf2b6a6100cf97d41e9ada1ccb59e4b138d4c712e075f759d7595e21ef1cff84b5
+  languageName: node
+  linkType: hard
+
+"@mdi/react@npm:^1":
+  version: 1.6.0
+  resolution: "@mdi/react@npm:1.6.0"
+  dependencies:
+    prop-types: ^15.7.2
+  checksum: 3516c240bd3f4750c8e7f9a14fd2f0937b1bfc622b9103d84d10a5fc37824c2a6ca16dc7cf2cc06502cb71b4f0c88cd8ac69edd45ec1f7900dd9b496e0bbf927
+  languageName: node
+  linkType: hard
+
 "@next/env@npm:12.1.6":
   version: 12.1.6
   resolution: "@next/env@npm:12.1.6"
@@ -829,6 +845,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "dayoff@workspace:."
   dependencies:
+    "@mdi/js": ^6
+    "@mdi/react": ^1
     "@types/navermaps": ^3
     "@types/node": ^17
     "@types/react": ^18
@@ -2726,7 +2744,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prop-types@npm:^15.8.1":
+"prop-types@npm:^15.7.2, prop-types@npm:^15.8.1":
   version: 15.8.1
   resolution: "prop-types@npm:15.8.1"
   dependencies:
