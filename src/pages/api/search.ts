@@ -1,23 +1,21 @@
 import { getRequest } from '@/modules/httpRequest';
-import { Place, SearchAPIResponse } from '@/types';
+import { SearchAPIResponse } from '@/types';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse<Place[]>) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse<SearchAPIResponse>
+) {
   try {
     const response: SearchAPIResponse = await getRequest<SearchAPIResponse>(
-      `https://openapi.naver.com/v1/search/local`,
+      `https://map.naver.com/v5/api/instantSearch`,
       {
-        query: req.body.query,
-        display: '5',
-      },
-      {
-        headers: {
-          'X-Naver-Client-Id': process.env.NAVER_CLIENT_ID,
-          'X-Naver-Client-Secret': process.env.NAVER_CLIENT_SECRET,
-        },
+        types: 'place,address',
+        coords: `${req.query.lat},${req.query.lng}`,
+        query: String(req.query.query),
       }
     );
-    res.status(200).json(response.items);
+    res.status(200).json(response);
   } catch (error) {
     res.status(500);
   }

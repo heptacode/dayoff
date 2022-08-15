@@ -1,25 +1,41 @@
 export type QueryType = { [key: string]: string };
 
 export interface Place {
+  type: 'place';
+  id: string;
   title: string;
-  link: string;
-  category: string;
-  description: string;
-  telephone: string;
-  address: string;
+  x: string;
+  y: string;
+  dist: number;
+  totalScore: number;
+  sid: string;
+  ctg: string;
+  cid: string;
+  jibunAddress: string;
   roadAddress: string;
-  mapx: string;
-  mapy: string;
+  review: {
+    count: string;
+  };
 }
 
-/**
- * 장소 검색 API 응답 결과
- * https://developers.naver.com/docs/serviceapi/search/local/local.md
- */
+export interface Address {
+  type: 'address';
+  id: string;
+  title: string;
+  x: string;
+  y: string;
+  dist: number;
+  totalScore: number;
+  pnu: string;
+  fullAddress: string;
+  shortAddress: string[];
+}
+
 export interface SearchAPIResponse {
-  lastBuildDate: string;
-  total: number;
-  start: number;
-  display: number;
-  items: Place[];
+  meta: {
+    query: string;
+  };
+  ac: string[];
+  place: Place[];
+  address: Address[];
 }

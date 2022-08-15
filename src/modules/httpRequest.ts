@@ -12,7 +12,6 @@ export async function getRequest<T = any>(
   query?: QueryType,
   requestOptions?: RequestInit
 ): Promise<T> {
-  console.log(`${url}${query ? `?${String(new URLSearchParams(query))}` : ''}`);
   return (
     await fetch(`${url}${query ? `?${String(new URLSearchParams(query))}` : ''}`, requestOptions)
   ).json();
