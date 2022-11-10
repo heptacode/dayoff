@@ -8,13 +8,18 @@ export enum EventType {
   Sleep = 'Sleep',
 }
 
+export interface EventGroup {
+  title: string | null;
+  subtitle: string | null;
+  date: Date | string | null;
+  events: Event[];
+}
+
 export interface Event {
-  type: EventType;
+  date: Date | string | null;
   title: string;
   subtitle: string;
   description: string;
-  date: string | null;
-  time: string | null;
   lat: number | null;
   lng: number | null;
 }

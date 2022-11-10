@@ -2,6 +2,7 @@ import { ErrorBoundary } from '@/components/interfaces/ErrorBoundary';
 import { ErrorOverlay } from '@/components/interfaces/ErrorOverlay';
 import { Loading } from '@/components/interfaces/Loading';
 import { EventProvider } from '@/contexts/EventContext';
+import { GlobalProvider } from '@/contexts/GlobalContext';
 import { MapProvider } from '@/contexts/MapContext';
 import '@/styles/globals.css';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -24,11 +25,13 @@ export default function App({ Component, pageProps }: AppProps) {
       <ErrorBoundary fallback={<ErrorOverlay />}>
         <Suspense fallback={<Loading />}>
           <QueryClientProvider client={queryClient}>
-            <MapProvider>
-              <EventProvider>
-                <Component {...pageProps} />
-              </EventProvider>
-            </MapProvider>
+            <GlobalProvider>
+              <MapProvider>
+                <EventProvider>
+                  <Component {...pageProps} />
+                </EventProvider>
+              </MapProvider>
+            </GlobalProvider>
             <ReactQueryDevtools initialIsOpen={false} />
           </QueryClientProvider>
         </Suspense>
