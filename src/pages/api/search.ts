@@ -1,5 +1,5 @@
-import { getRequest } from '@/modules/httpRequest';
 import { SearchAPIResponse } from '@/types';
+import { getRequest } from '@heptacode/http-request';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 export default async function handler(
@@ -7,7 +7,7 @@ export default async function handler(
   res: NextApiResponse<SearchAPIResponse>
 ) {
   try {
-    const response: SearchAPIResponse = await getRequest<SearchAPIResponse>(
+    const { data }: { data: SearchAPIResponse } = await getRequest<SearchAPIResponse>(
       `https://map.naver.com/v5/api/instantSearch`,
       {
         types: 'place,address',
@@ -15,7 +15,7 @@ export default async function handler(
         query: String(req.query.query),
       }
     );
-    res.status(200).json(response);
+    res.status(200).json(data);
   } catch (error) {
     res.status(500);
   }

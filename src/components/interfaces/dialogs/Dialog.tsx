@@ -1,4 +1,4 @@
-export default function Dialog() {
+export function Dialog() {
   return (
     <div
       className="fixed top-0 left-0 w-full h-full overflow-x-hidden overflow-y-auto"

@@ -1,6 +1,6 @@
 import { Component } from 'react';
 
-export default class ErrorBoundary extends Component<
+export class ErrorBoundary extends Component<
   { fallback?: any; children: any },
   { hasError: boolean }
 > {
@@ -9,7 +9,7 @@ export default class ErrorBoundary extends Component<
     this.state = { hasError: false };
   }
 
-  static getDerivedStateFromError(error: any) {
+  static getDerivedStateFromError() {
     return { hasError: true };
   }
 

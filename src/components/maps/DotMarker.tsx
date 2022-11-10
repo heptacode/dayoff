@@ -1,4 +1,4 @@
-export default function DotMarker(): HTMLElement {
+export function DotMarker(): HTMLElement {
   const radius: HTMLElement = document.createElement('div');
   radius.classList.add(
     'relative',

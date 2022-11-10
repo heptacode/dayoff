@@ -1,6 +1,6 @@
 import Image from 'next/image';
 
-export default function ErrorOverlay() {
+export function ErrorOverlay() {
   return (
     <div className="h-full flex flex-col justify-center items-center">
       <h6>문제가 발생했어요 :&#40;</h6>

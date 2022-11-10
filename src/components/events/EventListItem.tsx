@@ -1,4 +1,4 @@
-export default function EventListItem() {
+export function EventListItem() {
   return (
     <div className="">
       <h1>title</h1>

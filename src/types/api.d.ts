@@ -32,10 +32,10 @@ export interface Address {
 }
 
 export interface SearchAPIResponse {
-  meta: {
+  meta?: {
     query: string;
   };
-  ac: string[];
-  place: Place[];
-  address: Address[];
+  ac?: string[];
+  place?: Place[];
+  address?: Address[];
 }
