@@ -340,13 +340,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/geojson@npm:*":
-  version: 7946.0.10
-  resolution: "@types/geojson@npm:7946.0.10"
-  checksum: 12c407c2dc93ecb26c08af533ee732f1506a9b29456616ba7ba1d525df96206c28ddf44a528f6a5415d7d22893e9d967420940a9c095ee5e539c1eba5fefc1f4
-  languageName: node
-  linkType: hard
-
 "@types/json-schema@npm:^7.0.9":
   version: 7.0.11
   resolution: "@types/json-schema@npm:7.0.11"
@@ -358,15 +351,6 @@ __metadata:
   version: 0.0.29
   resolution: "@types/json5@npm:0.0.29"
   checksum: e60b153664572116dfea673c5bda7778dbff150498f44f998e34b5886d8afc47f16799280e4b6e241c0472aef1bc36add771c569c68fc5125fc2ae519a3eb9ac
-  languageName: node
-  linkType: hard
-
-"@types/navermaps@npm:^3.6.0":
-  version: 3.6.0
-  resolution: "@types/navermaps@npm:3.6.0"
-  dependencies:
-    "@types/geojson": "*"
-  checksum: 6e30fcc83f6a801ac04adf0dca46b168472888cf3111971c69165cf20c286d7c298ecf896798093ae4afe52f283b083a5cd7f91413844e87402b017f85f5eb91
   languageName: node
   linkType: hard
 
@@ -1149,7 +1133,6 @@ __metadata:
     "@mdi/react": ^1.6.1
     "@tanstack/react-query": ^4.14.5
     "@tanstack/react-query-devtools": ^4.14.5
-    "@types/navermaps": ^3.6.0
     "@types/node": ^18.11.9
     "@types/react": ^18.0.25
     "@types/react-dom": ^18.0.8
