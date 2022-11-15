@@ -9,8 +9,8 @@ export function ErrorOverlay() {
         src="/undraw_not_found_-60-pq.svg"
         alt="Not Found"
         loading="lazy"
-        width="160px"
-        height="100%"
+        width={160}
+        height={160}
       />
     </div>
   );

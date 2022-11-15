@@ -1,22 +1,43 @@
-import { SearchAPIResponse } from '@/types';
+import { KeywordSearchAPIResponse, KeywordSearchResponse } from '@/types';
 import { getRequest } from '@heptacode/http-request';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<SearchAPIResponse>
+  res: NextApiResponse<KeywordSearchResponse>
 ) {
   try {
-    const { data }: { data: SearchAPIResponse } = await getRequest<SearchAPIResponse>(
-      `https://map.naver.com/v5/api/instantSearch`,
+    const { data, status } = await getRequest<KeywordSearchAPIResponse>(
+      `https://dapi.kakao.com/v2/local/search/keyword.json`,
       {
-        types: 'place,address',
-        coords: `${req.query.lat},${req.query.lng}`,
-        query: String(req.query.query),
+        query: req.query.query ? String(req.query.query) : '',
+        size: 7,
+        sort: 'accuracy',
+      },
+      {
+        headers: {
+          Authorization: `KakaoAK ${process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY}`,
+        },
       }
     );
-    res.status(200).json(data);
-  } catch (error) {
-    res.status(500);
+
+    res
+      .setHeader('Cache-Control', 'no-store')
+      .status(status)
+      .json({
+        meta: data.meta,
+        places: data.documents?.map(place => {
+          return {
+            ...place,
+            x: Number(place.x),
+            y: Number(place.y),
+            road_address_name: place.road_address_name.length
+              ? place.road_address_name
+              : place.address_name,
+          };
+        }),
+      });
+  } catch {
+    res.setHeader('Cache-Control', 'no-store').status(500);
   }
 }

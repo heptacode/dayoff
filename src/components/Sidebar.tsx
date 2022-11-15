@@ -1,24 +1,10 @@
 import { Timeline } from '@/components/events/Timeline';
 import { IconButton } from '@/components/interfaces/IconButton';
-import { Input } from '@/components/interfaces/inputs/Input';
-import { useSearch } from '@/hooks/queries/search';
-import { useDebounceValue } from '@/utils/debounce';
+import { SearchInput } from '@/components/interfaces/inputs/SearchInput';
 import { mdiArrowCollapse } from '@mdi/js';
 import { Icon } from '@mdi/react';
-import { useState } from 'react';
 
 export function Sidebar() {
-  const [searchValue, setSearchValue] = useState<string>('');
-  const debouncedSearchQuery = useDebounceValue(searchValue, 300);
-  const { /*data: searchResult,*/ refetch: refetchSearch } = useSearch({
-    query: debouncedSearchQuery,
-  });
-
-  async function handleSearchFormSubmit(event: React.FormEvent) {
-    event.preventDefault();
-    refetchSearch();
-  }
-
   return (
     <aside className="fixed top-0 h-screen max-w-[500px] bg-white rounded-tr-lg shadow-lg divide-y divide-gray">
       <div>
@@ -33,19 +19,17 @@ export function Sidebar() {
       </div>
 
       <div className="p-5">
-        <form onSubmit={handleSearchFormSubmit}>
-          <Input
-            type="search"
-            placeholder="장소 검색"
-            value={searchValue}
-            onChange={(event: { target: any }) => setSearchValue(event.target.value)}
-          />
-        </form>
+        <SearchInput
+          handlePlaceSelect={() => {
+            return;
+          }}
+        />
 
         {/* <EventList items={[]} /> */}
         <Timeline
           className="mt-5"
-          eventGroups={[
+          eventGroups={
+            [] /*[
             {
               title: '첫째날',
               subtitle: 'asf',
@@ -71,7 +55,8 @@ export function Sidebar() {
                 },
               ],
             },
-          ]}
+          ]*/
+          }
         />
       </div>
     </aside>
