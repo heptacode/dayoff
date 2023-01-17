@@ -1,8 +1,23 @@
-import { extendTheme, type ThemeConfig } from '@chakra-ui/react';
+import { extendTheme, ThemeComponents, ThemeConfig } from '@chakra-ui/react';
 
-const config = {
-  initialColorMode: 'system',
-  useSystemColorMode: true,
-} satisfies ThemeConfig;
-
-export const theme = extendTheme({ config });
+export const theme = extendTheme({
+  config: {
+    initialColorMode: 'system',
+    useSystemColorMode: true,
+  } satisfies ThemeConfig,
+  components: {
+    Drawer: {
+      parts: ['dialog, dialogContainer'],
+      variants: {
+        transparent: {
+          dialog: {
+            pointerEvents: 'auto',
+          },
+          dialogContainer: {
+            pointerEvents: 'none',
+          },
+        },
+      },
+    },
+  } satisfies ThemeComponents,
+});

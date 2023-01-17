@@ -1,40 +1,50 @@
 import { Timeline } from '@/components/events/Timeline';
 import { SearchInput } from '@/components/interfaces/inputs/SearchInput';
-import { Button, Divider, Editable, EditableInput, EditablePreview } from '@chakra-ui/react';
-import { mdiArrowCollapse } from '@mdi/js';
-import { Icon } from '@mdi/react';
+import {
+  Drawer,
+  DrawerContent,
+  DrawerHeader,
+  Editable,
+  EditableInput,
+  EditablePreview,
+  Text,
+  useDisclosure,
+} from '@chakra-ui/react';
 
-export function Island() {
+export function Sidebar() {
+  const { isOpen, onClose } = useDisclosure({ isOpen: true });
+
   return (
-    <aside className="fixed top-0 h-screen max-w-[500px] bg-white rounded-tr-lg shadow-lg  ">
-      <div>
-        <Button position="absolute" top="2" right="2" padding="5px" size="sm" variant="ghost">
-          <Icon path={mdiArrowCollapse} />
-        </Button>
-
-        <div className="p-5">
+    <Drawer
+      isOpen={isOpen}
+      placement="left"
+      trapFocus={false}
+      variant="transparent"
+      onClose={onClose}
+    >
+      <DrawerContent>
+        <DrawerHeader borderBottomWidth="1px">
           <Editable defaultValue="Dayoff Title">
             <EditablePreview />
             <EditableInput onInput={console.log} />
           </Editable>
-          <p className="text-xs">이벤트 n개</p>
-        </div>
-      </div>
+          <Text fontSize="sm" fontWeight="initial">
+            이벤트 n개
+          </Text>
+        </DrawerHeader>
 
-      <Divider />
+        <div className="p-5">
+          <SearchInput
+            handlePlaceSelect={() => {
+              return;
+            }}
+          />
 
-      <div className="p-5">
-        <SearchInput
-          handlePlaceSelect={() => {
-            return;
-          }}
-        />
-
-        {/* <EventList items={[]} /> */}
-        <Timeline
-          className="mt-5"
-          eventGroups={
-            [] /*[
+          {/* <EventList items={[]} /> */}
+          <Timeline
+            className="mt-5"
+            eventGroups={
+              [] /*[
             {
               title: '첫째날',
               subtitle: 'asf',
@@ -61,9 +71,10 @@ export function Island() {
               ],
             },
           ]*/
-          }
-        />
-      </div>
-    </aside>
+            }
+          />
+        </div>
+      </DrawerContent>
+    </Drawer>
   );
 }
