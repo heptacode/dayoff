@@ -1,22 +1,27 @@
 import { Timeline } from '@/components/events/Timeline';
-import { IconButton } from '@/components/interfaces/IconButton';
 import { SearchInput } from '@/components/interfaces/inputs/SearchInput';
+import { Button, Divider, Editable, EditableInput, EditablePreview } from '@chakra-ui/react';
 import { mdiArrowCollapse } from '@mdi/js';
 import { Icon } from '@mdi/react';
 
-export function Sidebar() {
+export function Island() {
   return (
-    <aside className="fixed top-0 h-screen max-w-[500px] bg-white rounded-tr-lg shadow-lg divide-y divide-gray">
+    <aside className="fixed top-0 h-screen max-w-[500px] bg-white rounded-tr-lg shadow-lg  ">
       <div>
-        <IconButton className="absolute top-2 right-2 w-6 h-6">
+        <Button position="absolute" top="2" right="2" padding="5px" size="sm" variant="ghost">
           <Icon path={mdiArrowCollapse} />
-        </IconButton>
+        </Button>
 
         <div className="p-5">
-          <h1 className="text-xl">Dayoff Title</h1>
+          <Editable defaultValue="Dayoff Title">
+            <EditablePreview />
+            <EditableInput onInput={console.log} />
+          </Editable>
           <p className="text-xs">이벤트 n개</p>
         </div>
       </div>
+
+      <Divider />
 
       <div className="p-5">
         <SearchInput

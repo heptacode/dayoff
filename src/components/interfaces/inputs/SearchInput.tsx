@@ -1,9 +1,8 @@
 import { useSearch } from '@/hooks/queries/search';
 import { KeywordSearchDocument } from '@/types';
 import { useDebounceValue } from '@/utils/debounce';
-import classNames from 'classnames';
+import { Button, Card, Input } from '@chakra-ui/react';
 import React, { DetailedHTMLProps, HTMLAttributes, useState } from 'react';
-import { Input } from './Input';
 
 export function SearchInput({
   handlePlaceSelect,
@@ -61,23 +60,28 @@ export function SearchInput({
       </form>
 
       {places?.length ? (
-        <ul className="py-1 text-sm text-gray-700 dark:text-gray-200">
+        <Card paddingY="2">
           {places.map((place, index) => (
-            <li
-              className={classNames('block py-2 px-4 rounded-lg cursor-pointer', {
-                'select-list--hover': hoveredIndex === index,
-              })}
+            <Button
+              flexDirection="column"
+              alignItems="flex-start"
+              fontWeight="initial"
+              borderRadius={0}
+              paddingY={6}
+              variant={hoveredIndex === index ? 'solid' : 'ghost'}
               key={index}
-              onClick={() => handlePlaceSelect(place)}
+              onClick={() => {
+                handlePlaceSelect(place);
+                setSearchValue('');
+              }}
               onMouseOver={() => setHoveredIndex(index)}
               onMouseLeave={() => setHoveredIndex(-1)}
             >
               <strong>{place.place_name}</strong>
-              <br />
-              {place.road_address_name}
-            </li>
+              <small>{place.road_address_name}</small>
+            </Button>
           ))}
-        </ul>
+        </Card>
       ) : null}
     </div>
   );
