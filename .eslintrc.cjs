@@ -10,6 +10,14 @@ module.exports = {
   plugins: ['@typescript-eslint', 'import', 'prettier'],
   settings: { 'import/resolver': { typescript: {} } },
   rules: {
+    '@typescript-eslint/ban-types': [
+      'error',
+      {
+        types: {
+          '{}': false,
+        },
+      },
+    ],
     '@typescript-eslint/array-type': ['error', { default: 'array-simple' }],
     '@typescript-eslint/no-unused-vars': ['error', { ignoreRestSiblings: true }],
     '@typescript-eslint/no-non-null-assertion': 'off',
@@ -20,8 +28,9 @@ module.exports = {
     'import/order': [
       'error',
       {
-        groups: [['builtin', 'external', 'internal'], 'parent', 'sibling', 'index'],
+        groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index', 'object', 'type'],
         alphabetize: { order: 'asc' },
+        warnOnUnassignedImports: true,
       },
     ],
     'no-implicit-coercion': 'error',
