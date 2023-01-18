@@ -1,5 +1,5 @@
-import { KeywordSearchAPIResponse, KeywordSearchResponse } from '@/types';
 import { getRequest } from '@heptacode/http-request';
+import type { KeywordSearchAPIResponse, KeywordSearchResponse } from '@/types';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 export default async function handler(

@@ -1,8 +1,8 @@
 import { useSearch } from '@/hooks/queries/search';
-import { KeywordSearchDocument } from '@/types';
 import { useDebounceValue } from '@/utils/debounce';
 import { Button, Card, Input } from '@chakra-ui/react';
 import React, { DetailedHTMLProps, HTMLAttributes, useState } from 'react';
+import type { KeywordSearchDocument } from '@/types';
 
 export function SearchInput({
   handlePlaceSelect,

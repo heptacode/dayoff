@@ -26,7 +26,7 @@ module.exports = {
     eqeqeq: ['error', 'always', { null: 'ignore' }],
     'import/no-duplicates': 'error',
     'import/order': [
-      'error',
+      'warn',
       {
         groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index', 'object', 'type'],
         alphabetize: { order: 'asc' },

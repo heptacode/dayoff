@@ -1,5 +1,5 @@
-import { Event } from '@/types';
 import { AccordionPanel, Flex, Text } from '@chakra-ui/react';
+import type { Event } from '@/types';
 
 export function TimelineItem({ event, ...props }: { event: Event }) {
   return (

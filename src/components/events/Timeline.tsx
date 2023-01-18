@@ -1,4 +1,3 @@
-import type { Collection } from '@/types';
 import {
   Accordion,
   AccordionButton,
@@ -8,6 +7,7 @@ import {
   Box,
 } from '@chakra-ui/react';
 import { TimelineItem } from './TimelineItem';
+import type { Collection } from '@/types';
 
 export function Timeline({
   collections,

@@ -1,5 +1,5 @@
-import { Collection } from '@/types';
 import { createContext, Dispatch, SetStateAction, useContext, useState } from 'react';
+import type { Collection } from '@/types';
 
 export interface EventState {
   collections: Collection[];
