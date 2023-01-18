@@ -1,9 +1,11 @@
 import { Timeline } from '@/components/events/Timeline';
 import { SearchInput } from '@/components/interfaces/inputs/SearchInput';
 import { useEventContext } from '@/contexts/EventContext';
+import { useGlobalContext } from '@/contexts/GlobalContext';
 import {
   Box,
   Drawer,
+  DrawerCloseButton,
   DrawerContent,
   DrawerHeader,
   Editable,
@@ -14,8 +16,9 @@ import {
 } from '@chakra-ui/react';
 
 export function Sidebar() {
+  const { isSidebarOpen, setIsSidebarOpen } = useGlobalContext();
   const { collections } = useEventContext();
-  const { isOpen, onClose } = useDisclosure({ isOpen: true });
+  const { isOpen, onClose } = useDisclosure({ isOpen: isSidebarOpen });
 
   return (
     <Drawer
@@ -26,6 +29,7 @@ export function Sidebar() {
       onClose={onClose}
     >
       <DrawerContent>
+        <DrawerCloseButton onClick={() => setIsSidebarOpen(false)} />
         <DrawerHeader borderBottomWidth="1px">
           <Editable defaultValue="Dayoff Title">
             <EditablePreview />
@@ -37,11 +41,7 @@ export function Sidebar() {
         </DrawerHeader>
 
         <Box p="5">
-          <SearchInput
-            handlePlaceSelect={() => {
-              return;
-            }}
-          />
+          <SearchInput handlePlaceSelect={console.log} />
 
           <Timeline mt="5" collections={collections} />
         </Box>

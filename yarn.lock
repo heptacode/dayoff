@@ -1490,22 +1490,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mdi/js@npm:^7.0.96":
-  version: 7.0.96
-  resolution: "@mdi/js@npm:7.0.96"
-  checksum: 4bcc4542a2d8ba9e706a754333e90ce2677616709d3776016b83be59c7219e7514308dbca6e62c7dd38436b3c5d251b8769679c90e354f971b090fa2ebcbc4fe
-  languageName: node
-  linkType: hard
-
-"@mdi/react@npm:^1.6.1":
-  version: 1.6.1
-  resolution: "@mdi/react@npm:1.6.1"
-  dependencies:
-    prop-types: ^15.7.2
-  checksum: d0408c5fcc1cf6e4b1fc7be57a5516453b12c076dc682fe320c2fe7c19a333c265cd16dd2348d5587356f9f9a35cec46fb5f5f530d34c485d23975dcd240f834
-  languageName: node
-  linkType: hard
-
 "@motionone/animation@npm:^10.12.0":
   version: 10.15.1
   resolution: "@motionone/animation@npm:10.15.1"
@@ -2498,8 +2482,6 @@ __metadata:
     "@emotion/react": ^11
     "@emotion/styled": ^11
     "@heptacode/http-request": ^0.2.1
-    "@mdi/js": ^7.0.96
-    "@mdi/react": ^1.6.1
     "@tanstack/react-query": ^4.14.5
     "@tanstack/react-query-devtools": ^4.14.5
     "@types/navermaps": ^3.6.0
@@ -2521,6 +2503,7 @@ __metadata:
     prettier: ^2.8.3
     react: ^18.2.0
     react-dom: ^18.2.0
+    react-icons: ^4.7.1
     typescript: ^4.9.4
   languageName: unknown
   linkType: soft
@@ -4531,7 +4514,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prop-types@npm:^15.6.2, prop-types@npm:^15.7.2, prop-types@npm:^15.8.1":
+"prop-types@npm:^15.6.2, prop-types@npm:^15.8.1":
   version: 15.8.1
   resolution: "prop-types@npm:15.8.1"
   dependencies:
@@ -4603,6 +4586,15 @@ __metadata:
     "@types/react":
       optional: true
   checksum: f8db4d64aa5c983d15e80d0fd86d1d649e33744e7b6b70babb08c95f7828e38c2cce7068c0007cf3263eec8b738ebd317d24a613df7f75b472bad6529cf8d6b6
+  languageName: node
+  linkType: hard
+
+"react-icons@npm:^4.7.1":
+  version: 4.7.1
+  resolution: "react-icons@npm:4.7.1"
+  peerDependencies:
+    react: "*"
+  checksum: ed3cbdc5fc0c4d7d2debf78fdc8c4c80aeacf85a506a9a3c11b1d5922de393ac0a6542012b7fb81761e9280c54d0f26827d50a92b54ec8f0c8e52364d89970b5
   languageName: node
   linkType: hard
 

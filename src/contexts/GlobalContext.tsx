@@ -1,17 +1,17 @@
 import { createContext, Dispatch, SetStateAction, useContext, useState } from 'react';
 
 export interface GlobalState {
-  isCreateGlobalPanelOpen: boolean;
-  setIsCreateGlobalPanelOpen: Dispatch<SetStateAction<boolean>>;
+  isSidebarOpen: boolean;
+  setIsSidebarOpen: Dispatch<SetStateAction<boolean>>;
 }
 
 export const GlobalContext = createContext<GlobalState>({} as GlobalState);
 
 export function GlobalProvider({ children }: any) {
-  const [isCreateGlobalPanelOpen, setIsCreateGlobalPanelOpen] = useState<boolean>(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(true);
 
   return (
-    <GlobalContext.Provider value={{ isCreateGlobalPanelOpen, setIsCreateGlobalPanelOpen }}>
+    <GlobalContext.Provider value={{ isSidebarOpen, setIsSidebarOpen }}>
       {children}
     </GlobalContext.Provider>
   );

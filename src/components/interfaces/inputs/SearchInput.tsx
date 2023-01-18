@@ -60,7 +60,7 @@ export function SearchInput({
       </form>
 
       {places?.length ? (
-        <Card paddingY="2">
+        <Card paddingY="2" maxHeight="250" overflowY="auto">
           {places.map((place, index) => (
             <Button
               flexDirection="column"
