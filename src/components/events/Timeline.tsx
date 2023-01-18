@@ -1,34 +1,43 @@
-import { EventGroup } from '@/types';
-import dayjs from 'dayjs';
-import { DetailedHTMLProps, HTMLAttributes } from 'react';
+import type { Collection } from '@/types';
+import {
+  Accordion,
+  AccordionButton,
+  AccordionIcon,
+  AccordionItem,
+  AccordionProps,
+  Box,
+} from '@chakra-ui/react';
 import { TimelineItem } from './TimelineItem';
 
 export function Timeline({
-  eventGroups,
+  collections,
   ...props
-}: { eventGroups: EventGroup[] } & DetailedHTMLProps<
-  HTMLAttributes<HTMLDivElement>,
-  HTMLDivElement
->) {
+}: { collections: Collection[] } & AccordionProps) {
   return (
-    <div {...props}>
-      {eventGroups.map((eventGroup, index) => (
-        <div
-          className="p-5 mb-4 rounded-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700"
-          key={index}
-        >
-          <h1>{eventGroup.title}</h1>
-          <time className="text-lg font-semibold text-gray-900 dark:text-white">
-            {dayjs(eventGroup.date).format('YYYY-DD-MM')}
-          </time>
+    <Accordion defaultIndex={[...Array(collections.length).keys()]} allowMultiple {...props}>
+      {collections.map((collection, index) => (
+        <AccordionItem key={index}>
+          <AccordionButton>
+            <Box flex="1" textAlign="left">
+              <h2>{collection.title}</h2>
+            </Box>
+            <AccordionIcon />
+          </AccordionButton>
 
-          <ol className="relative border-l border-gray-200 dark:border-gray-700">
-            {eventGroup.events.map((event, index) => (
+          <Box
+            ml="6"
+            position="relative"
+            as="ol"
+            borderLeftWidth={1}
+            borderLeftColor="gray.200"
+            _dark={{ borderLeftColor: 'gray.600' }}
+          >
+            {collection.events.map((event, index) => (
               <TimelineItem event={event} key={index} />
             ))}
-          </ol>
-        </div>
+          </Box>
+        </AccordionItem>
       ))}
-    </div>
+    </Accordion>
   );
 }

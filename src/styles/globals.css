@@ -1,37 +1,3 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-@layer utilities {
-  * {
-    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  }
-
-  .loading__path {
-    animation: dash 1.5s ease-in-out infinite;
-    stroke-linecap: round;
-  }
-  @keyframes dash {
-    0% {
-      stroke-dasharray: 1, 200;
-      stroke-dashoffset: 0;
-    }
-    50% {
-      stroke-dasharray: 89, 200;
-      stroke-dashoffset: -35px;
-    }
-    100% {
-      stroke-dasharray: 89, 200;
-      stroke-dashoffset: -124px;
-    }
-  }
-}
-
-@layer components {
-  .select-list--hover {
-    @apply bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white;
-  }
-  .select-list--active {
-    @apply bg-gray-200 dark:hover:bg-gray-700 dark:hover:text-white;
-  }
+#__next {
+  height: 100vh;
 }

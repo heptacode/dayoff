@@ -1,7 +1,7 @@
-import { Loading } from '@/components/interfaces/Loading';
 import { useMapContext } from '@/contexts/MapContext';
 import { getCurrentPosition } from '@/utils/getCurrentPosition';
 import { waitForGeocoder } from '@/utils/waitForGeocoder';
+import { CircularProgress, Flex } from '@chakra-ui/react';
 import Script from 'next/script';
 import { useRef } from 'react';
 import { DotMarker } from './DotMarker';
@@ -51,9 +51,9 @@ export function Map() {
         strategy="lazyOnload"
         onLoad={initMap}
       />
-      <div ref={mapRef} className="w-full h-screen">
-        <Loading />
-      </div>
+      <Flex ref={mapRef} w="full" h="full" justifyContent="center" alignItems="center">
+        <CircularProgress isIndeterminate />
+      </Flex>
     </>
   );
 }

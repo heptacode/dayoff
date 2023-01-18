@@ -1,8 +1,9 @@
+import { Flex } from '@chakra-ui/react';
 import Image from 'next/image';
 
 export function ErrorOverlay() {
   return (
-    <div className="h-full flex flex-col justify-center items-center">
+    <Flex h="full" flexDirection="column" justifyContent="center" alignItems="center">
       <h6>문제가 발생했어요 :&#40;</h6>
 
       <Image
@@ -12,6 +13,6 @@ export function ErrorOverlay() {
         width={160}
         height={160}
       />
-    </div>
+    </Flex>
   );
 }
