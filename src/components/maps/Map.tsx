@@ -1,10 +1,11 @@
 import { useMapContext } from '@/contexts/MapContext';
 import { getCurrentPosition } from '@/utils/getCurrentPosition';
 import { waitForGeocoder } from '@/utils/waitForGeocoder';
-import { CircularProgress, Flex } from '@chakra-ui/react';
+import { CircularProgress, Flex, Icon } from '@chakra-ui/react';
 import Script from 'next/script';
 import { useRef } from 'react';
-import { DotMarker } from './DotMarker';
+import { renderToString } from 'react-dom/server';
+import { MdLocationPin } from 'react-icons/md';
 
 export function Map() {
   const mapRef = useRef<HTMLDivElement>(null);
@@ -12,8 +13,7 @@ export function Map() {
 
   async function initMap() {
     const map: naver.maps.Map = new naver.maps.Map(mapRef.current as HTMLDivElement, {
-      center: new naver.maps.LatLng(33.3590628, 126.534361),
-      zoom: 10,
+      zoom: 15,
       scaleControl: false,
       logoControl: false,
       mapDataControl: false,
@@ -21,27 +21,24 @@ export function Map() {
     });
     setMap(map);
 
-    try {
-      const { coords } = await getCurrentPosition();
-      const location = new naver.maps.LatLng(coords.latitude, coords.longitude);
-
-      new naver.maps.Marker({
-        map: map,
-        position: location,
-        icon: {
-          content: DotMarker(),
-        },
-      });
-    } catch (error) {
-      /* empty */
-    }
-
-    await waitForGeocoder();
+    const { coords } = await getCurrentPosition();
+    const location = new naver.maps.LatLng(coords.latitude, coords.longitude);
+    map.setCenter(location);
 
     new naver.maps.Marker({
       map: map,
-      position: naver.maps.TransCoord.fromTM128ToLatLng(new naver.maps.Point(263795, 85782)),
+      position: location,
+      icon: {
+        content: renderToString(<Icon as={MdLocationPin} boxSize="6" />),
+      },
     });
+
+    await waitForGeocoder();
+
+    // new naver.maps.Marker({
+    //   map: map,
+    //   position: naver.maps.TransCoord.fromTM128ToLatLng(new naver.maps.Point(263795, 85782)),
+    // });
   }
 
   return (

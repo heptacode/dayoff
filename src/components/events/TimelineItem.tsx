@@ -22,7 +22,7 @@ export function TimelineItem({ event, ...props }: { event: Event }) {
         {event.title}
       </Text>
       <Text as="time" display="block" fontSize="xs" mb="2">
-        {event.date?.toLocaleString()}
+        {event.date ? new Date(event.date).toLocaleString() : null}
       </Text>
 
       <Text fontSize="md">{event.subtitle}</Text>

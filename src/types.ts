@@ -9,13 +9,15 @@ export enum EventType {
 }
 
 export interface Collection {
-  title: string | null;
-  subtitle: string | null;
+  id: string;
+  title: string;
+  subtitle: string;
   events: Event[];
 }
 
 export interface Event {
-  date: Date | string | null;
+  id: string;
+  date: string | null;
   title: string;
   subtitle: string;
   description: string;
