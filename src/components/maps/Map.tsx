@@ -1,18 +1,15 @@
 import { useMapContext } from '@/contexts/MapContext';
 import { getCurrentPosition } from '@/utils/getCurrentPosition';
-import { waitForGeocoder } from '@/utils/waitForGeocoder';
-import { CircularProgress, Flex, Icon } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import Script from 'next/script';
 import { useRef } from 'react';
-import { renderToString } from 'react-dom/server';
-import { MdLocationPin } from 'react-icons/md';
 
 export function Map() {
   const mapRef = useRef<HTMLDivElement>(null);
   const { setMap } = useMapContext();
 
   async function initMap() {
-    const map: naver.maps.Map = new naver.maps.Map(mapRef.current as HTMLDivElement, {
+    const map = new naver.maps.Map(mapRef.current as HTMLDivElement, {
       zoom: 15,
       scaleControl: false,
       logoControl: false,
@@ -29,16 +26,9 @@ export function Map() {
       map: map,
       position: location,
       icon: {
-        content: renderToString(<Icon as={MdLocationPin} boxSize="6" />),
+        content: '<div class="dot-marker"></div>',
       },
     });
-
-    await waitForGeocoder();
-
-    // new naver.maps.Marker({
-    //   map: map,
-    //   position: naver.maps.TransCoord.fromTM128ToLatLng(new naver.maps.Point(263795, 85782)),
-    // });
   }
 
   return (
@@ -48,9 +38,7 @@ export function Map() {
         strategy="lazyOnload"
         onLoad={initMap}
       />
-      <Flex ref={mapRef} w="full" h="full" justifyContent="center" alignItems="center">
-        <CircularProgress isIndeterminate />
-      </Flex>
+      <Flex ref={mapRef} w="full" h="full" justifyContent="center" alignItems="center" />
     </>
   );
 }
