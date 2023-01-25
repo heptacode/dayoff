@@ -1,5 +1,5 @@
 import { useMapContext } from '@/contexts/MapContext';
-import { getCurrentPosition } from '@/utils/getCurrentPosition';
+import { getCurrentPosition, watchPosition } from '@/utils/geolocation';
 import { Flex } from '@chakra-ui/react';
 import Script from 'next/script';
 import { useRef } from 'react';
@@ -22,12 +22,17 @@ export function Map() {
     const location = new naver.maps.LatLng(coords.latitude, coords.longitude);
     map.setCenter(location);
 
-    new naver.maps.Marker({
+    const userPositionMarker = new naver.maps.Marker({
       map: map,
       position: location,
       icon: {
         content: '<div class="dot-marker"></div>',
       },
+    });
+
+    watchPosition((position: GeolocationPosition) => {
+      const location = new naver.maps.LatLng(position.coords.latitude, position.coords.longitude);
+      userPositionMarker.setPosition(location);
     });
   }
 
