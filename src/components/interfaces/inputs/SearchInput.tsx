@@ -69,7 +69,7 @@ export function SearchInput({
               borderRadius={0}
               paddingY={6}
               variant={hoveredIndex === index ? 'solid' : 'ghost'}
-              key={index}
+              key={place.id}
               onClick={() => {
                 handlePlaceSelect(place);
                 setSearchValue('');
