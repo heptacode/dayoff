@@ -1,7 +1,7 @@
 import { AccordionPanel, Flex, Text } from '@chakra-ui/react';
-import type { Event } from '@/types';
+import type { IEvent } from '@/types';
 
-export function TimelineItem({ event, ...props }: { event: Event }) {
+export function TimelineItem({ event, ...props }: { event: IEvent }) {
   return (
     <AccordionPanel as="li" ml="3" mb="3" {...props}>
       <Flex

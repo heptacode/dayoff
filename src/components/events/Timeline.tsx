@@ -7,12 +7,12 @@ import {
   Box,
 } from '@chakra-ui/react';
 import { TimelineItem } from './TimelineItem';
-import type { Collection } from '@/types';
+import type { ICollection } from '@/types';
 
 export function Timeline({
   collections,
   ...props
-}: { collections: Collection[] } & AccordionProps) {
+}: { collections: ICollection[] } & AccordionProps) {
   return (
     <Accordion defaultIndex={[...Array(collections.length).keys()]} allowMultiple {...props}>
       {collections.map((collection, index) => (

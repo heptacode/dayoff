@@ -1,29 +1,38 @@
-export enum EventType {
-  Airplane = 'Airplane',
-  Bus = 'Bus',
-  Train = 'Train',
-  Transfer = 'Transfer',
-  Eat = 'Eat',
-  Place = 'Place',
-  Sleep = 'Sleep',
-}
+import { model, Schema } from 'mongoose';
 
-export interface Collection {
-  id: string;
+export interface ICollection {
+  _id: string;
   title: string;
   subtitle: string;
-  events: Event[];
+  events: IEvent[];
 }
 
-export interface Event {
-  id: string;
-  date: string | null;
+const collectionSchema = new Schema<ICollection>({
+  title: { type: String, default: '', required: true },
+  subtitle: { type: String, default: '', required: true },
+  events: [{ type: Schema.Types.ObjectId, ref: 'Event' }],
+});
+export const Collection = model<ICollection>('Collection', collectionSchema);
+
+export interface IEvent {
+  _id: string;
   title: string;
   subtitle: string;
   description: string;
-  lat: number | null;
-  lng: number | null;
+  date: Date;
+  lat: number;
+  lng: number;
 }
+
+const eventSchema = new Schema<IEvent>({
+  title: { type: String, default: '', required: true },
+  subtitle: { type: String, default: '', required: true },
+  description: { type: String, default: '', required: true },
+  lat: { type: Number },
+  lng: { type: Number },
+  date: { type: Date, default: Date.now },
+});
+export const Event = model<IEvent>('Event', eventSchema);
 
 enum SortBy {
   DISTANCE = 'distance',

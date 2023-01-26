@@ -1,23 +1,23 @@
 import { createContext, Dispatch, SetStateAction, useContext, useState } from 'react';
-import type { Collection } from '@/types';
+import type { ICollection } from '@/types';
 
 export interface EventState {
-  collections: Collection[];
-  setCollections: Dispatch<SetStateAction<Collection[]>>;
+  collections: ICollection[];
+  setCollections: Dispatch<SetStateAction<ICollection[]>>;
 }
 
 export const EventContext = createContext<EventState>({} as EventState);
 
 export function EventProvider({ children }: any) {
-  const [collections, setCollections] = useState<Collection[]>([
+  const [collections, setCollections] = useState<ICollection[]>([
     {
-      id: 'qwre',
+      _id: 'qwre',
       title: '첫째날',
       subtitle: 'asf',
       events: [
         {
-          id: 'asf',
-          date: new Date().toUTCString(),
+          _id: 'asf',
+          date: new Date(),
           title: '제주 스타벅스',
           subtitle: '커피 타임',
           description:
@@ -26,8 +26,8 @@ export function EventProvider({ children }: any) {
           lng: 126.51530966206293,
         },
         {
-          id: 'asdf',
-          date: new Date().toUTCString(),
+          _id: 'asdf',
+          date: new Date(),
           title: '제주 스타벅스',
           subtitle: '커피 타임',
           description:
