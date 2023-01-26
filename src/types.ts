@@ -1,4 +1,4 @@
-import { model, Schema } from 'mongoose';
+import { model, models, Schema } from 'mongoose';
 
 export interface ICollection {
   _id: string;
@@ -12,7 +12,7 @@ const collectionSchema = new Schema<ICollection>({
   subtitle: { type: String, default: '', required: true },
   events: [{ type: Schema.Types.ObjectId, ref: 'Event' }],
 });
-export const Collection = model<ICollection>('Collection', collectionSchema);
+export const Collection = models.Collection ?? model<ICollection>('Collection', collectionSchema);
 
 export interface IEvent {
   _id: string;
@@ -32,7 +32,7 @@ const eventSchema = new Schema<IEvent>({
   lng: { type: Number },
   date: { type: Date, default: Date.now },
 });
-export const Event = model<IEvent>('Event', eventSchema);
+export const Event = models.Event ?? model<IEvent>('Event', eventSchema);
 
 enum SortBy {
   DISTANCE = 'distance',
