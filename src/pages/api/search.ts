@@ -16,7 +16,7 @@ export default async function handler(
       },
       {
         headers: {
-          Authorization: `KakaoAK ${process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY}`,
+          Authorization: `KakaoAK ${process.env.KAKAO_REST_KEY}`,
         },
       }
     );
