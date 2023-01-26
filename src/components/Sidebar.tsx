@@ -2,6 +2,7 @@ import { Timeline } from '@/components/events/Timeline';
 import { SearchInput } from '@/components/interfaces/inputs/SearchInput';
 import { useEventContext } from '@/contexts/EventContext';
 import { useGlobalContext } from '@/contexts/GlobalContext';
+import { ICollection } from '@/types';
 import {
   Box,
   Drawer,
@@ -14,11 +15,19 @@ import {
   Text,
   useDisclosure,
 } from '@chakra-ui/react';
+import { getRequest } from '@heptacode/http-request';
+import { useQuery } from '@tanstack/react-query';
 
 export function Sidebar() {
   const { isSidebarOpen, setIsSidebarOpen } = useGlobalContext();
-  const { collections } = useEventContext();
+  const { collections, setCollections } = useEventContext();
   const { isOpen, onClose } = useDisclosure({ isOpen: isSidebarOpen });
+
+  useQuery<ICollection[]>(
+    ['collections'],
+    async () => (await getRequest<ICollection[]>('/api/collection')).data,
+    { onSuccess: data => setCollections(data) }
+  );
 
   return (
     <Drawer

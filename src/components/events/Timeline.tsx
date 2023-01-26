@@ -6,6 +6,7 @@ import {
   AccordionProps,
   Box,
 } from '@chakra-ui/react';
+import { useEffect, useState } from 'react';
 import { TimelineItem } from './TimelineItem';
 import type { ICollection } from '@/types';
 
@@ -13,10 +14,21 @@ export function Timeline({
   collections,
   ...props
 }: { collections: ICollection[] } & AccordionProps) {
+  const [indices, setIndices] = useState<number[]>([]);
+
+  useEffect(() => {
+    setIndices([...Array(collections.length).keys()]);
+  }, [collections]);
+
   return (
-    <Accordion defaultIndex={[...Array(collections.length).keys()]} allowMultiple {...props}>
-      {collections.map((collection, index) => (
-        <AccordionItem key={index}>
+    <Accordion
+      allowMultiple
+      index={indices}
+      onChange={(idx: number[]) => setIndices(idx)}
+      {...props}
+    >
+      {collections.map(collection => (
+        <AccordionItem key={collection._id}>
           <AccordionButton>
             <Box flex="1" textAlign="left">
               <h2>{collection.title}</h2>
@@ -32,8 +44,8 @@ export function Timeline({
             borderLeftColor="gray.200"
             _dark={{ borderLeftColor: 'gray.600' }}
           >
-            {collection.events.map((event, index) => (
-              <TimelineItem event={event} key={index} />
+            {collection.events.map(event => (
+              <TimelineItem event={event} key={event._id} />
             ))}
           </Box>
         </AccordionItem>
