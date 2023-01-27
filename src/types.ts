@@ -4,14 +4,12 @@ export interface IPlan {
   _id: string;
   title: string;
   subtitle: string;
-  description: string;
   collections: ICollection[];
 }
 
 const planSchema = new Schema<IPlan>({
   title: { type: String, default: '', required: true },
   subtitle: { type: String, default: '', required: true },
-  description: { type: String, default: '', required: true },
   collections: [{ type: Schema.Types.ObjectId, ref: 'Collection' }],
 });
 export const Plan = models.Plan ?? model<IPlan>('Plan', planSchema);

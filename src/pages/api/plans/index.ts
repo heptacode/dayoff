@@ -9,9 +9,8 @@ export default withMongoose(async (req: NextApiRequestWithMongoose, res: NextApi
     }
     case 'POST': {
       const plan = await Plan.create<IPlan>({
-        title: req.body.title ?? '',
-        subtitle: req.body.subtitle ?? '',
-        description: req.body.description ?? '',
+        title: req.body.title ?? '계획 이름',
+        subtitle: req.body.subtitle ?? '새로운 계획',
         collections: [],
       });
       return res.status(201).send(plan);
