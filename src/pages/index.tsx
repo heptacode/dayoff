@@ -1,31 +1,15 @@
-import { Sidebar } from '@/components/Sidebar';
-import { Map } from '@/components/maps/Map';
-import { EventProvider } from '@/contexts/EventContext';
-import { useGlobalContext } from '@/contexts/GlobalContext';
-import { MapProvider } from '@/contexts/MapContext';
-import { Icon, IconButton } from '@chakra-ui/react';
-import { MdMenu } from 'react-icons/md';
+import { Box, Container, Heading, HStack } from '@chakra-ui/react';
 
 export default function Home() {
-  const { isSidebarOpen, setIsSidebarOpen } = useGlobalContext();
-
   return (
-    <MapProvider>
-      <EventProvider>
-        {!isSidebarOpen ? (
-          <IconButton
-            aria-label="Open Sidebar"
-            icon={<Icon as={MdMenu} boxSize="5" />}
-            position="absolute"
-            top="8px"
-            left="8px"
-            zIndex="1"
-            onClick={() => setIsSidebarOpen(true)}
-          />
-        ) : null}
-        <Map />
-        <Sidebar />
-      </EventProvider>
-    </MapProvider>
+    <Box as="section" pb={{ base: '12', md: '24' }}>
+      <Box as="nav" bg="bg-surface" boxShadow="sm">
+        <Container py={{ base: '4', lg: '5' }}>
+          <HStack spacing="10" justify="space-between">
+            <Heading size="lg">Dayoff</Heading>
+          </HStack>
+        </Container>
+      </Box>
+    </Box>
   );
 }
