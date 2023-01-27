@@ -25,7 +25,7 @@ export function Sidebar() {
 
   useQuery<ICollection[]>(
     ['collections'],
-    async () => (await getRequest<ICollection[]>('/api/collection')).data,
+    async () => (await getRequest<ICollection[]>('/api/collections')).data,
     { onSuccess: data => setCollections(data) }
   );
 
