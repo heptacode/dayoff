@@ -1,22 +1,20 @@
 import { NextApiRequestWithMongoose, withMongoose } from '@/hooks/mongoose';
-import { Event } from '@/types';
+import { IPlan, Plan } from '@/types';
 import type { NextApiResponse } from 'next';
 
 export default withMongoose(async (req: NextApiRequestWithMongoose, res: NextApiResponse<any>) => {
   switch (req.method) {
     case 'GET': {
-      return res.status(200).json(await Event.find());
+      return res.status(200).json(await Plan.find());
     }
     case 'POST': {
-      const event = await Event.create({
+      const plan = await Plan.create<IPlan>({
         title: req.body.title ?? '',
         subtitle: req.body.subtitle ?? '',
         description: req.body.description ?? '',
-        lat: req.body.lat ?? '',
-        lng: req.body.lng ?? '',
-        date: req.body.date ? new Date(req.body.date) : null,
+        collections: [],
       });
-      return res.status(201).send(event);
+      return res.status(201).send(plan);
     }
     default:
       res.setHeader('Allow', ['GET', 'POST']);

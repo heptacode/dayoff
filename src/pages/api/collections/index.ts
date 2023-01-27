@@ -8,12 +8,12 @@ export default withMongoose(async (req: NextApiRequestWithMongoose, res: NextApi
       return res.status(200).json(await Collection.find().populate('events'));
     }
     case 'POST': {
-      await Collection.create({
+      const collection = await Collection.create({
         title: req.body.title ?? '',
         subtitle: req.body.subtitle ?? '',
         events: [],
       });
-      return res.status(201).send('');
+      return res.status(201).send(collection);
     }
     default:
       res.setHeader('Allow', ['GET', 'POST']);

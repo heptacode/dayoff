@@ -1,16 +1,16 @@
 import { NextApiRequestWithMongoose, withMongoose } from '@/hooks/mongoose';
-import { Collection } from '@/types';
+import { Plan } from '@/types';
 import type { NextApiResponse } from 'next';
 
 export default withMongoose(async (req: NextApiRequestWithMongoose, res: NextApiResponse<any>) => {
   switch (req.method) {
     case 'PATCH': {
-      const collection = await Collection.findByIdAndUpdate(req.query.collectionId, {
+      const plan = await Plan.findByIdAndUpdate(req.query.eventId, {
         ...(req.body.title && { title: req.body.title }),
         ...(req.body.subtitle && { subtitle: req.body.subtitle }),
-        ...(req.body.events && { events: req.body.events }),
+        ...(req.body.description && { description: req.body.description }),
       });
-      return res.status(204).send(collection);
+      return res.status(204).send(plan);
     }
     default:
       res.setHeader('Allow', ['PATCH']);
