@@ -7,6 +7,7 @@ export default async function handler(
   res: NextApiResponse<KeywordSearchResponse>
 ) {
   try {
+    // https://apis.map.kakao.com/web/sample/keywordBasic/
     const { data, status } = await getRequest<KeywordSearchAPIResponse>(
       `https://dapi.kakao.com/v2/local/search/keyword.json`,
       {
