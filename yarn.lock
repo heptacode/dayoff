@@ -1758,7 +1758,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@chakra-ui/react@npm:^2.4.8":
+"@chakra-ui/react@npm:^2.4.9":
   version: 2.4.9
   resolution: "@chakra-ui/react@npm:2.4.9"
   dependencies:
@@ -3345,7 +3345,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "dayoff@workspace:."
   dependencies:
-    "@chakra-ui/react": ^2.4.8
+    "@chakra-ui/react": ^2.4.9
     "@emotion/react": ^11
     "@emotion/styled": ^11
     "@heptacode/http-request": ^0.2.1

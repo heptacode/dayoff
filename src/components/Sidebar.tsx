@@ -1,8 +1,7 @@
 import { Timeline } from '@/components/events/Timeline';
 import { SearchInput } from '@/components/interfaces/inputs/SearchInput';
-import { useEventContext } from '@/contexts/EventContext';
 import { useGlobalContext } from '@/contexts/GlobalContext';
-import { ICollection } from '@/types';
+import { usePlanContext } from '@/contexts/PlanContext';
 import {
   Box,
   Drawer,
@@ -12,22 +11,13 @@ import {
   Editable,
   EditableInput,
   EditablePreview,
-  Text,
   useDisclosure,
 } from '@chakra-ui/react';
-import { getRequest } from '@heptacode/http-request';
-import { useQuery } from '@tanstack/react-query';
 
 export function Sidebar() {
   const { isSidebarOpen, setIsSidebarOpen } = useGlobalContext();
-  const { collections, setCollections } = useEventContext();
+  const { title, setTitle, subtitle, collections } = usePlanContext();
   const { isOpen, onClose } = useDisclosure({ isOpen: isSidebarOpen });
-
-  useQuery<ICollection[]>(
-    ['collections'],
-    async () => (await getRequest<ICollection[]>('/api/collections')).data,
-    { onSuccess: data => setCollections(data) }
-  );
 
   return (
     <Drawer
@@ -40,13 +30,22 @@ export function Sidebar() {
       <DrawerContent>
         <DrawerCloseButton onClick={() => setIsSidebarOpen(false)} />
         <DrawerHeader borderBottomWidth="1px">
-          <Editable defaultValue="Dayoff Title">
+          <Editable value={title} onInput={e => setTitle((e.target as HTMLInputElement).value)}>
+            <EditablePreview />
+            <EditableInput />
+          </Editable>
+          <Editable
+            value={subtitle}
+            fontSize="sm"
+            fontWeight="normal"
+            onInput={e => setTitle((e.target as HTMLInputElement).value)}
+          >
             <EditablePreview />
             <EditableInput onInput={console.log} />
           </Editable>
-          <Text fontSize="sm" fontWeight="initial">
+          {/* <Text fontSize="sm" fontWeight="initial">
             이벤트 n개
-          </Text>
+          </Text> */}
         </DrawerHeader>
 
         <Box p="5">
