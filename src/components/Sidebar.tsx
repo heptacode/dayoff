@@ -16,7 +16,7 @@ import {
 
 export function Sidebar() {
   const { isSidebarOpen, setIsSidebarOpen } = useGlobalContext();
-  const { title, setTitle, subtitle, collections } = usePlanContext();
+  const { title, setTitle, subtitle, setSubtitle, collections } = usePlanContext();
   const { isOpen, onClose } = useDisclosure({ isOpen: isSidebarOpen });
 
   return (
@@ -38,10 +38,10 @@ export function Sidebar() {
             value={subtitle}
             fontSize="sm"
             fontWeight="normal"
-            onInput={e => setTitle((e.target as HTMLInputElement).value)}
+            onInput={e => setSubtitle((e.target as HTMLInputElement).value)}
           >
             <EditablePreview />
-            <EditableInput onInput={console.log} />
+            <EditableInput />
           </Editable>
           {/* <Text fontSize="sm" fontWeight="initial">
             이벤트 n개

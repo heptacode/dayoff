@@ -5,12 +5,12 @@ import type { NextApiResponse } from 'next';
 export default withMongoose(async (req: NextApiRequestWithMongoose, res: NextApiResponse<any>) => {
   switch (req.method) {
     case 'PATCH': {
-      const collection = await Collection.findByIdAndUpdate(req.query.collectionId, {
+      await Collection.findByIdAndUpdate(req.query.collectionId, {
         ...(req.body.title && { title: req.body.title }),
         ...(req.body.subtitle && { subtitle: req.body.subtitle }),
         ...(req.body.events && { events: req.body.events }),
       });
-      return res.status(204).send(collection);
+      return res.status(204).send('');
     }
     default:
       res.setHeader('Allow', ['PATCH']);

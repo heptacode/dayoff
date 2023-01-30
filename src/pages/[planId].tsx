@@ -13,7 +13,7 @@ import type { IPlan } from '@/types';
 export default function Plan() {
   const router = useRouter();
   const { isSidebarOpen, setIsSidebarOpen } = useGlobalContext();
-  const { setTitle, setSubtitle, setCollections } = usePlanContext();
+  const { setPlanId, setTitle, setSubtitle, setCollections } = usePlanContext();
 
   useQuery<IPlan>(
     ['plan'],
@@ -21,6 +21,7 @@ export default function Plan() {
     {
       enabled: router.isReady,
       onSuccess: data => {
+        setPlanId(String(router.query.planId));
         setTitle(data.title);
         setSubtitle(data.subtitle);
         setCollections(data.collections);

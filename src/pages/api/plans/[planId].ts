@@ -16,11 +16,11 @@ export default withMongoose(async (req: NextApiRequestWithMongoose, res: NextApi
       );
     }
     case 'PATCH': {
-      const plan = await Plan.findByIdAndUpdate(req.query.eventId, {
+      await Plan.findByIdAndUpdate(req.query.planId, {
         ...(req.body.title && { title: req.body.title }),
         ...(req.body.subtitle && { subtitle: req.body.subtitle }),
       });
-      return res.status(204).send(plan);
+      return res.status(204).send('');
     }
     default:
       res.setHeader('Allow', ['GET', 'PATCH']);
