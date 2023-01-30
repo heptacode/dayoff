@@ -2308,13 +2308,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@heptacode/http-request@npm:^0.2.1":
-  version: 0.2.1
-  resolution: "@heptacode/http-request@npm:0.2.1"
+"@heptacode/http-request@npm:^0.3.0":
+  version: 0.3.0
+  resolution: "@heptacode/http-request@npm:0.3.0"
   dependencies:
-    axios: ^0.27
-    prettier: ^2.7.1
-  checksum: 4bf882100cd4d765e150a94407b6c0c920e5fd6cbbb5592393bdc699e0c7163ef8ea9983a1fe280584268e8372c8bb44004019350776d101fb7368497920c787
+    axios: ^1.2.6
+    prettier: ^2.8.3
+  checksum: dbce53b56957ea7c5773ef10226019f421af9ba9bb6cb2fcb57495dc5a064b09c8df1bd8a8ec94ece0c5d4eb5923d9d4b6f8f62f08a003fe05999ab8a63540b7
   languageName: node
   linkType: hard
 
@@ -3052,13 +3052,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:^0.27":
-  version: 0.27.2
-  resolution: "axios@npm:0.27.2"
+"axios@npm:^1.2.6":
+  version: 1.2.6
+  resolution: "axios@npm:1.2.6"
   dependencies:
-    follow-redirects: ^1.14.9
+    follow-redirects: ^1.15.0
     form-data: ^4.0.0
-  checksum: 38cb7540465fe8c4102850c4368053c21683af85c5fdf0ea619f9628abbcb59415d1e22ebc8a6390d2bbc9b58a9806c874f139767389c862ec9b772235f06854
+    proxy-from-env: ^1.1.0
+  checksum: cbd19be3e07d2fbb6a0b126e49880cecdd44c1f68496ae0e7d21e7dc1c31fd59703a8eec51c9fd69034344f519cc1cdc22c22153131063657c4cef50195f0c00
   languageName: node
   linkType: hard
 
@@ -3348,7 +3349,7 @@ __metadata:
     "@chakra-ui/react": ^2.4.9
     "@emotion/react": ^11
     "@emotion/styled": ^11
-    "@heptacode/http-request": ^0.2.1
+    "@heptacode/http-request": ^0.3.0
     "@tanstack/react-query": ^4.14.5
     "@tanstack/react-query-devtools": ^4.14.5
     "@types/navermaps": ^3.6.0
@@ -4057,7 +4058,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"follow-redirects@npm:^1.14.9":
+"follow-redirects@npm:^1.15.0":
   version: 1.15.2
   resolution: "follow-redirects@npm:1.15.2"
   peerDependenciesMeta:
@@ -5339,7 +5340,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:^2.7.1, prettier@npm:^2.8.3":
+"prettier@npm:^2.8.3":
   version: 2.8.3
   resolution: "prettier@npm:2.8.3"
   bin:
@@ -5356,6 +5357,13 @@ __metadata:
     object-assign: ^4.1.1
     react-is: ^16.13.1
   checksum: c056d3f1c057cb7ff8344c645450e14f088a915d078dcda795041765047fa080d38e5d626560ccaac94a4e16e3aa15f3557c1a9a8d1174530955e992c675e459
+  languageName: node
+  linkType: hard
+
+"proxy-from-env@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "proxy-from-env@npm:1.1.0"
+  checksum: ed7fcc2ba0a33404958e34d95d18638249a68c430e30fcb6c478497d72739ba64ce9810a24f53a7d921d0c065e5b78e3822759800698167256b04659366ca4d4
   languageName: node
   linkType: hard
 
