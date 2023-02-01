@@ -12,6 +12,8 @@ export default withMongoose(async (req: NextApiRequestWithMongoose, res: NextApi
         title: req.body.title ?? '계획 이름',
         subtitle: req.body.subtitle ?? '새로운 계획',
         collections: [],
+        createdAt: new Date(),
+        updatedAt: new Date(),
       });
       return res.status(201).send(plan);
     }

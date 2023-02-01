@@ -19,6 +19,7 @@ export default withMongoose(async (req: NextApiRequestWithMongoose, res: NextApi
       await Plan.findByIdAndUpdate(req.query.planId, {
         ...(req.body.title && { title: req.body.title }),
         ...(req.body.subtitle && { subtitle: req.body.subtitle }),
+        updatedAt: new Date(),
       });
       return res.status(204).send('');
     }

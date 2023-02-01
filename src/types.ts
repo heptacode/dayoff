@@ -5,12 +5,16 @@ export interface IPlan {
   title: string;
   subtitle: string;
   collections: ICollection[];
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 const planSchema = new Schema<IPlan>({
   title: { type: String, default: '', required: true },
   subtitle: { type: String, default: '', required: true },
   collections: [{ type: Schema.Types.ObjectId, ref: 'Collection' }],
+  createdAt: [{ type: Date, default: new Date(), required: true }],
+  updatedAt: [{ type: Date, default: new Date(), required: true }],
 });
 export const Plan = models.Plan ?? model<IPlan>('Plan', planSchema);
 
