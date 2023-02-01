@@ -7,6 +7,10 @@ export default async function handler(
   res: NextApiResponse<KeywordSearchResponse>
 ) {
   try {
+    if (!req.query.query?.length) {
+      return res.status(404).json({});
+    }
+
     // https://apis.map.kakao.com/web/sample/keywordBasic/
     const { data, status } = await getRequest<KeywordSearchAPIResponse>(
       `https://dapi.kakao.com/v2/local/search/keyword.json`,
@@ -22,7 +26,7 @@ export default async function handler(
       }
     );
 
-    res
+    return res
       .setHeader('Cache-Control', 'no-store')
       .status(status)
       .json({
@@ -39,6 +43,6 @@ export default async function handler(
         }),
       });
   } catch {
-    res.setHeader('Cache-Control', 'no-store').status(500);
+    return res.setHeader('Cache-Control', 'no-store').status(500);
   }
 }
