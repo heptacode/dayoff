@@ -1,6 +1,6 @@
-import { IPlan } from '@/types';
-import { Card, CardBody, Heading, Text } from '@chakra-ui/react';
+import { Card, CardBody, CardFooter, Heading, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
+import type { IPlan } from '@/types';
 
 export function PlanCard({ plan }: { plan: IPlan }) {
   const router = useRouter();
@@ -11,6 +11,9 @@ export function PlanCard({ plan }: { plan: IPlan }) {
         <Heading size="md">{plan.title}</Heading>
         <Text>{plan.subtitle}</Text>
       </CardBody>
+      <CardFooter>
+        <Text>{new Intl.DateTimeFormat('ko-KR').format(new Date(plan.updatedAt))}</Text>
+      </CardFooter>
     </Card>
   );
 }
