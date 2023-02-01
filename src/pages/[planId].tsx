@@ -1,8 +1,7 @@
 import { Sidebar } from '@/components/Sidebar';
 import { Map } from '@/components/maps/Map';
-import { useGlobalContext } from '@/contexts/GlobalContext';
-import { MapProvider } from '@/contexts/MapContext';
-import { usePlanContext } from '@/contexts/PlanContext';
+import { useGlobalStore } from '@/stores/globalStore';
+import { usePlanStore } from '@/stores/planStore';
 import { Icon, IconButton } from '@chakra-ui/react';
 import { getRequest } from '@heptacode/http-request';
 import { useQuery } from '@tanstack/react-query';
@@ -13,8 +12,8 @@ import type { IPlan } from '@/types';
 
 export default function Plan() {
   const router = useRouter();
-  const { isSidebarOpen, setIsSidebarOpen } = useGlobalContext();
-  const { setIsLoading, setPlanId, setTitle, setSubtitle, setCollections } = usePlanContext();
+  const globalStore = useGlobalStore();
+  const planStore = usePlanStore();
 
   useQuery<IPlan>(
     ['plan', { planId: router.query.planId }],
@@ -25,11 +24,11 @@ export default function Plan() {
         router.replace('/');
       },
       onSuccess(data) {
-        setPlanId(String(router.query.planId));
-        setTitle(data.title);
-        setSubtitle(data.subtitle);
-        setCollections(data.collections);
-        setIsLoading(false);
+        planStore.setPlanId(String(router.query.planId));
+        planStore.setTitle(data.title);
+        planStore.setSubtitle(data.subtitle);
+        planStore.setCollections(data.collections);
+        planStore.setIsLoading(false);
       },
     }
   );
@@ -41,8 +40,8 @@ export default function Plan() {
   }, [router]);
 
   return (
-    <MapProvider>
-      {!isSidebarOpen ? (
+    <>
+      {!globalStore.isSidebarOpen ? (
         <IconButton
           aria-label="Open Sidebar"
           icon={<Icon as={MdMenu} boxSize="5" />}
@@ -50,11 +49,11 @@ export default function Plan() {
           top="8px"
           left="8px"
           zIndex="1"
-          onClick={() => setIsSidebarOpen(true)}
+          onClick={() => globalStore.setIsSidebarOpen(true)}
         />
       ) : null}
       <Map />
       <Sidebar />
-    </MapProvider>
+    </>
   );
 }

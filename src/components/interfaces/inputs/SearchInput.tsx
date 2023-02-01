@@ -1,4 +1,4 @@
-import { useSearch } from '@/hooks/queries/search';
+import { useSearchQuery } from '@/hooks/queries/search';
 import { useDebounceValue } from '@/utils/debounce';
 import { Button, Card, Input } from '@chakra-ui/react';
 import React, { DetailedHTMLProps, HTMLAttributes, useState } from 'react';
@@ -13,7 +13,7 @@ export function SearchInput({
   const [searchValue, setSearchValue] = useState<string>('');
   const [hoveredIndex, setHoveredIndex] = useState<number>(0);
   const debouncedSearchQuery = useDebounceValue(searchValue, 300);
-  const { data: places, refetch: refetchSearch } = useSearch({
+  const { data: places, refetch: refetchSearch } = useSearchQuery({
     query: debouncedSearchQuery,
   });
 

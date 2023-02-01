@@ -1,40 +1,20 @@
-import { useMapContext } from '@/contexts/MapContext';
-import { getCurrentPosition, watchPosition } from '@/utils/geolocation';
+import { useMap } from '@/hooks/map';
 import { Flex } from '@chakra-ui/react';
 import Script from 'next/script';
-import { useRef } from 'react';
+import { useEffect } from 'react';
 
 export function Map() {
-  const mapRef = useRef<HTMLDivElement>(null);
-  const { setMap } = useMapContext();
+  const { mapRef, initMap } = useMap();
 
-  async function initMap() {
-    const map = new naver.maps.Map(mapRef.current as HTMLDivElement, {
-      zoom: 15,
-      scaleControl: false,
-      logoControl: false,
-      mapDataControl: false,
-      mapTypeControl: false,
-    });
-    setMap(map);
-
-    const { coords } = await getCurrentPosition();
-    const location = new naver.maps.LatLng(coords.latitude, coords.longitude);
-    map.setCenter(location);
-
-    const userPositionMarker = new naver.maps.Marker({
-      map: map,
-      position: location,
-      icon: {
-        content: '<div class="dot-marker"></div>',
-      },
-    });
-
-    watchPosition((position: GeolocationPosition) => {
-      const location = new naver.maps.LatLng(position.coords.latitude, position.coords.longitude);
-      userPositionMarker.setPosition(location);
-    });
-  }
+  useEffect(() => {
+    try {
+      if (naver) {
+        initMap();
+      }
+    } catch (error) {
+      /* empty */
+    }
+  }, []);
 
   return (
     <>

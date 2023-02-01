@@ -1,7 +1,8 @@
 import { Timeline } from '@/components/events/Timeline';
 import { SearchInput } from '@/components/interfaces/inputs/SearchInput';
-import { useGlobalContext } from '@/contexts/GlobalContext';
-import { usePlanContext } from '@/contexts/PlanContext';
+import { usePlan } from '@/hooks/plan';
+import { useGlobalStore } from '@/stores/globalStore';
+import { usePlanStore } from '@/stores/planStore';
 import {
   Box,
   Drawer,
@@ -14,19 +15,16 @@ import {
   Progress,
   useDisclosure,
 } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 
 export function Sidebar() {
-  const { isSidebarOpen, setIsSidebarOpen } = useGlobalContext();
-  const {
-    isLoading,
-    isUpdating,
-    title,
-    subtitle,
-    collections,
-    handleTitleInput,
-    handleSubtitleInput,
-  } = usePlanContext();
-  const { isOpen, onClose } = useDisclosure({ isOpen: isSidebarOpen });
+  const router = useRouter();
+  const globalStore = useGlobalStore();
+  const planStore = usePlanStore();
+  const { handleTitleInput, handleSubtitleInput, handlePlaceSelect } = usePlan({
+    planId: String(router.query.planId),
+  });
+  const { isOpen, onClose } = useDisclosure({ isOpen: globalStore.isSidebarOpen });
 
   return (
     <Drawer
@@ -37,18 +35,18 @@ export function Sidebar() {
       onClose={onClose}
     >
       <DrawerContent>
-        <DrawerCloseButton onClick={() => setIsSidebarOpen(false)} />
-        {isLoading || isUpdating ? <Progress size="xs" isIndeterminate /> : null}
+        <DrawerCloseButton onClick={() => globalStore.setIsSidebarOpen(false)} />
+        {planStore.isLoading ? <Progress size="xs" isIndeterminate /> : null}
         <DrawerHeader borderBottomWidth="1px">
           <Editable
-            value={title}
+            value={planStore.title}
             onInput={e => handleTitleInput((e.target as HTMLInputElement).value)}
           >
             <EditablePreview />
             <EditableInput />
           </Editable>
           <Editable
-            value={subtitle}
+            value={planStore.subtitle}
             fontSize="sm"
             fontWeight="normal"
             onInput={e => handleSubtitleInput((e.target as HTMLInputElement).value)}
@@ -62,9 +60,9 @@ export function Sidebar() {
         </DrawerHeader>
 
         <Box p="5">
-          <SearchInput handlePlaceSelect={console.log} />
+          <SearchInput handlePlaceSelect={handlePlaceSelect} />
 
-          <Timeline mt="5" collections={collections} />
+          <Timeline mt="5" collections={planStore.collections} />
         </Box>
       </DrawerContent>
     </Drawer>

@@ -1,17 +1,17 @@
 import { PlanCard } from '@/components/plans/PlanCard';
-import { usePlanContext } from '@/contexts/PlanContext';
+import { usePlanStore } from '@/stores/planStore';
 import { Box, Container, Heading, HStack, SimpleGrid } from '@chakra-ui/react';
 import { getRequest } from '@heptacode/http-request';
 import { useQuery } from '@tanstack/react-query';
 import type { IPlan } from '@/types';
 
 export default function Home() {
-  const { plans, setPlans, setIsLoading } = usePlanContext();
+  const planStore = usePlanStore();
 
   useQuery<IPlan[]>(['plans'], async () => (await getRequest<IPlan[]>(`/api/plans`)).data, {
     onSuccess(data) {
-      setPlans(data);
-      setIsLoading(false);
+      planStore.setPlans(data);
+      planStore.setIsLoading(false);
     },
   });
 
@@ -28,7 +28,7 @@ export default function Home() {
       </Box>
 
       <SimpleGrid spacing={4} templateColumns="repeat(auto-fill, minmax(300px, 1fr))">
-        {plans.map(plan => (
+        {planStore.plans.map(plan => (
           <PlanCard plan={plan} key={plan._id} />
         ))}
       </SimpleGrid>

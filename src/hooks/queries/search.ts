@@ -2,7 +2,7 @@ import { getRequest } from '@heptacode/http-request';
 import { useQuery } from '@tanstack/react-query';
 import type { KeywordSearchDocument, KeywordSearchOptions, KeywordSearchResponse } from '@/types';
 
-export function useSearch({ query }: { query: string }) {
+export function useSearchQuery({ query }: { query: string }) {
   return useQuery<KeywordSearchDocument[]>(
     ['get_search_data', query],
     async () => {
