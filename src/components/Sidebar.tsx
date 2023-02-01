@@ -11,12 +11,21 @@ import {
   Editable,
   EditableInput,
   EditablePreview,
+  Progress,
   useDisclosure,
 } from '@chakra-ui/react';
 
 export function Sidebar() {
   const { isSidebarOpen, setIsSidebarOpen } = useGlobalContext();
-  const { title, setTitle, subtitle, setSubtitle, collections } = usePlanContext();
+  const {
+    isLoading,
+    isUpdating,
+    title,
+    subtitle,
+    collections,
+    handleTitleInput,
+    handleSubtitleInput,
+  } = usePlanContext();
   const { isOpen, onClose } = useDisclosure({ isOpen: isSidebarOpen });
 
   return (
@@ -29,8 +38,12 @@ export function Sidebar() {
     >
       <DrawerContent>
         <DrawerCloseButton onClick={() => setIsSidebarOpen(false)} />
+        {isLoading || isUpdating ? <Progress size="xs" isIndeterminate /> : null}
         <DrawerHeader borderBottomWidth="1px">
-          <Editable value={title} onInput={e => setTitle((e.target as HTMLInputElement).value)}>
+          <Editable
+            value={title}
+            onInput={e => handleTitleInput((e.target as HTMLInputElement).value)}
+          >
             <EditablePreview />
             <EditableInput />
           </Editable>
@@ -38,7 +51,7 @@ export function Sidebar() {
             value={subtitle}
             fontSize="sm"
             fontWeight="normal"
-            onInput={e => setSubtitle((e.target as HTMLInputElement).value)}
+            onInput={e => handleSubtitleInput((e.target as HTMLInputElement).value)}
           >
             <EditablePreview />
             <EditableInput />

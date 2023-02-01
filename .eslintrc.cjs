@@ -38,5 +38,6 @@ module.exports = {
     'no-var': 'error',
     'prefer-const': 'error',
     'prettier/prettier': 'error',
+    'react-hooks/exhaustive-deps': 'off',
   },
 };

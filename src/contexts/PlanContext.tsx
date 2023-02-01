@@ -1,55 +1,71 @@
 import { usePlan } from '@/hooks/queries/plan';
-import { useDebounceValue } from '@/utils/debounce';
-import { createContext, Dispatch, SetStateAction, useContext, useEffect, useState } from 'react';
+import { debounce } from '@/utils/debounce';
+import { createContext, Dispatch, SetStateAction, useCallback, useContext, useState } from 'react';
 import type { ICollection } from '@/types';
 
 export interface PlanState {
+  isLoading: boolean;
+  isUpdating: boolean;
   planId: string;
-  setPlanId: Dispatch<SetStateAction<string>>;
   title: string;
-  setTitle: Dispatch<SetStateAction<string>>;
   subtitle: string;
-  setSubtitle: Dispatch<SetStateAction<string>>;
   collections: ICollection[];
+  setIsLoading: Dispatch<SetStateAction<boolean>>;
+  setPlanId: Dispatch<SetStateAction<string>>;
+  setTitle: Dispatch<SetStateAction<string>>;
+  setSubtitle: Dispatch<SetStateAction<string>>;
   setCollections: Dispatch<SetStateAction<ICollection[]>>;
+  handleTitleInput(value: string): void;
+  handleSubtitleInput(value: string): void;
 }
 
 export const PlanContext = createContext<PlanState>({} as PlanState);
 
 export function PlanProvider({ children }: any) {
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [planId, setPlanId] = useState<string>('');
   const [title, setTitle] = useState<string>('');
   const [subtitle, setSubtitle] = useState<string>('');
   const [collections, setCollections] = useState<ICollection[]>([]);
 
-  const { updatePlan } = usePlan({ planId });
-  const debouncedTitle = useDebounceValue(title, 300);
-  const debouncedSubtitle = useDebounceValue(subtitle, 300);
+  const { updatePlan, isUpdating } = usePlan({ planId });
 
-  useEffect(() => {
-    if (planId && debouncedTitle.length) {
-      console.log('debouncedTitle', debouncedTitle);
-      updatePlan({ title: debouncedTitle });
-    }
-  }, [debouncedTitle, planId, updatePlan]);
+  const debounceTitle = useCallback(
+    debounce((title: string) => updatePlan({ title }), 300),
+    []
+  );
 
-  useEffect(() => {
-    if (planId && debouncedSubtitle.length) {
-      updatePlan({ title: debouncedSubtitle });
-    }
-  }, [debouncedSubtitle, planId, updatePlan]);
+  function handleTitleInput(value: string) {
+    setTitle(value);
+    debounceTitle(value);
+  }
+
+  const debounceSubtitle = useCallback(
+    debounce((subtitle: string) => updatePlan({ subtitle }), 300),
+    []
+  );
+
+  function handleSubtitleInput(value: string) {
+    setSubtitle(value);
+    debounceSubtitle(value);
+  }
 
   return (
     <PlanContext.Provider
       value={{
+        isLoading,
+        isUpdating,
         planId,
-        setPlanId,
         title,
-        setTitle,
         subtitle,
-        setSubtitle,
         collections,
+        setIsLoading,
+        setPlanId,
+        setTitle,
+        setSubtitle,
         setCollections,
+        handleTitleInput,
+        handleSubtitleInput,
       }}
     >
       {children}

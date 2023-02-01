@@ -16,7 +16,7 @@ export function useDebounceValue<T>(value: T, timeout = 500): T {
   return debouncedValue;
 }
 
-export function debounce<T extends (...args: any) => void | any>(fn: T, timeout = 500): T {
+export function debounce<T extends (...args: any) => any>(fn: T, timeout = 500): T {
   let timer: NodeJS.Timeout;
   const callable = (...args: any) => {
     clearTimeout(timer);
