@@ -17,7 +17,7 @@ export default function Plan() {
   const { setIsLoading, setPlanId, setTitle, setSubtitle, setCollections } = usePlanContext();
 
   useQuery<IPlan>(
-    ['plan'],
+    ['plan', { planId: router.query.planId }],
     async () => (await getRequest<IPlan>(`/api/plans/${router.query.planId}`)).data,
     {
       enabled: router.isReady && router.query.planId?.length === 24,
