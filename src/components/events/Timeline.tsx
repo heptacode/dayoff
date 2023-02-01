@@ -17,7 +17,7 @@ export function Timeline({
   const [indices, setIndices] = useState<number[]>([]);
 
   useEffect(() => {
-    setIndices([...Array(collections.length).keys()]);
+    setIndices([...Array(collections?.length).keys()]);
   }, [collections]);
 
   return (
@@ -27,7 +27,7 @@ export function Timeline({
       onChange={(idx: number[]) => setIndices(idx)}
       {...props}
     >
-      {collections.map(collection => (
+      {collections?.map(collection => (
         <AccordionItem key={collection._id}>
           <AccordionButton>
             <Box flex="1" textAlign="left">
@@ -44,7 +44,7 @@ export function Timeline({
             borderLeftColor="gray.200"
             _dark={{ borderLeftColor: 'gray.600' }}
           >
-            {collection.events.map(event => (
+            {collection.events?.map(event => (
               <TimelineItem event={event} key={event._id} />
             ))}
           </Box>

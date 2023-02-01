@@ -61,7 +61,7 @@ export function SearchInput({
 
       {places?.length ? (
         <Card paddingY="2" maxHeight="250" overflowY="auto">
-          {places.map((place, index) => (
+          {places?.map((place, index) => (
             <Button
               flexDirection="column"
               alignItems="flex-start"
