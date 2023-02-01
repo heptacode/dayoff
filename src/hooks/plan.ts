@@ -1,12 +1,14 @@
 import { usePlanStore } from '@/stores/planStore';
 import { debounce } from '@/utils/debounce';
 import { useCallback } from 'react';
+import { useEventQuery } from './queries/event';
 import { usePlanQuery } from './queries/plan';
 import type { KeywordSearchDocument } from '@/types';
 
 export function usePlan({ planId }: { planId: string }) {
   const planStore = usePlanStore();
   const { updatePlan, isLoading } = usePlanQuery({ planId });
+  const { createEvent } = useEventQuery({ collectionId: '' });
 
   const debounceTitle = useCallback(
     debounce((title: string) => updatePlan({ title }), 300),
@@ -29,7 +31,10 @@ export function usePlan({ planId }: { planId: string }) {
   }
 
   function handlePlaceSelect(place: KeywordSearchDocument) {
-    console.log(place);
+    createEvent({
+      lat: place.y,
+      lng: place.x,
+    });
   }
 
   return {

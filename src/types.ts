@@ -36,16 +36,14 @@ export interface IEvent {
   _id: string;
   title: string;
   subtitle: string;
-  description: string;
-  date: Date;
   lat: number;
   lng: number;
+  date: Date;
 }
 
 const eventSchema = new Schema<IEvent>({
   title: { type: String, default: '', required: true },
   subtitle: { type: String, default: '', required: true },
-  description: { type: String, default: '', required: true },
   lat: { type: Number },
   lng: { type: Number },
   date: { type: Date, default: Date.now },

@@ -21,14 +21,14 @@ export function TimelineItem({ event, ...props }: { event: IEvent }) {
       <Text fontSize="md" mb="1" fontWeight="semibold">
         {event.title}
       </Text>
-      <Text as="time" display="block" fontSize="xs" mb="2">
-        {event.date ? new Date(event.date).toLocaleString() : null}
+      <Text as="time" display="block" fontSize="xs">
+        {event.date
+          ? new Intl.DateTimeFormat('ko-KR', { dateStyle: 'medium', timeStyle: 'short' }).format(
+              new Date(event.date)
+            )
+          : null}
       </Text>
-
-      <Text fontSize="md">{event.subtitle}</Text>
-      <Text fontSize="sm" textColor="gray.500" _dark={{ textColor: 'gray.300' }}>
-        {event.description}
-      </Text>
+      <Text fontSize="sm">{event.subtitle}</Text>
     </AccordionPanel>
   );
 }

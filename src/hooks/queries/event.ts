@@ -1,14 +1,44 @@
-import { patchRequest } from '@heptacode/http-request';
+import { patchRequest, postRequest } from '@heptacode/http-request';
 import { useMutation } from '@tanstack/react-query';
 
-export function useEventQuery({ planId }: { planId: string }) {
-  const { isLoading: isUpdating, mutateAsync: updatePlan } = useMutation(
+export function useEventQuery({
+  collectionId,
+  eventId,
+}: {
+  collectionId?: string;
+  eventId?: string;
+}) {
+  const { isLoading: isCreating, mutateAsync: createEvent } = useMutation(
+    ({
+      title,
+      subtitle,
+      lat,
+      lng,
+      date,
+    }: {
+      title?: string;
+      subtitle?: string;
+      lat?: number;
+      lng?: number;
+      date?: Date;
+    }) =>
+      postRequest(`/api/events`, {
+        collectionId,
+        ...(title && { title }),
+        ...(subtitle && { subtitle }),
+        ...(lat && { lat }),
+        ...(lng && { lng }),
+        ...(date && { date }),
+      })
+  );
+
+  const { isLoading: isUpdating, mutateAsync: updateEvent } = useMutation(
     ({ title, subtitle }: { title?: string; subtitle?: string }) =>
-      patchRequest(`/api/events/${planId}`, {
+      patchRequest(`/api/events/${eventId}`, {
         ...(title && { title }),
         ...(subtitle && { subtitle }),
       })
   );
 
-  return { isUpdating, updatePlan };
+  return { isLoading: isCreating || isUpdating, createEvent, updateEvent };
 }
