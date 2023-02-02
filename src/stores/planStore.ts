@@ -9,12 +9,14 @@ export interface PlanState {
   title: string;
   subtitle: string;
   collections: ICollection[];
+  collectionId: string;
   setIsLoading(value: boolean): void;
   setPlans(value: IPlan[]): void;
   setPlanId(value: string): void;
   setTitle(value: string): void;
   setSubtitle(value: string): void;
   setCollections(value: ICollection[]): void;
+  setCollectionId(value: string): void;
 }
 
 export const usePlanStore = create<PlanState>()(
@@ -25,6 +27,7 @@ export const usePlanStore = create<PlanState>()(
     title: '',
     subtitle: '',
     collections: [],
+    collectionId: '',
     setIsLoading(value) {
       set({ isLoading: value });
     },
@@ -42,6 +45,9 @@ export const usePlanStore = create<PlanState>()(
     },
     setCollections(value) {
       set({ collections: value });
+    },
+    setCollectionId(value) {
+      set({ collectionId: value });
     },
   }))
 );

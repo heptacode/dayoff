@@ -1,27 +1,41 @@
-import { usePlanStore } from '@/stores/planStore';
 import { getRequest, patchRequest } from '@heptacode/http-request';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import type { IPlan } from '@/types';
 
-export function usePlanQuery({ planId }: { planId: string }) {
-  const planStore = usePlanStore();
+export function usePlanQuery({
+  planId,
+  onPlansSuccess,
+  onPlanError,
+  onPlanSuccess,
+}: {
+  planId?: string;
+  onPlansSuccess?(data: IPlan[]): void;
+  onPlanError?(): void;
+  onPlanSuccess?(data: IPlan): void;
+}) {
   const router = useRouter();
 
-  const { data: plan, isLoading: isFetching } = useQuery<IPlan>(
-    ['plan', { planId }],
-    async () => (await getRequest<IPlan>(`/api/plans/${router.query.planId}`)).data,
+  const { isLoading: isPlansLoading, data: plans } = useQuery<IPlan[]>(
+    ['plans'],
+    async () => (await getRequest<IPlan[]>(`/api/plans`)).data,
     {
-      enabled: router.isReady && router.query.planId?.length === 24,
+      onSuccess(data) {
+        onPlansSuccess?.(data);
+      },
+    }
+  );
+
+  const { isLoading: isPlanLoading, data: plan } = useQuery<IPlan>(
+    ['plan', { planId }],
+    async () => (await getRequest<IPlan>(`/api/plans/${planId}`)).data,
+    {
+      enabled: router.isReady && planId?.length === 24,
       onError() {
-        router.replace('/');
+        onPlanError?.();
       },
       onSuccess(data) {
-        planStore.setPlanId(planId);
-        planStore.setTitle(data.title);
-        planStore.setSubtitle(data.subtitle);
-        planStore.setCollections(data.collections);
-        planStore.setIsLoading(false);
+        onPlanSuccess?.(data);
       },
     }
   );
@@ -34,5 +48,10 @@ export function usePlanQuery({ planId }: { planId: string }) {
       })
   );
 
-  return { isLoading: isFetching || isUpdating, plan, updatePlan };
+  return {
+    isLoading: isPlansLoading || isPlanLoading || isUpdating,
+    plans,
+    plan,
+    updatePlan,
+  };
 }

@@ -8,7 +8,7 @@ import type { KeywordSearchDocument } from '@/types';
 export function usePlan({ planId }: { planId: string }) {
   const planStore = usePlanStore();
   const { updatePlan, isLoading } = usePlanQuery({ planId });
-  const { createEvent } = useEventQuery({ collectionId: '' });
+  const { createEvent } = useEventQuery({ planId, collectionId: planStore.collectionId });
 
   const debounceTitle = useCallback(
     debounce((title: string) => updatePlan({ title }), 300),
@@ -32,6 +32,8 @@ export function usePlan({ planId }: { planId: string }) {
 
   function handlePlaceSelect(place: KeywordSearchDocument) {
     createEvent({
+      title: place.place_name,
+      subtitle: place.road_address_name,
       lat: place.y,
       lng: place.x,
     });

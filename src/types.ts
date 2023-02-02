@@ -1,4 +1,4 @@
-import { model, models, Schema } from 'mongoose';
+import { model, models, ObjectId, Schema } from 'mongoose';
 
 export interface IPlan {
   _id: string;
@@ -20,20 +20,23 @@ export const Plan = models.Plan ?? model<IPlan>('Plan', planSchema);
 
 export interface ICollection {
   _id: string;
+  planId: ObjectId;
   title: string;
   subtitle: string;
-  events: IEvent[];
+  events?: IEvent[];
 }
 
 const collectionSchema = new Schema<ICollection>({
+  planId: { type: Schema.Types.ObjectId, ref: 'Plan', required: true },
   title: { type: String, default: '', required: true },
   subtitle: { type: String, default: '', required: true },
-  events: [{ type: Schema.Types.ObjectId, ref: 'Event' }],
 });
 export const Collection = models.Collection ?? model<ICollection>('Collection', collectionSchema);
 
 export interface IEvent {
   _id: string;
+  planId: ObjectId;
+  collectionId: ObjectId;
   title: string;
   subtitle: string;
   lat: number;
@@ -42,6 +45,8 @@ export interface IEvent {
 }
 
 const eventSchema = new Schema<IEvent>({
+  planId: { type: Schema.Types.ObjectId, ref: 'Plan', required: true },
+  collectionId: { type: Schema.Types.ObjectId, ref: 'Collection', required: true },
   title: { type: String, default: '', required: true },
   subtitle: { type: String, default: '', required: true },
   lat: { type: Number },

@@ -1,21 +1,19 @@
 import { NextApiRequestWithMongoose, withMongoose } from '@/hooks/mongoose';
-import { Event } from '@/types';
+import { Collection } from '@/types';
 import type { NextApiResponse } from 'next';
 
 export default withMongoose(async (req: NextApiRequestWithMongoose, res: NextApiResponse<any>) => {
   switch (req.method) {
     case 'GET': {
-      return res.status(200).json(await Event.find());
+      return res.status(200).json(await Collection.find({ planId: req.query.planId }));
     }
     case 'POST': {
-      const event = await Event.create({
-        title: req.body.title ?? '이벤트 제목',
-        subtitle: req.body.subtitle ?? '이벤트 부제목',
-        lat: req.body.lat ?? 0,
-        lng: req.body.lng ?? 0,
-        date: req.body.date ?? new Date(req.body.date),
+      const collection = await Collection.create({
+        planId: req.query.planId,
+        title: req.body.title ?? '',
+        subtitle: req.body.subtitle ?? '',
       });
-      return res.status(201).send(event);
+      return res.status(201).send(collection);
     }
     default:
       res.setHeader('Allow', ['GET', 'POST']);

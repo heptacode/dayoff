@@ -1,15 +1,12 @@
 import { PlanCard } from '@/components/plans/PlanCard';
+import { usePlanQuery } from '@/hooks/queries/plan';
 import { usePlanStore } from '@/stores/planStore';
 import { Box, Container, Heading, HStack, SimpleGrid } from '@chakra-ui/react';
-import { getRequest } from '@heptacode/http-request';
-import { useQuery } from '@tanstack/react-query';
-import type { IPlan } from '@/types';
 
 export default function Home() {
   const planStore = usePlanStore();
-
-  useQuery<IPlan[]>(['plans'], async () => (await getRequest<IPlan[]>(`/api/plans`)).data, {
-    onSuccess(data) {
+  usePlanQuery({
+    onPlansSuccess(data) {
       planStore.setPlans(data);
       planStore.setIsLoading(false);
     },

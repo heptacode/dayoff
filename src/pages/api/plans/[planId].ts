@@ -5,15 +5,7 @@ import type { NextApiResponse } from 'next';
 export default withMongoose(async (req: NextApiRequestWithMongoose, res: NextApiResponse<any>) => {
   switch (req.method) {
     case 'GET': {
-      return res.status(200).json(
-        await Plan.findById(req.query.planId).populate({
-          path: 'collections',
-          populate: {
-            path: 'events',
-            model: 'Event',
-          },
-        })
-      );
+      return res.status(200).json(await Plan.findById(req.query.planId).populate('collections'));
     }
     case 'PATCH': {
       await Plan.findByIdAndUpdate(req.query.planId, {

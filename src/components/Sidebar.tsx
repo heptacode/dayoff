@@ -62,7 +62,7 @@ export function Sidebar() {
         <Box p="5">
           <SearchInput handlePlaceSelect={handlePlaceSelect} />
 
-          <Timeline mt="5" collections={planStore.collections} />
+          <Timeline mt="5" collections={planStore.collections} events={planStore.events} />
         </Box>
       </DrawerContent>
     </Drawer>

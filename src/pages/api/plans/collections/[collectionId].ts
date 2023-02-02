@@ -8,7 +8,6 @@ export default withMongoose(async (req: NextApiRequestWithMongoose, res: NextApi
       await Collection.findByIdAndUpdate(req.query.collectionId, {
         ...(req.body.title && { title: req.body.title }),
         ...(req.body.subtitle && { subtitle: req.body.subtitle }),
-        ...(req.body.events && { events: req.body.events }),
       });
       return res.status(204).send('');
     }

@@ -8,12 +8,13 @@ import {
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { TimelineItem } from './TimelineItem';
-import type { ICollection } from '@/types';
+import type { ICollection, IEvent } from '@/types';
 
 export function Timeline({
   collections,
+  events,
   ...props
-}: { collections: ICollection[] } & AccordionProps) {
+}: { collections: ICollection[]; events: IEvent[] } & AccordionProps) {
   const [indices, setIndices] = useState<number[]>([]);
 
   useEffect(() => {
@@ -44,9 +45,11 @@ export function Timeline({
             borderLeftColor="gray.200"
             _dark={{ borderLeftColor: 'gray.600' }}
           >
-            {collection.events?.map(event => (
-              <TimelineItem event={event} key={event._id} />
-            ))}
+            {events
+              ?.filter((event: IEvent) => String(event.collectionId) === collection._id)
+              .map(event => (
+                <TimelineItem event={event} key={event._id} />
+              ))}
           </Box>
         </AccordionItem>
       ))}

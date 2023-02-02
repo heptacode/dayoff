@@ -1,11 +1,13 @@
-import { patchRequest, postRequest } from '@heptacode/http-request';
-import { useMutation } from '@tanstack/react-query';
+import { getRequest, patchRequest, postRequest } from '@heptacode/http-request';
+import { useMutation, useQueries } from '@tanstack/react-query';
 
 export function useEventQuery({
+  planId,
   collectionId,
   eventId,
 }: {
-  collectionId?: string;
+  planId: string;
+  collectionId: string;
   eventId?: string;
 }) {
   const { isLoading: isCreating, mutateAsync: createEvent } = useMutation(
@@ -22,8 +24,7 @@ export function useEventQuery({
       lng?: number;
       date?: Date;
     }) =>
-      postRequest(`/api/events`, {
-        collectionId,
+      postRequest(`/api/plans/${planId}/collections/${collectionId}/events`, {
         ...(title && { title }),
         ...(subtitle && { subtitle }),
         ...(lat && { lat }),
@@ -34,7 +35,7 @@ export function useEventQuery({
 
   const { isLoading: isUpdating, mutateAsync: updateEvent } = useMutation(
     ({ title, subtitle }: { title?: string; subtitle?: string }) =>
-      patchRequest(`/api/events/${eventId}`, {
+      patchRequest(`/api/plans/${planId}/collections/${collectionId}/events/${eventId}`, {
         ...(title && { title }),
         ...(subtitle && { subtitle }),
       })
