@@ -5,37 +5,25 @@ import type { IPlan } from '@/types';
 
 export function usePlanQuery({
   planId,
-  onPlansSuccess,
-  onPlanError,
-  onPlanSuccess,
+  onFetchError,
+  onFetchSuccess,
 }: {
   planId?: string;
-  onPlansSuccess?(data: IPlan[]): void;
-  onPlanError?(): void;
-  onPlanSuccess?(data: IPlan): void;
+  onFetchError?(): void;
+  onFetchSuccess?(data: IPlan): void;
 }) {
   const router = useRouter();
 
-  const { isLoading: isPlansLoading, data: plans } = useQuery<IPlan[]>(
-    ['plans'],
-    async () => (await getRequest<IPlan[]>(`/api/plans`)).data,
-    {
-      onSuccess(data) {
-        onPlansSuccess?.(data);
-      },
-    }
-  );
-
-  const { isLoading: isPlanLoading, data: plan } = useQuery<IPlan>(
+  const { isLoading: isFetchLoading, data: plan } = useQuery<IPlan>(
     ['plan', { planId }],
     async () => (await getRequest<IPlan>(`/api/plans/${planId}`)).data,
     {
       enabled: router.isReady && Boolean(planId) && planId?.length === 24,
       onError() {
-        onPlanError?.();
+        onFetchError?.();
       },
       onSuccess(data) {
-        onPlanSuccess?.(data);
+        onFetchSuccess?.(data);
       },
     }
   );
@@ -49,8 +37,7 @@ export function usePlanQuery({
   );
 
   return {
-    isLoading: isPlansLoading || isPlanLoading || isUpdating,
-    plans,
+    isLoading: isFetchLoading || isUpdating,
     plan,
     updatePlan,
   };

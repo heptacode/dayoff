@@ -1,6 +1,8 @@
+import { useCollectionStore } from '@/stores/collectionStore';
+import { useEventStore } from '@/stores/eventStore';
 import { usePlanStore } from '@/stores/planStore';
 import { debounce } from '@/utils/debounce';
-import { useCallback, useEffect } from 'react';
+import { useCallback } from 'react';
 import { useCollectionQuery } from './queries/collections';
 import { useEventQuery } from './queries/event';
 import { usePlanQuery } from './queries/plan';
@@ -8,26 +10,23 @@ import type { KeywordSearchDocument } from '@/types';
 
 export function usePlan({ planId }: { planId?: string }) {
   const planStore = usePlanStore();
+  const collectionStore = useCollectionStore();
+  const eventStore = useEventStore();
   const { updatePlan, isLoading } = usePlanQuery({ planId });
-  const { collections } = useCollectionQuery({ planId });
-  const { eventResults, createEvent } = useEventQuery({
+  const { collections } = useCollectionQuery({
     planId,
-    collectionId: planStore.collectionId,
-    collections,
+    onFetchSuccess(data) {
+      collectionStore.setCollections(data);
+    },
   });
-
-  useEffect(() => {
-    if (collections?.length) {
-      planStore.setCollections(collections);
-    }
-  }, [collections]);
-
-  useEffect(() => {
-    if (eventResults?.length && eventResults.every(result => result.isSuccess)) {
-      const events = eventResults.flatMap(result => result.data);
-      planStore.setEvents(events);
-    }
-  }, [eventResults]);
+  const { createEvent } = useEventQuery({
+    planId,
+    collectionId: collectionStore.collectionId,
+    collections,
+    onQuerySuccess(data) {
+      eventStore.setEvents(eventStore.events.concat(data));
+    },
+  });
 
   const debounceTitle = useCallback(
     debounce((title: string) => updatePlan({ title }), 300),

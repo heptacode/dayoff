@@ -1,12 +1,12 @@
 import { PlanCard } from '@/components/plans/PlanCard';
-import { usePlanQuery } from '@/hooks/queries/plan';
+import { usePlansQuery } from '@/hooks/queries/plans';
 import { usePlanStore } from '@/stores/planStore';
 import { Box, Container, Heading, HStack, SimpleGrid } from '@chakra-ui/react';
 
 export default function Home() {
   const planStore = usePlanStore();
-  usePlanQuery({
-    onPlansSuccess(data) {
+  usePlansQuery({
+    onFetchSuccess(data) {
       planStore.setPlans(data);
       planStore.setIsLoading(false);
     },

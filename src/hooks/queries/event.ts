@@ -1,4 +1,4 @@
-import { ICollection } from '@/types';
+import { ICollection, IEvent } from '@/types';
 import { getRequest, patchRequest, postRequest } from '@heptacode/http-request';
 import { useMutation, useQueries } from '@tanstack/react-query';
 
@@ -7,20 +7,29 @@ export function useEventQuery({
   collectionId,
   collections,
   eventId,
+  onQuerySuccess,
 }: {
   planId?: string;
   collectionId: string;
   collections?: ICollection[];
   eventId?: string;
+  onQuerySuccess?(data: IEvent[]): void;
 }) {
-  const eventResults = useQueries({
+  const eventQueries = useQueries({
     queries:
       collections?.map(collection => {
         return {
           queryKey: ['plan.collection', { collectionId: collection._id }],
           queryFn: async () =>
-            (await getRequest(`/api/plans/${planId}/collections/${collection._id}/events`)).data,
+            (
+              await getRequest<IEvent[]>(
+                `/api/plans/${planId}/collections/${collection._id}/events`
+              )
+            ).data,
           enabled: Boolean(collection._id),
+          onSuccess(data: IEvent[]) {
+            onQuerySuccess?.(data);
+          },
         };
       }) ?? [],
   });
@@ -58,7 +67,7 @@ export function useEventQuery({
 
   return {
     isLoading: isCreating || isUpdating,
-    eventResults,
+    eventQueries,
     createEvent,
     updateEvent,
   };

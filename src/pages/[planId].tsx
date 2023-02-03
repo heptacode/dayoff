@@ -14,10 +14,10 @@ export default function Plan() {
   const planStore = usePlanStore();
   usePlanQuery({
     planId: router.query.planId ? String(router.query.planId) : undefined,
-    onPlanError() {
+    onFetchError() {
       router.replace('/');
     },
-    onPlanSuccess(data) {
+    onFetchSuccess(data) {
       planStore.setPlanId(String(router.query.planId));
       planStore.setTitle(data.title);
       planStore.setSubtitle(data.subtitle);
