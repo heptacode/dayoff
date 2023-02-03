@@ -17,6 +17,7 @@ export function usePlan({ planId }: { planId?: string }) {
     planId,
     onFetchSuccess(data) {
       collectionStore.setCollections(data);
+      collectionStore.setIsLoading(false);
     },
   });
   const { createEvent } = useEventQuery({
@@ -25,6 +26,7 @@ export function usePlan({ planId }: { planId?: string }) {
     collections,
     onQuerySuccess(data) {
       eventStore.setEvents(eventStore.events.concat(data));
+      eventStore.setIsLoading(false);
     },
   });
 

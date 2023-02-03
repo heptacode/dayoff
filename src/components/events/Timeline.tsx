@@ -1,3 +1,4 @@
+import { useEventStore } from '@/stores/eventStore';
 import {
   Accordion,
   AccordionButton,
@@ -5,6 +6,7 @@ import {
   AccordionItem,
   AccordionProps,
   Box,
+  Progress,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { TimelineItem } from './TimelineItem';
@@ -15,6 +17,7 @@ export function Timeline({
   events,
   ...props
 }: { collections: ICollection[]; events: IEvent[] } & AccordionProps) {
+  const eventStore = useEventStore();
   const [indices, setIndices] = useState<number[]>([]);
 
   useEffect(() => {
@@ -30,6 +33,7 @@ export function Timeline({
     >
       {collections.map(collection => (
         <AccordionItem key={collection._id}>
+          {eventStore.isLoading ? <Progress size="xs" isIndeterminate /> : null}
           <AccordionButton>
             <Box flex="1" textAlign="left">
               <h2>{collection.title}</h2>

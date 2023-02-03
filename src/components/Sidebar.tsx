@@ -40,7 +40,9 @@ export function Sidebar() {
     >
       <DrawerContent>
         <DrawerCloseButton onClick={() => globalStore.setIsSidebarOpen(false)} />
-        {planStore.isLoading ? <Progress size="xs" isIndeterminate /> : null}
+        {planStore.isLoading || collectionStore.isLoading ? (
+          <Progress size="xs" isIndeterminate />
+        ) : null}
         <DrawerHeader borderBottomWidth="1px">
           <Editable
             value={planStore.title}
