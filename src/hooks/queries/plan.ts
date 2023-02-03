@@ -30,7 +30,7 @@ export function usePlanQuery({
     ['plan', { planId }],
     async () => (await getRequest<IPlan>(`/api/plans/${planId}`)).data,
     {
-      enabled: router.isReady && planId?.length === 24,
+      enabled: router.isReady && Boolean(planId) && planId?.length === 24,
       onError() {
         onPlanError?.();
       },

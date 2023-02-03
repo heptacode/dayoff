@@ -22,7 +22,7 @@ export function Sidebar() {
   const globalStore = useGlobalStore();
   const planStore = usePlanStore();
   const { handleTitleInput, handleSubtitleInput, handlePlaceSelect } = usePlan({
-    planId: String(router.query.planId),
+    planId: router.query.planId ? String(router.query.planId) : undefined,
   });
   const { isOpen, onClose } = useDisclosure({ isOpen: globalStore.isSidebarOpen });
 

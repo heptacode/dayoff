@@ -1,15 +1,30 @@
+import { ICollection } from '@/types';
 import { getRequest, patchRequest, postRequest } from '@heptacode/http-request';
 import { useMutation, useQueries } from '@tanstack/react-query';
 
 export function useEventQuery({
   planId,
   collectionId,
+  collections,
   eventId,
 }: {
-  planId: string;
+  planId?: string;
   collectionId: string;
+  collections?: ICollection[];
   eventId?: string;
 }) {
+  const eventResults = useQueries({
+    queries:
+      collections?.map(collection => {
+        return {
+          queryKey: ['plan.collection', { collectionId: collection._id }],
+          queryFn: async () =>
+            (await getRequest(`/api/plans/${planId}/collections/${collection._id}/events`)).data,
+          enabled: Boolean(collection._id),
+        };
+      }) ?? [],
+  });
+
   const { isLoading: isCreating, mutateAsync: createEvent } = useMutation(
     ({
       title,
@@ -41,5 +56,10 @@ export function useEventQuery({
       })
   );
 
-  return { isLoading: isCreating || isUpdating, createEvent, updateEvent };
+  return {
+    isLoading: isCreating || isUpdating,
+    eventResults,
+    createEvent,
+    updateEvent,
+  };
 }

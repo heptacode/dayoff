@@ -4,7 +4,6 @@ export interface IPlan {
   _id: string;
   title: string;
   subtitle: string;
-  collections: ICollection[];
   createdAt: Date;
   updatedAt: Date;
 }
@@ -12,7 +11,6 @@ export interface IPlan {
 const planSchema = new Schema<IPlan>({
   title: { type: String, default: '', required: true },
   subtitle: { type: String, default: '', required: true },
-  collections: [{ type: Schema.Types.ObjectId, ref: 'Collection' }],
   createdAt: [{ type: Date, default: new Date(), required: true }],
   updatedAt: [{ type: Date, default: new Date(), required: true }],
 });
@@ -23,7 +21,6 @@ export interface ICollection {
   planId: ObjectId;
   title: string;
   subtitle: string;
-  events?: IEvent[];
 }
 
 const collectionSchema = new Schema<ICollection>({

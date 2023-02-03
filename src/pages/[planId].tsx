@@ -13,7 +13,7 @@ export default function Plan() {
   const globalStore = useGlobalStore();
   const planStore = usePlanStore();
   usePlanQuery({
-    planId: String(router.query.planId),
+    planId: router.query.planId ? String(router.query.planId) : undefined,
     onPlanError() {
       router.replace('/');
     },
@@ -21,8 +21,6 @@ export default function Plan() {
       planStore.setPlanId(String(router.query.planId));
       planStore.setTitle(data.title);
       planStore.setSubtitle(data.subtitle);
-      planStore.setCollections(data.collections);
-      planStore.setCollectionId(data.collections[0]._id);
       planStore.setIsLoading(false);
     },
   });
