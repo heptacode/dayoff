@@ -49,11 +49,13 @@ export function Timeline({
             borderLeftColor="gray.200"
             _dark={{ borderLeftColor: 'gray.600' }}
           >
-            {events.map(event =>
-              String(event.collectionId) === collection._id ? (
-                <TimelineItem event={event} key={event._id} />
-              ) : null
-            )}
+            {events
+              .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+              .map(event =>
+                String(event.collectionId) === collection._id ? (
+                  <TimelineItem event={event} key={event._id} />
+                ) : null
+              )}
           </Box>
         </AccordionItem>
       ))}
