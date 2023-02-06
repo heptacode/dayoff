@@ -1,3 +1,4 @@
+import { useCollectionStore } from '@/stores/collectionStore';
 import { useEventStore } from '@/stores/eventStore';
 import {
   Accordion,
@@ -8,21 +9,31 @@ import {
   Box,
   Progress,
 } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { TimelineItem } from './TimelineItem';
-import type { ICollection, IEvent } from '@/types';
+import type { IEvent } from '@/types';
 
-export function Timeline({
-  collections,
-  events,
-  ...props
-}: { collections: ICollection[]; events: IEvent[] } & AccordionProps) {
+export function Timeline(props?: AccordionProps) {
+  const collectionStore = useCollectionStore();
   const eventStore = useEventStore();
   const [indices, setIndices] = useState<number[]>([]);
 
+  const handleMove = useCallback((dragIndex: number, hoverIndex: number) => {
+    console.log(dragIndex, hoverIndex);
+    const events = eventStore.events.slice(0);
+    // [events[hoverIndex], events[dragIndex]] = [events[dragIndex], events[hoverIndex]];
+    [events[dragIndex], events[hoverIndex]] = [events[hoverIndex], events[dragIndex]];
+    console.log(events);
+    // eventStore.setEvents(events);
+  }, []);
+
+  const renderCard = useCallback((event: IEvent, index: number) => {
+    return <TimelineItem key={event._id} event={event} index={index} handleMove={handleMove} />;
+  }, []);
+
   useEffect(() => {
-    setIndices([...Array(collections?.length).keys()]);
-  }, [collections]);
+    setIndices([...Array(collectionStore.collections?.length).keys()]);
+  }, [collectionStore.collections]);
 
   return (
     <Accordion
@@ -31,7 +42,7 @@ export function Timeline({
       onChange={(idx: number[]) => setIndices(idx)}
       {...props}
     >
-      {collections.map(collection => (
+      {collectionStore.collections.map(collection => (
         <AccordionItem key={collection._id}>
           {eventStore.isLoading ? <Progress size="xs" isIndeterminate /> : null}
           <AccordionButton>
@@ -49,10 +60,8 @@ export function Timeline({
             borderLeftColor="gray.200"
             _dark={{ borderLeftColor: 'gray.600' }}
           >
-            {events.map(event =>
-              String(event.collectionId) === collection._id ? (
-                <TimelineItem event={event} key={event._id} />
-              ) : null
+            {eventStore.events.map((event, index) =>
+              String(event.collectionId) === collection._id ? renderCard(event, index) : null
             )}
           </Box>
         </AccordionItem>

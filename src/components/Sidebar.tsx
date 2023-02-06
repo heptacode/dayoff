@@ -2,7 +2,6 @@ import { Timeline } from '@/components/events/Timeline';
 import { SearchInput } from '@/components/interfaces/inputs/SearchInput';
 import { usePlan } from '@/hooks/plan';
 import { useCollectionStore } from '@/stores/collectionStore';
-import { useEventStore } from '@/stores/eventStore';
 import { useGlobalStore } from '@/stores/globalStore';
 import { usePlanStore } from '@/stores/planStore';
 import {
@@ -24,7 +23,6 @@ export function Sidebar() {
   const globalStore = useGlobalStore();
   const planStore = usePlanStore();
   const collectionStore = useCollectionStore();
-  const eventStore = useEventStore();
   const { handleTitleInput, handleSubtitleInput, handlePlaceSelect } = usePlan({
     planId: router.query.planId ? String(router.query.planId) : undefined,
   });
@@ -68,7 +66,7 @@ export function Sidebar() {
         <Box p="5">
           <SearchInput handlePlaceSelect={handlePlaceSelect} />
 
-          <Timeline mt="5" collections={collectionStore.collections} events={eventStore.events} />
+          <Timeline mt="5" />
         </Box>
       </DrawerContent>
     </Drawer>
