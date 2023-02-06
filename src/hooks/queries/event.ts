@@ -1,23 +1,24 @@
-import { ICollection, IEvent } from '@/types';
+import { useCollectionStore } from '@/stores/collectionStore';
+import { usePlanStore } from '@/stores/planStore';
 import { getRequest, patchRequest, postRequest } from '@heptacode/http-request';
 import { useMutation, useQueries } from '@tanstack/react-query';
+import type { IEvent } from '@/types';
 
 export function useEventQuery({
-  planId,
   collectionId,
-  collections,
   onFetchSuccess,
 }: {
-  planId?: string;
   collectionId?: string;
-  collections?: ICollection[];
   onFetchSuccess?(collectionId: string, data: IEvent[]): void;
 }) {
+  const planStore = usePlanStore();
+  const collectionStore = useCollectionStore();
+
   const queryMap: Map<string, number> = new Map();
 
   const eventQueries = useQueries({
     queries:
-      collections?.map((collection, index) => {
+      collectionStore.collections?.map((collection, index) => {
         queryMap.set(collection._id, index);
 
         return {
@@ -25,7 +26,7 @@ export function useEventQuery({
           queryFn: async () =>
             (
               await getRequest<IEvent[]>(
-                `/api/plans/${planId}/collections/${collection._id}/events`
+                `/api/plans/${planStore.planId}/collections/${collection._id}/events`
               )
             ).data,
           enabled: Boolean(collection._id),
@@ -64,7 +65,7 @@ export function useEventQuery({
       lng?: number;
       date?: Date;
     }) =>
-      postRequest<IEvent>(`/api/plans/${planId}/collections/${collectionId}/events`, {
+      postRequest<IEvent>(`/api/plans/${planStore.planId}/collections/${collectionId}/events`, {
         ...(title && { title }),
         ...(subtitle && { subtitle }),
         ...(lat && { lat }),
@@ -100,7 +101,7 @@ export function useEventQuery({
       date?: Date;
       collectionId?: string;
     }) =>
-      patchRequest(`/api/plans/${planId}/collections/${collectionId}/events/${eventId}`, {
+      patchRequest(`/api/plans/${planStore.planId}/collections/${collectionId}/events/${eventId}`, {
         ...(title && { title }),
         ...(subtitle && { subtitle }),
         ...(lat && { lat }),

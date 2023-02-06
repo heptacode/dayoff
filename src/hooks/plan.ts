@@ -8,13 +8,12 @@ import { useEventQuery } from './queries/event';
 import { usePlanQuery } from './queries/plan';
 import type { KeywordSearchDocument } from '@/types';
 
-export function usePlan({ planId }: { planId?: string }) {
+export function usePlan() {
   const planStore = usePlanStore();
   const collectionStore = useCollectionStore();
   const eventStore = useEventStore();
-  const { updatePlan, isLoading } = usePlanQuery({ planId });
-  const { collections } = useCollectionQuery({
-    planId,
+  const { updatePlan, isLoading } = usePlanQuery({});
+  useCollectionQuery({
     onFetchSuccess(data) {
       collectionStore.setCollections(data);
       if (data?.length) {
@@ -24,9 +23,7 @@ export function usePlan({ planId }: { planId?: string }) {
     },
   });
   const { createEvent } = useEventQuery({
-    planId,
     collectionId: collectionStore.collectionId,
-    collections,
     onFetchSuccess(collectionId, data) {
       eventStore.setEvents(collectionId, data);
       eventStore.setIsLoading(false);

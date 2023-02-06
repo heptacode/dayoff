@@ -16,12 +16,10 @@ export default function Plan() {
   const planStore = usePlanStore();
   const collectionStore = useCollectionStore();
   usePlanQuery({
-    planId: router.query.planId ? String(router.query.planId) : undefined,
     onFetchError() {
       router.replace('/');
     },
     onFetchSuccess(data) {
-      planStore.setPlanId(String(router.query.planId));
       planStore.setTitle(data.title);
       planStore.setSubtitle(data.subtitle);
       planStore.setIsLoading(false);
@@ -29,8 +27,12 @@ export default function Plan() {
   });
 
   useEffect(() => {
-    if (router.isReady && router.query.planId?.length !== 24) {
-      router.replace('/');
+    if (router.isReady) {
+      if (router.query.planId?.length === 24) {
+        planStore.setPlanId(String(router.query.planId));
+      } else {
+        router.replace('/');
+      }
     }
   }, [router]);
 

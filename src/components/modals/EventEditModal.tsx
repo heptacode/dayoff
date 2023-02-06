@@ -1,7 +1,5 @@
 import { useEventQuery } from '@/hooks/queries/event';
-import { useCollectionStore } from '@/stores/collectionStore';
 import { useEventStore } from '@/stores/eventStore';
-import { usePlanStore } from '@/stores/planStore';
 import { ICollection } from '@/types';
 import {
   Button,
@@ -21,16 +19,12 @@ export function EventEditModal({
   collections,
   ...props
 }: { collections: ICollection[] } & Partial<ModalProps>) {
-  const planStore = usePlanStore();
-  const collectionStore = useCollectionStore();
   const eventStore = useEventStore();
   const { isOpen, onClose } = useDisclosure({
     ...props,
   });
 
   const { isLoading, updateEvent } = useEventQuery({
-    planId: planStore.planId,
-    collections: collectionStore.collections,
     onFetchSuccess(collectionId, data) {
       eventStore.setEvents(collectionId, data);
     },

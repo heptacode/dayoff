@@ -1,19 +1,20 @@
+import { usePlanStore } from '@/stores/planStore';
 import { ICollection } from '@/types';
 import { getRequest } from '@heptacode/http-request';
 import { useQuery } from '@tanstack/react-query';
 
 export function useCollectionQuery({
-  planId,
   onFetchSuccess,
 }: {
-  planId?: string;
   onFetchSuccess?(data: ICollection[]): void;
 }) {
+  const planStore = usePlanStore();
+
   const { isLoading, data: collections } = useQuery<ICollection[]>(
-    ['plan.collections', { planId }],
-    async () => (await getRequest(`/api/plans/${planId}/collections`)).data,
+    ['plan.collections', { planId: planStore.planId }],
+    async () => (await getRequest(`/api/plans/${planStore.planId}/collections`)).data,
     {
-      enabled: Boolean(planId),
+      enabled: Boolean(planStore.planId),
       onSuccess(data) {
         onFetchSuccess?.(data);
       },
