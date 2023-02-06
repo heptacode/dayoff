@@ -1,6 +1,8 @@
 import { Sidebar } from '@/components/Sidebar';
 import { Map } from '@/components/maps/Map';
+import { EventEditModal } from '@/components/modals/EventEditModal';
 import { usePlanQuery } from '@/hooks/queries/plan';
+import { useCollectionStore } from '@/stores/collectionStore';
 import { useGlobalStore } from '@/stores/globalStore';
 import { usePlanStore } from '@/stores/planStore';
 import { Icon, IconButton } from '@chakra-ui/react';
@@ -12,6 +14,7 @@ export default function Plan() {
   const router = useRouter();
   const globalStore = useGlobalStore();
   const planStore = usePlanStore();
+  const collectionStore = useCollectionStore();
   usePlanQuery({
     planId: router.query.planId ? String(router.query.planId) : undefined,
     onFetchError() {
@@ -46,6 +49,11 @@ export default function Plan() {
       ) : null}
       <Map />
       <Sidebar />
+      <EventEditModal
+        collections={collectionStore.collections}
+        isOpen={globalStore.isEventEditModalOpen}
+        onClose={() => globalStore.setIsEventEditModalOpen(false)}
+      />
     </>
   );
 }

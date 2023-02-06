@@ -55,6 +55,7 @@ export function usePlan({ planId }: { planId?: string }) {
 
   function handlePlaceSelect(place: KeywordSearchDocument) {
     createEvent({
+      collectionId: collectionStore.collectionId,
       title: place.place_name,
       subtitle: place.road_address_name,
       lat: place.y,

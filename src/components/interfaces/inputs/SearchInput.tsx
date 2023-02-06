@@ -63,13 +63,13 @@ export function SearchInput({
         <Card paddingY="2" maxHeight="250" overflowY="auto">
           {places?.map((place, index) => (
             <Button
+              key={place.id}
               flexDirection="column"
               alignItems="flex-start"
               fontWeight="initial"
               borderRadius={0}
               paddingY={6}
               variant={hoveredIndex === index ? 'solid' : 'ghost'}
-              key={place.id}
               onClick={() => {
                 handlePlaceSelect(place);
                 setSearchValue('');

@@ -6,13 +6,11 @@ export function useEventQuery({
   planId,
   collectionId,
   collections,
-  eventId,
   onFetchSuccess,
 }: {
   planId?: string;
-  collectionId: string;
+  collectionId?: string;
   collections?: ICollection[];
-  eventId?: string;
   onFetchSuccess?(collectionId: string, data: IEvent[]): void;
 }) {
   const queryMap: Map<string, number> = new Map();
@@ -52,12 +50,14 @@ export function useEventQuery({
 
   const { isLoading: isCreating, mutateAsync: createEvent } = useMutation(
     ({
+      collectionId,
       title,
       subtitle,
       lat,
       lng,
       date,
     }: {
+      collectionId: string;
       title?: string;
       subtitle?: string;
       lat?: number;
@@ -73,20 +73,44 @@ export function useEventQuery({
       }),
     {
       onSuccess() {
-        refetchEvent(collectionId);
+        if (collectionId) {
+          refetchEvent(collectionId);
+        } else {
+          refetchEvents();
+        }
       },
     }
   );
 
   const { isLoading: isUpdating, mutateAsync: updateEvent } = useMutation(
-    ({ title, subtitle }: { title?: string; subtitle?: string }) =>
+    ({
+      eventId,
+      title,
+      subtitle,
+      lat,
+      lng,
+      date,
+      collectionId,
+    }: {
+      eventId: string;
+      title?: string;
+      subtitle?: string;
+      lat?: number;
+      lng?: number;
+      date?: Date;
+      collectionId?: string;
+    }) =>
       patchRequest(`/api/plans/${planId}/collections/${collectionId}/events/${eventId}`, {
         ...(title && { title }),
         ...(subtitle && { subtitle }),
+        ...(lat && { lat }),
+        ...(lng && { lng }),
+        ...(date && { date }),
+        ...(collectionId && { collectionId }),
       }),
     {
       onSuccess() {
-        refetchEvent(collectionId);
+        refetchEvents();
       },
     }
   );

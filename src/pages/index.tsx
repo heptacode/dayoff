@@ -26,7 +26,7 @@ export default function Home() {
 
       <SimpleGrid spacing={4} templateColumns="repeat(auto-fill, minmax(300px, 1fr))">
         {planStore.plans.map(plan => (
-          <PlanCard plan={plan} key={plan._id} />
+          <PlanCard key={plan._id} plan={plan} />
         ))}
       </SimpleGrid>
     </>

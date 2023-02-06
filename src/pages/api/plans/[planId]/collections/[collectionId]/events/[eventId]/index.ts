@@ -11,6 +11,7 @@ export default withMongoose(async (req: NextApiRequestWithMongoose, res: NextApi
         ...(req.body.description && { description: req.body.description }),
         ...(req.body.lat && { lat: req.body.lat }),
         ...(req.body.lng && { lng: req.body.lng }),
+        ...(req.body.collectionId && { collectionId: req.body.collectionId }),
       });
       return res.status(204).send('');
     }
