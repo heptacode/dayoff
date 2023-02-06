@@ -7,17 +7,21 @@ export function useEventQuery({
   collectionId,
   collections,
   eventId,
-  onQuerySuccess,
+  onFetchSuccess,
 }: {
   planId?: string;
   collectionId: string;
   collections?: ICollection[];
   eventId?: string;
-  onQuerySuccess?(data: IEvent[]): void;
+  onFetchSuccess?(collectionId: string, data: IEvent[]): void;
 }) {
+  const queryMap: Map<string, number> = new Map();
+
   const eventQueries = useQueries({
     queries:
-      collections?.map(collection => {
+      collections?.map((collection, index) => {
+        queryMap.set(collection._id, index);
+
         return {
           queryKey: ['plan.collection', { collectionId: collection._id }],
           queryFn: async () =>
@@ -28,11 +32,23 @@ export function useEventQuery({
             ).data,
           enabled: Boolean(collection._id),
           onSuccess(data: IEvent[]) {
-            onQuerySuccess?.(data);
+            onFetchSuccess?.(collection._id, data);
           },
         };
       }) ?? [],
   });
+
+  function refetchEvent(collectionId: string) {
+    if (queryMap.has(collectionId)) {
+      eventQueries[queryMap.get(collectionId)!].refetch();
+    }
+  }
+
+  function refetchEvents() {
+    if (eventQueries.length) {
+      eventQueries.forEach(eventQuery => eventQuery.refetch());
+    }
+  }
 
   const { isLoading: isCreating, mutateAsync: createEvent } = useMutation(
     ({
@@ -48,13 +64,18 @@ export function useEventQuery({
       lng?: number;
       date?: Date;
     }) =>
-      postRequest(`/api/plans/${planId}/collections/${collectionId}/events`, {
+      postRequest<IEvent>(`/api/plans/${planId}/collections/${collectionId}/events`, {
         ...(title && { title }),
         ...(subtitle && { subtitle }),
         ...(lat && { lat }),
         ...(lng && { lng }),
         ...(date && { date }),
-      })
+      }),
+    {
+      onSuccess() {
+        refetchEvent(collectionId);
+      },
+    }
   );
 
   const { isLoading: isUpdating, mutateAsync: updateEvent } = useMutation(
@@ -62,12 +83,19 @@ export function useEventQuery({
       patchRequest(`/api/plans/${planId}/collections/${collectionId}/events/${eventId}`, {
         ...(title && { title }),
         ...(subtitle && { subtitle }),
-      })
+      }),
+    {
+      onSuccess() {
+        refetchEvent(collectionId);
+      },
+    }
   );
 
   return {
     isLoading: isCreating || isUpdating,
     eventQueries,
+    refetchEvent,
+    refetchEvents,
     createEvent,
     updateEvent,
   };

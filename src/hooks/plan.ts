@@ -17,6 +17,9 @@ export function usePlan({ planId }: { planId?: string }) {
     planId,
     onFetchSuccess(data) {
       collectionStore.setCollections(data);
+      if (data?.length) {
+        collectionStore.setCollectionId(data[0]._id);
+      }
       collectionStore.setIsLoading(false);
     },
   });
@@ -24,8 +27,8 @@ export function usePlan({ planId }: { planId?: string }) {
     planId,
     collectionId: collectionStore.collectionId,
     collections,
-    onQuerySuccess(data) {
-      eventStore.setEvents(eventStore.events.concat(data));
+    onFetchSuccess(collectionId, data) {
+      eventStore.setEvents(collectionId, data);
       eventStore.setIsLoading(false);
     },
   });

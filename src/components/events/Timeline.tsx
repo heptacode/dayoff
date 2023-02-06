@@ -1,3 +1,4 @@
+import { useCollectionStore } from '@/stores/collectionStore';
 import { useEventStore } from '@/stores/eventStore';
 import {
   Accordion,
@@ -10,19 +11,15 @@ import {
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { TimelineItem } from './TimelineItem';
-import type { ICollection, IEvent } from '@/types';
 
-export function Timeline({
-  collections,
-  events,
-  ...props
-}: { collections: ICollection[]; events: IEvent[] } & AccordionProps) {
+export function Timeline(props: AccordionProps) {
+  const collectionStore = useCollectionStore();
   const eventStore = useEventStore();
   const [indices, setIndices] = useState<number[]>([]);
 
   useEffect(() => {
-    setIndices([...Array(collections?.length).keys()]);
-  }, [collections]);
+    setIndices([...Array(collectionStore.collections?.length).keys()]);
+  }, [collectionStore.collections]);
 
   return (
     <Accordion
@@ -31,7 +28,7 @@ export function Timeline({
       onChange={(idx: number[]) => setIndices(idx)}
       {...props}
     >
-      {collections.map(collection => (
+      {collectionStore.collections.map(collection => (
         <AccordionItem key={collection._id}>
           {eventStore.isLoading ? <Progress size="xs" isIndeterminate /> : null}
           <AccordionButton>
@@ -49,8 +46,9 @@ export function Timeline({
             borderLeftColor="gray.200"
             _dark={{ borderLeftColor: 'gray.600' }}
           >
-            {events
-              .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+            {eventStore.events
+              .get(collection._id)
+              ?.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
               .map(event =>
                 String(event.collectionId) === collection._id ? (
                   <TimelineItem event={event} key={event._id} />

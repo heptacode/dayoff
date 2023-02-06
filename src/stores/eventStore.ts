@@ -4,20 +4,20 @@ import type { IEvent } from '@/types';
 
 export interface EventState {
   isLoading: boolean;
-  events: IEvent[];
+  events: Map<string, IEvent[]>;
   setIsLoading(value: boolean): void;
-  setEvents(value: IEvent[]): void;
+  setEvents(collectionId: string, value: IEvent[]): void;
 }
 
 export const useEventStore = create<EventState>()(
   devtools(set => ({
     isLoading: true,
-    events: [],
+    events: new Map(),
     setIsLoading(value) {
       set({ isLoading: value });
     },
-    setEvents(value) {
-      set({ events: value });
+    setEvents(collectionId, value) {
+      set({ events: this.events.set(collectionId, value) });
     },
   }))
 );
