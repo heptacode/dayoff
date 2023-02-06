@@ -30,8 +30,8 @@ export function EventEditModal({
     },
   });
 
-  function handleEventMove(collectionId: string) {
-    updateEvent({
+  async function handleEventMove(collectionId: string) {
+    await updateEvent({
       eventId: eventStore.selectedEvent!._id,
       collectionId,
     });
