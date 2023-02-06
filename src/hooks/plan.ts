@@ -18,7 +18,7 @@ export function usePlan({ planId }: { planId?: string }) {
     onFetchSuccess(data) {
       collectionStore.setCollections(data);
       if (data?.length) {
-        collectionStore.setCollectionId(data[0]._id);
+        collectionStore.setCollectionId(data[data.length - 1]._id);
       }
       collectionStore.setIsLoading(false);
     },
