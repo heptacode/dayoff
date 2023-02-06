@@ -16,16 +16,12 @@ import {
   Progress,
   useDisclosure,
 } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
 
 export function Sidebar() {
-  const router = useRouter();
   const globalStore = useGlobalStore();
   const planStore = usePlanStore();
   const collectionStore = useCollectionStore();
-  const { handleTitleInput, handleSubtitleInput, handlePlaceSelect } = usePlan({
-    planId: router.query.planId ? String(router.query.planId) : undefined,
-  });
+  const { handleTitleInput, handleSubtitleInput, handlePlaceSelect } = usePlan();
   const { isOpen, onClose } = useDisclosure({ isOpen: globalStore.isSidebarOpen });
 
   return (
