@@ -42,7 +42,7 @@ export default function Plan() {
         <IconButton
           aria-label="Open Sidebar"
           icon={<Icon as={MdMenu} boxSize="5" />}
-          position="absolute"
+          position="fixed"
           top="8px"
           left="8px"
           zIndex="1"
