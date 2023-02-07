@@ -39,7 +39,7 @@ export default function Plan() {
     <>
       {!globalStore.isSidebarOpen ? (
         <IconButton
-          aria-label="Open Sidebar"
+          aria-label="사이드바 열기"
           icon={<Icon as={MdMenu} boxSize="5" />}
           position="fixed"
           top="8px"
