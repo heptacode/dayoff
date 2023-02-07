@@ -1,7 +1,7 @@
 import { useCollectionStore } from '@/stores/collectionStore';
 import { usePlanStore } from '@/stores/planStore';
 import { ICollection } from '@/types';
-import { getRequest, patchRequest } from '@heptacode/http-request';
+import { deleteRequest, getRequest, patchRequest } from '@heptacode/http-request';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 
@@ -23,6 +23,8 @@ export function useCollectionQuery({
     {
       enabled: Boolean(planStore.planId),
       onSuccess(data) {
+        data.forEach(collection => collectionStore.setCollections(collection._id, collection));
+
         onFetchSuccess?.(data);
       },
     }
@@ -40,9 +42,19 @@ export function useCollectionQuery({
     }
   );
 
-  useEffect(() => {
-    collectionStore.setIsLoading(isFetching || isUpdating);
-  }, [isFetching, isUpdating]);
+  const { isLoading: isDeleting, mutateAsync: deleteCollection } = useMutation(
+    (collectionId: string) =>
+      deleteRequest(`/api/plans/${planStore.planId}/collections/${collectionId}`),
+    {
+      onSuccess() {
+        refetch();
+      },
+    }
+  );
 
-  return { collections, updateCollection };
+  useEffect(() => {
+    collectionStore.setIsLoading(isFetching || isUpdating || isDeleting);
+  }, [isFetching, isUpdating, isDeleting]);
+
+  return { collections, updateCollection, deleteCollection };
 }
