@@ -1,13 +1,13 @@
 import { Timeline } from '@/components/events/Timeline';
 import { SearchInput } from '@/components/interfaces/inputs/SearchInput';
 import { usePlan } from '@/hooks/plan';
+import { useCollectionQuery } from '@/hooks/queries/collections';
 import { useCollectionStore } from '@/stores/collectionStore';
 import { useGlobalStore } from '@/stores/globalStore';
 import { usePlanStore } from '@/stores/planStore';
 import {
   Box,
   Button,
-  Center,
   Drawer,
   DrawerCloseButton,
   DrawerContent,
@@ -15,11 +15,12 @@ import {
   Editable,
   EditableInput,
   EditablePreview,
+  HStack,
   Icon,
   Progress,
   useDisclosure,
 } from '@chakra-ui/react';
-import { MdEdit } from 'react-icons/md';
+import { MdAdd, MdEdit } from 'react-icons/md';
 
 export function Sidebar() {
   const globalStore = useGlobalStore();
@@ -27,6 +28,8 @@ export function Sidebar() {
   const collectionStore = useCollectionStore();
   const { handleTitleInput, handleSubtitleInput, handlePlaceSelect } = usePlan();
   const { isOpen, onClose } = useDisclosure({ isOpen: globalStore.isSidebarOpen });
+
+  const { createCollection } = useCollectionQuery({});
 
   return (
     <Drawer
@@ -65,12 +68,16 @@ export function Sidebar() {
 
           <Timeline my="5" />
 
-          <Center>
+          <HStack justify="center">
+            <Button onClick={() => createCollection()}>
+              <Icon as={MdAdd} mr="1" />
+              추가
+            </Button>
             <Button onClick={() => globalStore.setIsCollectionEditModalOpen(true)}>
               <Icon as={MdEdit} mr="1" />
-              컬렉션 편집
+              편집
             </Button>
-          </Center>
+          </HStack>
         </Box>
       </DrawerContent>
     </Drawer>

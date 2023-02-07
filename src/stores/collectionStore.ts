@@ -8,6 +8,7 @@ export interface CollectionState {
   collectionId: string;
   setIsLoading(value: boolean): void;
   setCollections(collectionId: string, value: ICollection): void;
+  clearCollections(): void;
   setCollectionId(value: string): void;
 }
 
@@ -21,6 +22,9 @@ export const useCollectionStore = create<CollectionState>()(
     },
     setCollections(collectionId, value) {
       set({ collections: this.collections.set(collectionId, value) });
+    },
+    clearCollections() {
+      set({ collections: new Map() });
     },
     setCollectionId(value) {
       set({ collectionId: value });

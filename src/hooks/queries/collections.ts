@@ -1,7 +1,7 @@
 import { useCollectionStore } from '@/stores/collectionStore';
 import { usePlanStore } from '@/stores/planStore';
 import { ICollection } from '@/types';
-import { deleteRequest, getRequest, patchRequest } from '@heptacode/http-request';
+import { deleteRequest, getRequest, patchRequest, postRequest } from '@heptacode/http-request';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 
@@ -30,6 +30,15 @@ export function useCollectionQuery({
     }
   );
 
+  const { isLoading: isCreating, mutateAsync: createCollection } = useMutation(
+    () => postRequest(`/api/plans/${planStore.planId}/collections`),
+    {
+      onSuccess() {
+        refetch();
+      },
+    }
+  );
+
   const { isLoading: isUpdating, mutateAsync: updateCollection } = useMutation(
     ({ collectionId, title }: { collectionId: string; title?: string }) =>
       patchRequest(`/api/plans/${planStore.planId}/collections/${collectionId}`, {
@@ -47,14 +56,15 @@ export function useCollectionQuery({
       deleteRequest(`/api/plans/${planStore.planId}/collections/${collectionId}`),
     {
       onSuccess() {
+        collectionStore.clearCollections();
         refetch();
       },
     }
   );
 
   useEffect(() => {
-    collectionStore.setIsLoading(isFetching || isUpdating || isDeleting);
-  }, [isFetching, isUpdating, isDeleting]);
+    collectionStore.setIsLoading(isFetching || isCreating || isUpdating || isDeleting);
+  }, [isFetching, isCreating, isUpdating, isDeleting]);
 
-  return { collections, updateCollection, deleteCollection };
+  return { collections, createCollection, updateCollection, deleteCollection };
 }
