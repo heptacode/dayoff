@@ -10,10 +10,6 @@ export function useEvent() {
 
   const { updateEvent } = useEventQuery({
     collectionId: collectionStore.collectionId,
-    onFetchSuccess(collectionId, data) {
-      eventStore.setEvents(collectionId, data);
-      eventStore.setIsLoading(false);
-    },
   });
 
   const debounceTitle = useCallback(

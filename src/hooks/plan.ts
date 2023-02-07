@@ -1,5 +1,4 @@
 import { useCollectionStore } from '@/stores/collectionStore';
-import { useEventStore } from '@/stores/eventStore';
 import { usePlanStore } from '@/stores/planStore';
 import { debounce } from '@/utils/debounce';
 import { useCallback } from 'react';
@@ -11,24 +10,16 @@ import type { KeywordSearchDocument } from '@/types';
 export function usePlan() {
   const planStore = usePlanStore();
   const collectionStore = useCollectionStore();
-  const eventStore = useEventStore();
   const { updatePlan } = usePlanQuery({});
   useCollectionQuery({
     onFetchSuccess(data) {
-      data.forEach(collection => collectionStore.setCollections(collection._id, collection));
-
       if (data?.length) {
         collectionStore.setCollectionId(data[data.length - 1]._id);
       }
-      collectionStore.setIsLoading(false);
     },
   });
   const { createEvent } = useEventQuery({
     collectionId: collectionStore.collectionId,
-    onFetchSuccess(collectionId, data) {
-      eventStore.setEvents(collectionId, data);
-      eventStore.setIsLoading(false);
-    },
   });
 
   const debounceTitle = useCallback(

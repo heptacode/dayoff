@@ -22,11 +22,7 @@ export function EventEditModal(props: Partial<ModalProps>) {
     ...props,
   });
 
-  const { updateEvent } = useEventQuery({
-    onFetchSuccess(collectionId, data) {
-      eventStore.setEvents(collectionId, data);
-    },
-  });
+  const { updateEvent } = useEventQuery({});
 
   async function handleEventMove(collectionId: string) {
     await updateEvent({

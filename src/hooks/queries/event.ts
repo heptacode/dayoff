@@ -6,13 +6,7 @@ import { useMutation, useQueries } from '@tanstack/react-query';
 import { useEffect, useMemo } from 'react';
 import type { IEvent } from '@/types';
 
-export function useEventQuery({
-  collectionId,
-  onFetchSuccess,
-}: {
-  collectionId?: string;
-  onFetchSuccess?(collectionId: string, data: IEvent[]): void;
-}) {
+export function useEventQuery({ collectionId }: { collectionId?: string }) {
   const planStore = usePlanStore();
   const collectionStore = useCollectionStore();
   const eventStore = useEventStore();
@@ -34,7 +28,7 @@ export function useEventQuery({
             ).data,
           enabled: Boolean(collection._id),
           onSuccess(data: IEvent[]) {
-            onFetchSuccess?.(collection._id, data);
+            eventStore.setEvents(collection._id, data);
           },
         };
       }) ?? [],

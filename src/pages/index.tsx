@@ -5,12 +5,7 @@ import { Box, Container, Heading, HStack, SimpleGrid } from '@chakra-ui/react';
 
 export default function Home() {
   const planStore = usePlanStore();
-  usePlansQuery({
-    onFetchSuccess(data) {
-      planStore.setPlans(data);
-      planStore.setIsLoading(false);
-    },
-  });
+  usePlansQuery();
 
   return (
     <>

@@ -1,17 +1,25 @@
+import { usePlanStore } from '@/stores/planStore';
 import { getRequest } from '@heptacode/http-request';
 import { useQuery } from '@tanstack/react-query';
+import { useEffect } from 'react';
 import type { IPlan } from '@/types';
 
-export function usePlansQuery({ onFetchSuccess }: { onFetchSuccess?(data: IPlan[]): void }) {
+export function usePlansQuery() {
+  const planStore = usePlanStore();
+
   const { isLoading, data: plans } = useQuery<IPlan[]>(
     ['plans'],
     async () => (await getRequest<IPlan[]>(`/api/plans`)).data,
     {
       onSuccess(data) {
-        onFetchSuccess?.(data);
+        planStore.setPlans(data);
       },
     }
   );
 
-  return { isLoading, plans };
+  useEffect(() => {
+    planStore.setIsLoading(isLoading);
+  }, [isLoading]);
+
+  return { plans };
 }
