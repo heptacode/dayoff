@@ -8,6 +8,11 @@ export default withMongoose(async (req: NextApiRequestWithMongoose, res: NextApi
       return res.status(200).json(await Event.find({ collectionId: req.query.collectionId }));
     }
     case 'POST': {
+      const documentCount = await Event.countDocuments({ collectionId: req.query.collectionId });
+      if (documentCount >= 20) {
+        return res.status(402).send('');
+      }
+
       const event = await Event.create({
         planId: req.query.planId,
         collectionId: req.query.collectionId,
