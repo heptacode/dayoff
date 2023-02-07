@@ -95,10 +95,10 @@ export function TimelineItem({ event, index, ...props }: { event: IEvent; index:
 
         <IconButton
           position="absolute"
-          top="-2"
-          right="-4"
+          right="-2"
           aria-label="Open Edit Dialog"
           icon={<Icon as={MdReorder} boxSize="4" />}
+          size="sm"
           borderRadius="full"
           variant="ghost"
           onClick={() => {
