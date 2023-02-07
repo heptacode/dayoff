@@ -1,7 +1,9 @@
 import { useCollectionStore } from '@/stores/collectionStore';
+import { useEventStore } from '@/stores/eventStore';
 import { usePlanStore } from '@/stores/planStore';
 import { getRequest, patchRequest, postRequest } from '@heptacode/http-request';
 import { useMutation, useQueries } from '@tanstack/react-query';
+import { useEffect, useMemo } from 'react';
 import type { IEvent } from '@/types';
 
 export function useEventQuery({
@@ -13,6 +15,7 @@ export function useEventQuery({
 }) {
   const planStore = usePlanStore();
   const collectionStore = useCollectionStore();
+  const eventStore = useEventStore();
 
   const queryMap: Map<string, number> = new Map();
 
@@ -116,8 +119,16 @@ export function useEventQuery({
     }
   );
 
+  const isFetching = useMemo(
+    () => eventQueries.findIndex(query => query.isLoading) !== -1,
+    [eventQueries]
+  );
+
+  useEffect(() => {
+    eventStore.setIsLoading(isFetching || isCreating || isUpdating);
+  }, [isFetching, isCreating, isUpdating]);
+
   return {
-    isLoading: isCreating || isUpdating,
     eventQueries,
     refetchEvent,
     refetchEvents,

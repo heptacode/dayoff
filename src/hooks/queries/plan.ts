@@ -2,6 +2,7 @@ import { usePlanStore } from '@/stores/planStore';
 import { getRequest, patchRequest } from '@heptacode/http-request';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 import type { IPlan } from '@/types';
 
 export function usePlanQuery({
@@ -14,7 +15,7 @@ export function usePlanQuery({
   const router = useRouter();
   const planStore = usePlanStore();
 
-  const { isLoading: isFetchLoading, data: plan } = useQuery<IPlan>(
+  const { isLoading: isFetching, data: plan } = useQuery<IPlan>(
     ['plan', { planId: planStore.planId }],
     async () => (await getRequest<IPlan>(`/api/plans/${planStore.planId}`)).data,
     {
@@ -36,8 +37,11 @@ export function usePlanQuery({
       })
   );
 
+  useEffect(() => {
+    planStore.setIsLoading(isFetching || isUpdating);
+  }, [isFetching, isUpdating]);
+
   return {
-    isLoading: isFetchLoading || isUpdating,
     plan,
     updatePlan,
   };

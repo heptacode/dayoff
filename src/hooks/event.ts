@@ -8,7 +8,7 @@ export function useEvent() {
   const collectionStore = useCollectionStore();
   const eventStore = useEventStore();
 
-  const { isLoading, updateEvent } = useEventQuery({
+  const { updateEvent } = useEventQuery({
     collectionId: collectionStore.collectionId,
     onFetchSuccess(collectionId, data) {
       eventStore.setEvents(collectionId, data);
@@ -56,7 +56,6 @@ export function useEvent() {
   }
 
   return {
-    isLoading: eventStore.isLoading || isLoading,
     handleTitleInput,
     handleSubtitleInput,
     handleDateInput,

@@ -22,7 +22,7 @@ export function EventEditModal(props: Partial<ModalProps>) {
     ...props,
   });
 
-  const { isLoading, updateEvent } = useEventQuery({
+  const { updateEvent } = useEventQuery({
     onFetchSuccess(collectionId, data) {
       eventStore.setEvents(collectionId, data);
     },
@@ -57,7 +57,8 @@ export function EventEditModal(props: Partial<ModalProps>) {
                   paddingY={6}
                   variant="ghost"
                   isDisabled={
-                    isLoading || String(eventStore.selectedEvent?.collectionId) === collection._id
+                    eventStore.isLoading ||
+                    String(eventStore.selectedEvent?.collectionId) === collection._id
                   }
                   onClick={() => handleEventMove(collection._id)}
                 >

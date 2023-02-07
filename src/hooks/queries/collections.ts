@@ -1,7 +1,9 @@
+import { useCollectionStore } from '@/stores/collectionStore';
 import { usePlanStore } from '@/stores/planStore';
 import { ICollection } from '@/types';
 import { getRequest, patchRequest } from '@heptacode/http-request';
 import { useMutation, useQuery } from '@tanstack/react-query';
+import { useEffect } from 'react';
 
 export function useCollectionQuery({
   onFetchSuccess,
@@ -9,6 +11,7 @@ export function useCollectionQuery({
   onFetchSuccess?(data: ICollection[]): void;
 }) {
   const planStore = usePlanStore();
+  const collectionStore = useCollectionStore();
 
   const {
     isLoading: isFetching,
@@ -37,5 +40,9 @@ export function useCollectionQuery({
     }
   );
 
-  return { isLoading: isFetching || isUpdating, collections, updateCollection };
+  useEffect(() => {
+    collectionStore.setIsLoading(isFetching || isUpdating);
+  }, [isFetching, isUpdating]);
+
+  return { collections, updateCollection };
 }

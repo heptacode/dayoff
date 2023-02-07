@@ -12,7 +12,7 @@ export function usePlan() {
   const planStore = usePlanStore();
   const collectionStore = useCollectionStore();
   const eventStore = useEventStore();
-  const { updatePlan, isLoading } = usePlanQuery({});
+  const { updatePlan } = usePlanQuery({});
   useCollectionQuery({
     onFetchSuccess(data) {
       data.forEach(collection => collectionStore.setCollections(collection._id, collection));
@@ -62,7 +62,6 @@ export function usePlan() {
   }
 
   return {
-    isLoading: planStore.isLoading || isLoading,
     handleTitleInput,
     handleSubtitleInput,
     handlePlaceSelect,
