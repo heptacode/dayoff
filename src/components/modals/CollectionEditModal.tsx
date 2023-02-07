@@ -60,7 +60,6 @@ export function CollectionEditModal(props: Partial<ModalProps>) {
                         handleTitleInput(collection._id, (e.target as HTMLInputElement).value)
                       }
                     />
-                    <Input value={collection.subtitle} variant="flushed" />
                   </CardBody>
                 </Card>
               ))}

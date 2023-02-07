@@ -62,7 +62,6 @@ export function EventEditModal(props: Partial<ModalProps>) {
                   onClick={() => handleEventMove(collection._id)}
                 >
                   <strong>{collection.title}</strong>
-                  <small>{collection.subtitle}</small>
                 </Button>
               ))}
             </Card>

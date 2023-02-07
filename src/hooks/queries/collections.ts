@@ -26,18 +26,9 @@ export function useCollectionQuery({
   );
 
   const { isLoading: isUpdating, mutateAsync: updateCollection } = useMutation(
-    ({
-      collectionId,
-      title,
-      subtitle,
-    }: {
-      collectionId: string;
-      title?: string;
-      subtitle?: string;
-    }) =>
+    ({ collectionId, title }: { collectionId: string; title?: string }) =>
       patchRequest(`/api/plans/${planStore.planId}/collections/${collectionId}`, {
         ...(title && { title }),
-        ...(subtitle && { subtitle }),
       }),
     {
       onSuccess() {

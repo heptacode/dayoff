@@ -20,13 +20,11 @@ export interface ICollection {
   _id: string;
   planId: ObjectId;
   title: string;
-  subtitle: string;
 }
 
 const collectionSchema = new Schema<ICollection>({
   planId: { type: Schema.Types.ObjectId, ref: 'Plan', required: true },
   title: { type: String, default: '', required: true },
-  subtitle: { type: String, default: '', required: true },
 });
 export const Collection = models.Collection ?? model<ICollection>('Collection', collectionSchema);
 

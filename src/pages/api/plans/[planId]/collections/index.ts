@@ -11,7 +11,6 @@ export default withMongoose(async (req: NextApiRequestWithMongoose, res: NextApi
       const collection = await Collection.create({
         planId: req.query.planId,
         title: req.body.title ?? '',
-        subtitle: req.body.subtitle ?? '',
       });
       return res.status(201).send(collection);
     }

@@ -34,7 +34,6 @@ export function Timeline(props: AccordionProps) {
           <AccordionButton>
             <Box flex="1" textAlign="left">
               <h2>{collection.title}</h2>
-              <small>{collection.subtitle ?? ''}</small>
             </Box>
             <AccordionIcon />
           </AccordionButton>
