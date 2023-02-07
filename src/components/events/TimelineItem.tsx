@@ -1,24 +1,37 @@
+import { useEvent } from '@/hooks/event';
 import { useEventStore } from '@/stores/eventStore';
 import { useGlobalStore } from '@/stores/globalStore';
-import { AccordionPanel, Flex, Icon, IconButton, Text } from '@chakra-ui/react';
+import {
+  AccordionPanel,
+  Editable,
+  EditableInput,
+  EditablePreview,
+  Flex,
+  Icon,
+  IconButton,
+  Input,
+  Text,
+} from '@chakra-ui/react';
 import { MdReorder } from 'react-icons/md';
 import type { IEvent } from '@/types';
 
 export function TimelineItem({ event, index, ...props }: { event: IEvent; index: number }) {
   const globalStore = useGlobalStore();
   const eventStore = useEventStore();
+  const { handleTitleInput, handleSubtitleInput, handleDateInput } = useEvent();
 
   return (
     <AccordionPanel as="li" ml="3" mb="3" {...props}>
       <Flex
         position="absolute"
+        left={-3}
+        mt={1}
         w="6"
         h="6"
         bgColor="blue.200"
         borderRadius="full"
         ring="8"
         ringColor="white"
-        left={-3}
         justifyContent="center"
         alignItems="center"
         _dark={{ ringColor: 'gray.900', bgColor: 'blue.800' }}
@@ -29,19 +42,56 @@ export function TimelineItem({ event, index, ...props }: { event: IEvent; index:
       </Flex>
 
       <Flex position="relative" direction="column">
-        <Text fontSize="md" mb="1" fontWeight="semibold">
-          {event.title}
-        </Text>
+        <Editable
+          value={event.title}
+          fontWeight="semibold"
+          onInput={e =>
+            handleTitleInput(
+              String(event.collectionId),
+              event._id,
+              (e.target as HTMLInputElement).value
+            )
+          }
+        >
+          <EditablePreview />
+          <EditableInput />
+        </Editable>
 
         <Text as="time" display="block" fontSize="xs">
-          {event.date
+          <Input
+            type="datetime-local"
+            variant="unstyled"
+            fontSize="sm"
+            value={String(event.date).slice(0, 16)}
+            onInput={e =>
+              handleDateInput(
+                String(event.collectionId),
+                event._id,
+                new Date((e.target as HTMLInputElement).value)
+              )
+            }
+          />
+          {/* {event.date
             ? new Intl.DateTimeFormat('ko-KR', { dateStyle: 'medium', timeStyle: 'short' }).format(
                 new Date(event.date)
               )
-            : null}
+            : null} */}
         </Text>
 
-        <Text fontSize="sm">{event.subtitle}</Text>
+        <Editable
+          value={event.subtitle}
+          fontSize="sm"
+          onInput={e =>
+            handleSubtitleInput(
+              String(event.collectionId),
+              event._id,
+              (e.target as HTMLInputElement).value
+            )
+          }
+        >
+          <EditablePreview />
+          <EditableInput />
+        </Editable>
 
         <IconButton
           position="absolute"
