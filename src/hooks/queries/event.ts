@@ -98,7 +98,7 @@ export function useEventQuery({
       subtitle?: string;
       lat?: number;
       lng?: number;
-      date?: Date;
+      date?: string;
       collectionId?: string;
     }) =>
       patchRequest(`/api/plans/${planStore.planId}/collections/${collectionId}/events/${eventId}`, {

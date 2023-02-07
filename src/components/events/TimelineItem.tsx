@@ -12,6 +12,7 @@ import {
   Input,
   Text,
 } from '@chakra-ui/react';
+import dayjs from 'dayjs';
 import { MdReorder } from 'react-icons/md';
 import type { IEvent } from '@/types';
 
@@ -62,20 +63,15 @@ export function TimelineItem({ event, index, ...props }: { event: IEvent; index:
             type="datetime-local"
             variant="unstyled"
             fontSize="sm"
-            value={String(event.date).slice(0, 16)}
+            value={dayjs(event.date).format('YYYY-MM-DDTHH:mm')}
             onInput={e =>
               handleDateInput(
                 String(event.collectionId),
                 event._id,
-                new Date((e.target as HTMLInputElement).value)
+                new Date((e.target as HTMLInputElement).value).toISOString()
               )
             }
           />
-          {/* {event.date
-            ? new Intl.DateTimeFormat('ko-KR', { dateStyle: 'medium', timeStyle: 'short' }).format(
-                new Date(event.date)
-              )
-            : null} */}
         </Text>
 
         <Editable

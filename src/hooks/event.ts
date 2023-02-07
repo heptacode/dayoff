@@ -43,11 +43,11 @@ export function useEvent() {
   }
 
   const debounceDate = useCallback(
-    debounce((eventId, date: Date) => updateEvent({ eventId, date }), 1000),
+    debounce((eventId, date: string) => updateEvent({ eventId, date }), 2000),
     []
   );
 
-  function handleDateInput(collectionId: string, eventId: string, value: Date) {
+  function handleDateInput(collectionId: string, eventId: string, value: string) {
     const collectionEvents = eventStore.events.get(collectionId)!;
     const index = collectionEvents.findIndex(event => event._id === eventId);
     collectionEvents[index].date = value;

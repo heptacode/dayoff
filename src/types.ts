@@ -38,7 +38,7 @@ export interface IEvent {
   subtitle: string;
   lat: number;
   lng: number;
-  date: Date;
+  date: Date | string;
 }
 
 const eventSchema = new Schema<IEvent>({

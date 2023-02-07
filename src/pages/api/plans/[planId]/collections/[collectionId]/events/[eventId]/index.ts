@@ -5,12 +5,14 @@ import type { NextApiResponse } from 'next';
 export default withMongoose(async (req: NextApiRequestWithMongoose, res: NextApiResponse<any>) => {
   switch (req.method) {
     case 'PATCH': {
+      // console.log(new Date(rq.body.date));
       await Event.findByIdAndUpdate(req.query.eventId, {
         ...(req.body.title && { title: req.body.title }),
         ...(req.body.subtitle && { subtitle: req.body.subtitle }),
         ...(req.body.description && { description: req.body.description }),
         ...(req.body.lat && { lat: req.body.lat }),
         ...(req.body.lng && { lng: req.body.lng }),
+        ...(req.body.date && { date: new Date(req.body.date) }),
         ...(req.body.collectionId && { collectionId: req.body.collectionId }),
       });
       return res.status(204).send('');
