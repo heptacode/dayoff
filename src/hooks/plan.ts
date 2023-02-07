@@ -15,7 +15,8 @@ export function usePlan() {
   const { updatePlan, isLoading } = usePlanQuery({});
   useCollectionQuery({
     onFetchSuccess(data) {
-      collectionStore.setCollections(data);
+      data.forEach(collection => collectionStore.setCollections(collection._id, collection));
+
       if (data?.length) {
         collectionStore.setCollectionId(data[data.length - 1]._id);
       }

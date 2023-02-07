@@ -1,6 +1,6 @@
 import { useEventQuery } from '@/hooks/queries/event';
+import { useCollectionStore } from '@/stores/collectionStore';
 import { useEventStore } from '@/stores/eventStore';
-import { ICollection } from '@/types';
 import {
   Button,
   Card,
@@ -15,10 +15,8 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 
-export function EventEditModal({
-  collections,
-  ...props
-}: { collections: ICollection[] } & Partial<ModalProps>) {
+export function EventEditModal(props: Partial<ModalProps>) {
+  const collectionStore = useCollectionStore();
   const eventStore = useEventStore();
   const { isOpen, onClose } = useDisclosure({
     ...props,
@@ -47,9 +45,9 @@ export function EventEditModal({
         <ModalBody mb="5">
           <Heading size="sm">컬렉션 이동</Heading>
 
-          {collections?.length ? (
+          {collectionStore.collections.size ? (
             <Card paddingY="2" maxHeight="300" overflowY="auto">
-              {collections?.map(collection => (
+              {[...collectionStore.collections.values()].map(collection => (
                 <Button
                   key={collection._id}
                   flexDirection="column"

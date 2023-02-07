@@ -6,6 +6,8 @@ import { useGlobalStore } from '@/stores/globalStore';
 import { usePlanStore } from '@/stores/planStore';
 import {
   Box,
+  Button,
+  Center,
   Drawer,
   DrawerCloseButton,
   DrawerContent,
@@ -13,9 +15,11 @@ import {
   Editable,
   EditableInput,
   EditablePreview,
+  Icon,
   Progress,
   useDisclosure,
 } from '@chakra-ui/react';
+import { MdEdit } from 'react-icons/md';
 
 export function Sidebar() {
   const globalStore = useGlobalStore();
@@ -56,10 +60,17 @@ export function Sidebar() {
           </Editable>
         </DrawerHeader>
 
-        <Box p="5">
+        <Box p="5" overflowY="scroll">
           <SearchInput handlePlaceSelect={handlePlaceSelect} />
 
-          <Timeline mt="5" />
+          <Timeline my="5" />
+
+          <Center>
+            <Button onClick={() => globalStore.setIsCollectionEditModalOpen(true)}>
+              <Icon as={MdEdit} mr="1" />
+              컬렉션 편집
+            </Button>
+          </Center>
         </Box>
       </DrawerContent>
     </Drawer>

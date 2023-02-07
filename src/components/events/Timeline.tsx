@@ -18,8 +18,8 @@ export function Timeline(props: AccordionProps) {
   const [indices, setIndices] = useState<number[]>([]);
 
   useEffect(() => {
-    setIndices([...Array(collectionStore.collections?.length).keys()]);
-  }, [collectionStore.collections]);
+    setIndices([...Array(collectionStore.collections?.size).keys()]);
+  }, [collectionStore.collections.size]);
 
   return (
     <Accordion
@@ -28,7 +28,7 @@ export function Timeline(props: AccordionProps) {
       onChange={(idx: number[]) => setIndices(idx)}
       {...props}
     >
-      {collectionStore.collections.map(collection => (
+      {[...collectionStore.collections.values()].map(collection => (
         <AccordionItem key={collection._id}>
           {eventStore.isLoading ? <Progress size="xs" isIndeterminate /> : null}
           <AccordionButton>
