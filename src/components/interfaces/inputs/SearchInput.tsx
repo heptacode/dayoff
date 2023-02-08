@@ -11,7 +11,8 @@ export function SearchInput({
   handlePlaceSelect: (place: KeywordSearchDocument) => void;
 } & DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>) {
   const [searchValue, setSearchValue] = useState<string>('');
-  const [hoveredIndex, setHoveredIndex] = useState<number>(0);
+  const [isComposing, setIsComposing] = useState<boolean>(false);
+  const [hoveredIndex, setHoveredIndex] = useState<number>(-1);
   const debouncedSearchQuery = useDebounceValue(searchValue, 300);
   const { data: places, refetch: refetchSearch } = useSearchQuery({
     query: debouncedSearchQuery,
@@ -23,27 +24,38 @@ export function SearchInput({
   }
 
   function handleKeyDown(event: React.KeyboardEvent) {
-    if (!places) {
+    if (!places?.length || !searchValue.length) {
       return;
     }
 
-    if (event.key === 'ArrowDown') {
+    if (!isComposing && ['ArrowDown', 'ArrowUp', 'Enter'].includes(event.key)) {
       event.preventDefault();
-      setHoveredIndex(hoveredIndex + 1);
-      if (hoveredIndex + 1 >= places.length) {
-        setHoveredIndex(0);
+
+      switch (event.key) {
+        case 'ArrowDown': {
+          setHoveredIndex(hoveredIndex + 1);
+          if (hoveredIndex + 1 >= places.length) {
+            setHoveredIndex(0);
+          }
+          break;
+        }
+        case 'ArrowUp': {
+          setHoveredIndex(hoveredIndex - 1);
+          if (hoveredIndex <= 0) {
+            setHoveredIndex(places.length - 1);
+          }
+          break;
+        }
+        case 'Enter': {
+          handlePlaceSelect(places[hoveredIndex]);
+          setSearchValue('');
+          setHoveredIndex(0);
+          return;
+        }
+        default: {
+          setHoveredIndex(0);
+        }
       }
-    } else if (event.key === 'ArrowUp') {
-      event.preventDefault();
-      setHoveredIndex(hoveredIndex - 1);
-      if (hoveredIndex <= 0) {
-        setHoveredIndex(places.length - 1);
-      }
-    } else if (event.key === 'Enter') {
-      event.preventDefault();
-      handlePlaceSelect(places[hoveredIndex]);
-    } else {
-      setHoveredIndex(0);
     }
   }
 
@@ -54,7 +66,11 @@ export function SearchInput({
           type="search"
           placeholder="장소 검색"
           value={searchValue}
-          onChange={(event: { target: any }) => setSearchValue(event.target.value)}
+          onCompositionStart={() => setIsComposing(true)}
+          onCompositionEnd={() => setIsComposing(false)}
+          onClick={() => setHoveredIndex(-1)}
+          onFocus={() => setHoveredIndex(-1)}
+          onChange={e => setSearchValue(e.target.value)}
           onKeyDown={handleKeyDown}
         />
       </form>
