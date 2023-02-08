@@ -1,5 +1,5 @@
 import { NextApiRequestWithMongoose, withMongoose } from '@/hooks/mongoose';
-import { Collection } from '@/types';
+import { Collection, Event } from '@/types';
 import type { NextApiResponse } from 'next';
 
 export default withMongoose(async (req: NextApiRequestWithMongoose, res: NextApiResponse<any>) => {
@@ -11,7 +11,15 @@ export default withMongoose(async (req: NextApiRequestWithMongoose, res: NextApi
       return res.status(204).send('');
     }
     case 'DELETE': {
-      await Collection.findByIdAndDelete(req.query.collectionId);
+      const session = await req.mongoose.startSession();
+      session.startTransaction();
+
+      await Collection.findByIdAndDelete(req.query.collectionId).session(session);
+      await Event.deleteMany({ collectionId: req.query.collectionId }).session(session);
+
+      await session.commitTransaction();
+      session.endSession();
+
       return res.status(204).send('');
     }
     default:
