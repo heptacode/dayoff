@@ -31,15 +31,16 @@ export function CollectionEditModal(props: Partial<ModalProps>) {
   const debounceTitle = useCallback(
     debounce(
       (collectionId: string, title: string) => updateCollection({ collectionId, title }),
-      300
+      500
     ),
     []
   );
 
   function handleTitleInput(collectionId: string, value: string) {
-    const collection = collectionStore.collections.get(collectionId)!;
-    collection.title = '';
-    collectionStore.setCollections(collectionId, collection);
+    collectionStore.setCollections(collectionId, {
+      ...collectionStore.collections.get(collectionId)!,
+      title: value,
+    });
     debounceTitle(collectionId, value);
   }
 
