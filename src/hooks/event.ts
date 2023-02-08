@@ -19,7 +19,7 @@ export function useEvent() {
   );
 
   function handleTitleInput(collectionId: string, eventId: string, value: string) {
-    eventStore.setEvents(collectionId, eventId, {
+    eventStore.setEvent(collectionId, eventId, {
       ...eventStore.events.get(collectionId)!.get(eventId)!,
       title: value,
     });
@@ -32,7 +32,7 @@ export function useEvent() {
   );
 
   function handleSubtitleInput(collectionId: string, eventId: string, value: string) {
-    eventStore.setEvents(collectionId, eventId, {
+    eventStore.setEvent(collectionId, eventId, {
       ...eventStore.events.get(collectionId)!.get(eventId)!,
       subtitle: value,
     });
@@ -40,7 +40,7 @@ export function useEvent() {
   }
 
   function handleDateInput(collectionId: string, eventId: string, value: string) {
-    eventStore.setEvents(collectionId, eventId, {
+    eventStore.setEvent(collectionId, eventId, {
       ...eventStore.events.get(collectionId)!.get(eventId)!,
       date: value,
     });

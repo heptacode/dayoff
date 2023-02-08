@@ -1,10 +1,13 @@
-import { useEventQuery } from '@/hooks/queries/event';
+import { useEventEdit } from '@/hooks/eventEdit';
 import { useCollectionStore } from '@/stores/collectionStore';
 import { useEventStore } from '@/stores/eventStore';
 import {
+  Box,
   Button,
-  Card,
-  Heading,
+  FormControl,
+  FormLabel,
+  Icon,
+  Input,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -12,8 +15,13 @@ import {
   ModalHeader,
   ModalOverlay,
   ModalProps,
+  Progress,
+  Select,
+  Stack,
+  StackDivider,
   useDisclosure,
 } from '@chakra-ui/react';
+import { MdDeleteForever } from 'react-icons/md';
 
 export function EventEditModal(props: Partial<ModalProps>) {
   const collectionStore = useCollectionStore();
@@ -21,48 +29,76 @@ export function EventEditModal(props: Partial<ModalProps>) {
   const { isOpen, onClose } = useDisclosure({
     ...props,
   });
-
-  const { updateEvent } = useEventQuery({});
-
-  async function handleEventMove(collectionId: string) {
-    await updateEvent({
-      eventId: eventStore.selectedEvent!._id,
-      collectionId,
-    });
-    onClose();
-  }
+  const {
+    handleTitleInput,
+    handleTitleSave,
+    handleSubtitleInput,
+    handleSubtitleSave,
+    handleEventMove,
+    handleEventDelete,
+  } = useEventEdit({ onClose });
 
   return (
     <Modal isOpen={isOpen} isCentered onClose={onClose} {...props}>
       <ModalOverlay />
       <ModalContent>
+        {eventStore.isLoading ? <Progress size="xs" isIndeterminate /> : null}
         <ModalHeader>이벤트 편집</ModalHeader>
         <ModalCloseButton />
         <ModalBody mb="5">
-          <Heading size="sm">컬렉션 이동</Heading>
+          <Stack divider={<StackDivider />} spacing="4">
+            <FormControl>
+              <FormLabel>이벤트 제목</FormLabel>
+              <Input
+                placeholder="제목 입력"
+                value={eventStore.selectedEvent?.title}
+                isDisabled={eventStore.isLoading}
+                onInput={e => handleTitleInput((e.target as HTMLInputElement).value)}
+                onBlur={() => handleTitleSave()}
+              />
+            </FormControl>
 
-          {collectionStore.collections.size ? (
-            <Card paddingY="2" maxHeight="300" overflowY="auto">
-              {[...collectionStore.collections.values()].map(collection => (
-                <Button
-                  key={collection._id}
-                  flexDirection="column"
-                  alignItems="flex-start"
-                  fontWeight="initial"
-                  borderRadius={0}
-                  paddingY={6}
-                  variant="ghost"
-                  isDisabled={
-                    eventStore.isLoading ||
-                    String(eventStore.selectedEvent?.collectionId) === collection._id
-                  }
-                  onClick={() => handleEventMove(collection._id)}
-                >
-                  <strong>{collection.title}</strong>
-                </Button>
-              ))}
-            </Card>
-          ) : null}
+            <FormControl>
+              <FormLabel>이벤트 부제목</FormLabel>
+              <Input
+                placeholder="부제목 입력"
+                value={eventStore.selectedEvent?.subtitle}
+                isDisabled={eventStore.isLoading}
+                onInput={e => handleSubtitleInput((e.target as HTMLInputElement).value)}
+                onBlur={() => handleSubtitleSave()}
+              />
+            </FormControl>
+
+            <FormControl>
+              <FormLabel>컬렉션 이동</FormLabel>
+              <Select
+                placeholder="컬렉션 선택"
+                isDisabled={eventStore.isLoading}
+                onChange={e => handleEventMove((e.target as HTMLSelectElement).value)}
+              >
+                {[...collectionStore.collections.values()].map(collection => (
+                  <option
+                    key={collection._id}
+                    value={collection._id}
+                    disabled={String(eventStore.selectedEvent?.collectionId) === collection._id}
+                  >
+                    {collection.title}
+                  </option>
+                ))}
+              </Select>
+            </FormControl>
+
+            <Box>
+              <Button
+                colorScheme="red"
+                disabled={eventStore.isLoading}
+                onClick={() => handleEventDelete(eventStore.selectedEvent!._id)}
+              >
+                <Icon as={MdDeleteForever} boxSize="5" />
+                삭제
+              </Button>
+            </Box>
+          </Stack>
         </ModalBody>
       </ModalContent>
     </Modal>

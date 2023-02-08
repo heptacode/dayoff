@@ -1,7 +1,7 @@
 import { useCollectionStore } from '@/stores/collectionStore';
 import { useEventStore } from '@/stores/eventStore';
 import { usePlanStore } from '@/stores/planStore';
-import { getRequest, patchRequest, postRequest } from '@heptacode/http-request';
+import { deleteRequest, getRequest, patchRequest, postRequest } from '@heptacode/http-request';
 import { useMutation, useQueries } from '@tanstack/react-query';
 import { useEffect, useMemo } from 'react';
 import type { IEvent } from '@/types';
@@ -28,7 +28,7 @@ export function useEventQuery({ collectionId }: { collectionId?: string }) {
             ).data,
           enabled: Boolean(collection._id),
           onSuccess(data: IEvent[]) {
-            data.forEach(event => eventStore.setEvents(collection._id, event._id, event));
+            data.forEach(event => eventStore.setEvent(collection._id, event._id, event));
           },
         };
       }) ?? [],
@@ -113,14 +113,30 @@ export function useEventQuery({ collectionId }: { collectionId?: string }) {
     }
   );
 
+  const { isLoading: isDeleting, mutateAsync: deleteEvent } = useMutation(
+    (eventId: string) =>
+      deleteRequest(`/api/plans/${planStore.planId}/collections/${collectionId}/events/${eventId}`),
+    {
+      onSuccess() {
+        if (collectionId) {
+          eventStore.setEvents(collectionId, new Map());
+          refetchEvent(collectionId);
+        } else {
+          eventStore.clearEvents();
+          refetchEvents();
+        }
+      },
+    }
+  );
+
   const isFetching = useMemo(
     () => eventQueries.findIndex(query => query.isLoading) !== -1,
     [eventQueries]
   );
 
   useEffect(() => {
-    eventStore.setIsLoading(isFetching || isCreating || isUpdating);
-  }, [isFetching, isCreating, isUpdating]);
+    eventStore.setIsLoading(isFetching || isCreating || isUpdating || isDeleting);
+  }, [isFetching, isCreating, isUpdating, isDeleting]);
 
   return {
     eventQueries,
@@ -128,5 +144,6 @@ export function useEventQuery({ collectionId }: { collectionId?: string }) {
     refetchEvents,
     createEvent,
     updateEvent,
+    deleteEvent,
   };
 }

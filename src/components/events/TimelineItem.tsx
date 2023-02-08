@@ -13,7 +13,7 @@ import {
   Text,
 } from '@chakra-ui/react';
 import dayjs from 'dayjs';
-import { MdReorder } from 'react-icons/md';
+import { MdEdit } from 'react-icons/md';
 import type { IEvent } from '@/types';
 
 export function TimelineItem({ event, index, ...props }: { event: IEvent; index: number }) {
@@ -100,7 +100,7 @@ export function TimelineItem({ event, index, ...props }: { event: IEvent; index:
           position="absolute"
           right="-2"
           aria-label="Open Edit Dialog"
-          icon={<Icon as={MdReorder} boxSize="4" />}
+          icon={<Icon as={MdEdit} boxSize="4" />}
           size="sm"
           borderRadius="full"
           variant="ghost"

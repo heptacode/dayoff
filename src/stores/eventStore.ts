@@ -7,7 +7,9 @@ export interface EventState {
   events: Map<string, Map<string, IEvent>>;
   selectedEvent: IEvent | null;
   setIsLoading(value: boolean): void;
-  setEvents(collectionId: string, eventId: string, value: IEvent): void;
+  setEvent(collectionId: string, eventId: string, value: IEvent): void;
+  setEvents(collectionId: string, value: Map<string, IEvent>): void;
+  clearEvents(): void;
   setSelectedEvent(value: IEvent): void;
 }
 
@@ -19,7 +21,7 @@ export const useEventStore = create<EventState>()(
     setIsLoading(value) {
       set({ isLoading: value });
     },
-    setEvents(collectionId, eventId, value) {
+    setEvent(collectionId, eventId, value) {
       if (this.events.has(collectionId)) {
         set({
           events: this.events.set(collectionId, this.events.get(collectionId)!.set(eventId, value)),
@@ -27,6 +29,12 @@ export const useEventStore = create<EventState>()(
       } else {
         set({ events: this.events.set(collectionId, new Map([[eventId, value]])) });
       }
+    },
+    setEvents(collectionId, value) {
+      set({ events: this.events.set(collectionId, value) });
+    },
+    clearEvents() {
+      set({ events: new Map() });
     },
     setSelectedEvent(value) {
       set({ selectedEvent: value });
