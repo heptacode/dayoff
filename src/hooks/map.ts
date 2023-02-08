@@ -1,11 +1,13 @@
+import { useEventStore } from '@/stores/eventStore';
 import { useGlobalStore } from '@/stores/globalStore';
 import { useMapStore } from '@/stores/mapStore';
 import { getCurrentPosition, watchPosition } from '@/utils/geolocation';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
 export function useMap() {
   const globalStore = useGlobalStore();
   const mapStore = useMapStore();
+  const eventStore = useEventStore();
   const mapRef = useRef<HTMLDivElement>(null);
 
   async function initMap() {
@@ -42,6 +44,21 @@ export function useMap() {
       globalStore.setUserLocation(position);
     });
   }
+
+  useEffect(() => {
+    if (mapStore.map && eventStore.events.size) {
+      [...eventStore.events.values()].forEach(collectionEvents =>
+        [...collectionEvents.values()].forEach(event => {
+          const marker = new naver.maps.Marker({
+            map: mapStore.map!,
+            position: new naver.maps.LatLng(event.lat, event.lng),
+            title: event.title,
+          });
+          mapStore.setMarker(event._id, marker);
+        })
+      );
+    }
+  }, [eventStore.events.size]);
 
   return { mapRef, initMap };
 }
