@@ -1,6 +1,7 @@
 import { useCollectionStore } from '@/stores/collectionStore';
 import { useEventStore } from '@/stores/eventStore';
 import { debounce } from '@/utils/debounce';
+import dayjs from 'dayjs';
 import { useCallback } from 'react';
 import { useEventQuery } from './queries/event';
 
@@ -38,22 +39,23 @@ export function useEvent() {
     debounceSubtitle(eventId, value);
   }
 
-  const debounceDate = useCallback(
-    debounce((eventId, date: string) => updateEvent({ eventId, date }), 2000),
-    []
-  );
-
   function handleDateInput(collectionId: string, eventId: string, value: string) {
     eventStore.setEvents(collectionId, eventId, {
       ...eventStore.events.get(collectionId)!.get(eventId)!,
       date: value,
     });
-    debounceDate(eventId, value);
+  }
+
+  function handleDateSave(eventId: string, value: string) {
+    if (eventStore.selectedEvent && !dayjs(eventStore.selectedEvent.date).isSame(dayjs(value))) {
+      updateEvent({ eventId, date: value });
+    }
   }
 
   return {
     handleTitleInput,
     handleSubtitleInput,
     handleDateInput,
+    handleDateSave,
   };
 }

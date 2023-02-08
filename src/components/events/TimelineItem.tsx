@@ -19,7 +19,7 @@ import type { IEvent } from '@/types';
 export function TimelineItem({ event, index, ...props }: { event: IEvent; index: number }) {
   const globalStore = useGlobalStore();
   const eventStore = useEventStore();
-  const { handleTitleInput, handleSubtitleInput, handleDateInput } = useEvent();
+  const { handleTitleInput, handleSubtitleInput, handleDateInput, handleDateSave } = useEvent();
 
   return (
     <AccordionPanel as="li" ml="3" mb="3" {...props}>
@@ -64,9 +64,16 @@ export function TimelineItem({ event, index, ...props }: { event: IEvent; index:
             variant="unstyled"
             fontSize="sm"
             value={dayjs(event.date).format('YYYY-MM-DDTHH:mm')}
+            onFocus={() => eventStore.setSelectedEvent(event)}
             onInput={e =>
               handleDateInput(
                 String(event.collectionId),
+                event._id,
+                new Date((e.target as HTMLInputElement).value).toISOString()
+              )
+            }
+            onBlur={e =>
+              handleDateSave(
                 event._id,
                 new Date((e.target as HTMLInputElement).value).toISOString()
               )
