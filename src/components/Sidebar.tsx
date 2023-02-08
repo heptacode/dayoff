@@ -18,6 +18,7 @@ import {
   HStack,
   Icon,
   Progress,
+  Skeleton,
   useDisclosure,
 } from '@chakra-ui/react';
 import { MdAdd, MdEdit } from 'react-icons/md';
@@ -47,14 +48,19 @@ export function Sidebar() {
           <Box h="1" />
         )}
         <DrawerHeader borderBottomWidth="1px">
-          <Editable value={planStore.title}>
-            <EditablePreview />
-            <EditableInput onChange={e => handleTitleInput(e.target.value)} />
-          </Editable>
-          <Editable value={planStore.subtitle} fontSize="sm" fontWeight="normal">
-            <EditablePreview />
-            <EditableInput onChange={e => handleSubtitleInput(e.target.value)} />
-          </Editable>
+          <Skeleton mr="20" isLoaded={Boolean(planStore.title)}>
+            <Editable value={planStore.title} variant="flushed">
+              <EditablePreview />
+              <EditableInput onChange={e => handleTitleInput(e.target.value)} />
+            </Editable>
+          </Skeleton>
+
+          <Skeleton my="1" mr="10" isLoaded={Boolean(planStore.subtitle)}>
+            <Editable value={planStore.subtitle} fontSize="sm" fontWeight="normal">
+              <EditablePreview />
+              <EditableInput onChange={e => handleSubtitleInput(e.target.value)} />
+            </Editable>
+          </Skeleton>
         </DrawerHeader>
 
         <Box p="5" overflowY="scroll">
