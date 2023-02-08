@@ -73,10 +73,12 @@ export function Sidebar() {
               <Icon as={MdAdd} mr="1" />
               추가
             </Button>
-            <Button onClick={() => globalStore.setIsCollectionEditModalOpen(true)}>
-              <Icon as={MdEdit} mr="1" />
-              편집
-            </Button>
+            {collectionStore.collections.size ? (
+              <Button onClick={() => globalStore.setIsCollectionEditModalOpen(true)}>
+                <Icon as={MdEdit} mr="1" />
+                편집
+              </Button>
+            ) : null}
           </HStack>
         </Box>
       </DrawerContent>

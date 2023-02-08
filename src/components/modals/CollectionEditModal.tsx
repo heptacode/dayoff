@@ -16,6 +16,7 @@ import {
   ModalHeader,
   ModalOverlay,
   ModalProps,
+  Progress,
   Stack,
   StackDivider,
   useDisclosure,
@@ -48,15 +49,17 @@ export function CollectionEditModal(props: Partial<ModalProps>) {
     debounceTitle(collectionId, value);
   }
 
-  function handleCollectionDelete(collectionId: string) {
+  async function handleCollectionDelete(collectionId: string) {
     if (confirm('컬렉션과 컬렉션에 포함된 모든 이벤트가 영구적으로 삭제됩니다. 계속할까요?')) {
-      deleteCollection(collectionId);
+      await deleteCollection(collectionId);
+      onClose();
     }
   }
 
   return (
     <Modal isOpen={isOpen} isCentered onClose={onClose} {...props}>
       <ModalOverlay />
+      {collectionStore.isLoading ? <Progress size="xs" isIndeterminate /> : null}
       <ModalContent>
         <ModalHeader>컬렉션 편집</ModalHeader>
         <ModalCloseButton />
