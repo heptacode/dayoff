@@ -35,6 +35,7 @@ export function useMap() {
       position: location,
       icon: {
         content: '<div class="dot-marker"></div>',
+        anchor: new naver.maps.Point(4, 24),
       },
     });
 
@@ -54,10 +55,19 @@ export function useMap() {
       });
 
       [...eventStore.events.values()].forEach(event => {
+        const index = [...eventStore.events.values()]
+          .filter(_event => _event.collectionId === event.collectionId)
+          .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+          .findIndex(_event => _event._id === event._id);
+
         const marker = new naver.maps.Marker({
           map: mapStore.map!,
           position: new naver.maps.LatLng(event.lat, event.lng),
           title: event.title,
+          icon: {
+            content: `<div class="marker"><span>${index}</span></div>`,
+            anchor: new naver.maps.Point(15.5, 35),
+          },
         });
         mapStore.setMarker(event._id, marker);
       });

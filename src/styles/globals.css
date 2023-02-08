@@ -22,3 +22,23 @@
   border: 1px solid white;
   background-color: #4185f3;
 }
+
+.marker {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 30px;
+  height: 30px;
+
+  background-color: #3095fa;
+  border-radius: 50% 50% 50% 0;
+  box-shadow: 1px 1px 10px 5px rgba(#000, 0.5);
+
+  color: white;
+  transform: rotate(-45deg);
+}
+
+.marker span {
+  transform: rotate(45deg);
+}
