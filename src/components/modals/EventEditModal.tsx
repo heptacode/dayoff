@@ -21,6 +21,7 @@ import {
   StackDivider,
   useDisclosure,
 } from '@chakra-ui/react';
+import dayjs from 'dayjs';
 import { MdDeleteForever } from 'react-icons/md';
 
 export function EventEditModal(props: Partial<ModalProps>) {
@@ -34,6 +35,8 @@ export function EventEditModal(props: Partial<ModalProps>) {
     handleTitleSave,
     handleSubtitleInput,
     handleSubtitleSave,
+    handleDateInput,
+    handleDateSave,
     handleEventMove,
     handleEventDelete,
   } = useEventEdit({ onClose });
@@ -66,6 +69,18 @@ export function EventEditModal(props: Partial<ModalProps>) {
                 isDisabled={eventStore.isLoading}
                 onInput={e => handleSubtitleInput((e.target as HTMLInputElement).value)}
                 onBlur={() => handleSubtitleSave()}
+              />
+            </FormControl>
+
+            <FormControl>
+              <FormLabel>이벤트 날짜</FormLabel>
+              <Input
+                type="datetime-local"
+                value={dayjs(eventStore.selectedEvent?.date).format('YYYY-MM-DDTHH:mm')}
+                onInput={e =>
+                  handleDateInput(new Date((e.target as HTMLInputElement).value).toISOString())
+                }
+                onBlur={() => handleDateSave()}
               />
             </FormControl>
 

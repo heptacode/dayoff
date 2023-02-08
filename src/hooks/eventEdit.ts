@@ -1,4 +1,5 @@
 import { useEventStore } from '@/stores/eventStore';
+import dayjs from 'dayjs';
 import { useEventQuery } from './queries/event';
 
 export function useEventEdit({ onClose }: { onClose(): void }) {
@@ -50,6 +51,28 @@ export function useEventEdit({ onClose }: { onClose(): void }) {
     }
   }
 
+  function handleDateInput(value: string) {
+    eventStore.setSelectedEvent({
+      ...eventStore.selectedEvent!,
+      date: value,
+    });
+  }
+
+  function handleDateSave() {
+    if (
+      dayjs(
+        eventStore.events
+          .get(String(eventStore.selectedEvent!.collectionId))!
+          .get(eventStore.selectedEvent!._id)?.date
+      ).isSame(dayjs(eventStore.selectedEvent!.date))
+    ) {
+      updateEvent({
+        eventId: eventStore.selectedEvent!._id,
+        date: String(eventStore.selectedEvent!.date),
+      });
+    }
+  }
+
   async function handleEventMove(collectionId: string) {
     eventStore.clearEvents();
     await updateEvent({
@@ -71,6 +94,8 @@ export function useEventEdit({ onClose }: { onClose(): void }) {
     handleTitleSave,
     handleSubtitleInput,
     handleSubtitleSave,
+    handleDateInput,
+    handleDateSave,
     handleEventMove,
     handleEventDelete,
   };
