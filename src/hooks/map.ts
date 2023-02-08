@@ -47,6 +47,12 @@ export function useMap() {
 
   useEffect(() => {
     if (mapStore.map) {
+      [...mapStore.markers.entries()].forEach(([eventId, marker]) => {
+        if (!eventStore.events.has(eventId)) {
+          marker.setMap(null);
+        }
+      });
+
       [...eventStore.events.values()].forEach(event => {
         const marker = new naver.maps.Marker({
           map: mapStore.map!,
