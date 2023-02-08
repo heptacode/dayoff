@@ -28,7 +28,7 @@ export function useEventQuery({ collectionId }: { collectionId?: string }) {
             ).data,
           enabled: Boolean(collection._id),
           onSuccess(data: IEvent[]) {
-            eventStore.setEvents(collection._id, data);
+            data.forEach(event => eventStore.setEvents(collection._id, event._id, event));
           },
         };
       }) ?? [],

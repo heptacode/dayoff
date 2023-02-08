@@ -46,14 +46,15 @@ export function Timeline(props: AccordionProps) {
             borderLeftColor="gray.200"
             _dark={{ borderLeftColor: 'gray.600' }}
           >
-            {eventStore.events
-              .get(collection._id)
-              ?.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
-              .map((event, index) =>
-                String(event.collectionId) === collection._id ? (
-                  <TimelineItem key={event._id} event={event} index={index} />
-                ) : null
-              )}
+            {eventStore.events.has(collection._id)
+              ? [...eventStore.events.get(collection._id)!.values()]
+                  ?.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+                  .map((event, index) =>
+                    String(event.collectionId) === collection._id ? (
+                      <TimelineItem key={event._id} event={event} index={index} />
+                    ) : null
+                  )
+              : null}
           </Box>
         </AccordionItem>
       ))}

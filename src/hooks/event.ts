@@ -18,10 +18,10 @@ export function useEvent() {
   );
 
   function handleTitleInput(collectionId: string, eventId: string, value: string) {
-    const collectionEvents = eventStore.events.get(collectionId)!;
-    const index = collectionEvents.findIndex(event => event._id === eventId);
-    collectionEvents[index].title = value;
-    eventStore.setEvents(collectionId, collectionEvents);
+    eventStore.setEvents(collectionId, eventId, {
+      ...eventStore.events.get(collectionId)!.get(eventId)!,
+      title: value,
+    });
     debounceTitle(eventId, value);
   }
 
@@ -31,10 +31,10 @@ export function useEvent() {
   );
 
   function handleSubtitleInput(collectionId: string, eventId: string, value: string) {
-    const collectionEvents = eventStore.events.get(collectionId)!;
-    const index = collectionEvents.findIndex(event => event._id === eventId);
-    collectionEvents[index].subtitle = value;
-    eventStore.setEvents(collectionId, collectionEvents);
+    eventStore.setEvents(collectionId, eventId, {
+      ...eventStore.events.get(collectionId)!.get(eventId)!,
+      subtitle: value,
+    });
     debounceSubtitle(eventId, value);
   }
 
@@ -44,10 +44,10 @@ export function useEvent() {
   );
 
   function handleDateInput(collectionId: string, eventId: string, value: string) {
-    const collectionEvents = eventStore.events.get(collectionId)!;
-    const index = collectionEvents.findIndex(event => event._id === eventId);
-    collectionEvents[index].date = value;
-    eventStore.setEvents(collectionId, collectionEvents);
+    eventStore.setEvents(collectionId, eventId, {
+      ...eventStore.events.get(collectionId)!.get(eventId)!,
+      date: value,
+    });
     debounceDate(eventId, value);
   }
 
