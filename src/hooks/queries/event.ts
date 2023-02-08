@@ -28,7 +28,7 @@ export function useEventQuery({ collectionId }: { collectionId?: string }) {
             ).data,
           enabled: Boolean(collection._id),
           onSuccess(data: IEvent[]) {
-            data.forEach(event => eventStore.setEvent(collection._id, event._id, event));
+            data.forEach(event => eventStore.setEvent(event._id, event));
           },
         };
       }) ?? [],
@@ -119,7 +119,6 @@ export function useEventQuery({ collectionId }: { collectionId?: string }) {
     {
       onSuccess() {
         if (collectionId) {
-          eventStore.setEvents(collectionId, new Map());
           refetchEvent(collectionId);
         } else {
           eventStore.clearEvents();

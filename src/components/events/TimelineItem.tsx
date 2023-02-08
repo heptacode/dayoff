@@ -46,13 +46,7 @@ export function TimelineItem({ event, index, ...props }: { event: IEvent; index:
         <Editable
           value={event.title}
           fontWeight="semibold"
-          onInput={e =>
-            handleTitleInput(
-              String(event.collectionId),
-              event._id,
-              (e.target as HTMLInputElement).value
-            )
-          }
+          onInput={e => handleTitleInput(event._id, (e.target as HTMLInputElement).value)}
         >
           <EditablePreview />
           <EditableInput />
@@ -67,7 +61,6 @@ export function TimelineItem({ event, index, ...props }: { event: IEvent; index:
             onFocus={() => eventStore.setSelectedEvent(event)}
             onInput={e =>
               handleDateInput(
-                String(event.collectionId),
                 event._id,
                 new Date((e.target as HTMLInputElement).value).toISOString()
               )
@@ -84,13 +77,7 @@ export function TimelineItem({ event, index, ...props }: { event: IEvent; index:
         <Editable
           value={event.subtitle}
           fontSize="sm"
-          onInput={e =>
-            handleSubtitleInput(
-              String(event.collectionId),
-              event._id,
-              (e.target as HTMLInputElement).value
-            )
-          }
+          onInput={e => handleSubtitleInput(event._id, (e.target as HTMLInputElement).value)}
         >
           <EditablePreview />
           <EditableInput />

@@ -20,9 +20,8 @@ export function useEventEdit({ onClose }: { onClose(): void }) {
 
   function handleTitleSave() {
     if (
-      eventStore.events
-        .get(String(eventStore.selectedEvent!.collectionId))!
-        .get(eventStore.selectedEvent!._id)?.subtitle === eventStore.selectedEvent!.subtitle
+      eventStore.events.get(eventStore.selectedEvent!._id)?.subtitle ===
+      eventStore.selectedEvent!.subtitle
     ) {
       updateEvent({
         eventId: eventStore.selectedEvent!._id,
@@ -40,9 +39,8 @@ export function useEventEdit({ onClose }: { onClose(): void }) {
 
   function handleSubtitleSave() {
     if (
-      eventStore.events
-        .get(String(eventStore.selectedEvent!.collectionId))!
-        .get(eventStore.selectedEvent!._id)?.subtitle === eventStore.selectedEvent!.subtitle
+      eventStore.events.get(eventStore.selectedEvent!._id)?.subtitle ===
+      eventStore.selectedEvent!.subtitle
     ) {
       updateEvent({
         eventId: eventStore.selectedEvent!._id,
@@ -60,11 +58,9 @@ export function useEventEdit({ onClose }: { onClose(): void }) {
 
   function handleDateSave() {
     if (
-      dayjs(
-        eventStore.events
-          .get(String(eventStore.selectedEvent!.collectionId))!
-          .get(eventStore.selectedEvent!._id)?.date
-      ).isSame(dayjs(eventStore.selectedEvent!.date))
+      dayjs(eventStore.events.get(eventStore.selectedEvent!._id)?.date).isSame(
+        dayjs(eventStore.selectedEvent!.date)
+      )
     ) {
       updateEvent({
         eventId: eventStore.selectedEvent!._id,
@@ -84,6 +80,7 @@ export function useEventEdit({ onClose }: { onClose(): void }) {
 
   function handleEventDelete(eventId: string) {
     if (confirm('이벤트가 영구적으로 삭제됩니다. 계속할까요?')) {
+      eventStore.deleteEvent(eventId);
       deleteEvent(eventId);
       onClose();
     }

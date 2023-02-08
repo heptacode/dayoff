@@ -46,17 +46,15 @@ export function useMap() {
   }
 
   useEffect(() => {
-    if (mapStore.map && eventStore.events.size) {
-      [...eventStore.events.values()].forEach(collectionEvents =>
-        [...collectionEvents.values()].forEach(event => {
-          const marker = new naver.maps.Marker({
-            map: mapStore.map!,
-            position: new naver.maps.LatLng(event.lat, event.lng),
-            title: event.title,
-          });
-          mapStore.setMarker(event._id, marker);
-        })
-      );
+    if (mapStore.map) {
+      [...eventStore.events.values()].forEach(event => {
+        const marker = new naver.maps.Marker({
+          map: mapStore.map!,
+          position: new naver.maps.LatLng(event.lat, event.lng),
+          title: event.title,
+        });
+        mapStore.setMarker(event._id, marker);
+      });
     }
   }, [eventStore.events.size]);
 

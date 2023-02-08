@@ -18,9 +18,9 @@ export function useEvent() {
     []
   );
 
-  function handleTitleInput(collectionId: string, eventId: string, value: string) {
-    eventStore.setEvent(collectionId, eventId, {
-      ...eventStore.events.get(collectionId)!.get(eventId)!,
+  function handleTitleInput(eventId: string, value: string) {
+    eventStore.setEvent(eventId, {
+      ...eventStore.events.get(eventId)!,
       title: value,
     });
     debounceTitle(eventId, value);
@@ -31,17 +31,17 @@ export function useEvent() {
     []
   );
 
-  function handleSubtitleInput(collectionId: string, eventId: string, value: string) {
-    eventStore.setEvent(collectionId, eventId, {
-      ...eventStore.events.get(collectionId)!.get(eventId)!,
+  function handleSubtitleInput(eventId: string, value: string) {
+    eventStore.setEvent(eventId, {
+      ...eventStore.events.get(eventId)!,
       subtitle: value,
     });
     debounceSubtitle(eventId, value);
   }
 
-  function handleDateInput(collectionId: string, eventId: string, value: string) {
-    eventStore.setEvent(collectionId, eventId, {
-      ...eventStore.events.get(collectionId)!.get(eventId)!,
+  function handleDateInput(eventId: string, value: string) {
+    eventStore.setEvent(eventId, {
+      ...eventStore.events.get(eventId)!,
       date: value,
     });
   }

@@ -4,11 +4,11 @@ import type { IEvent } from '@/types';
 
 export interface EventState {
   isLoading: boolean;
-  events: Map<string, Map<string, IEvent>>;
+  events: Map<string, IEvent>;
   selectedEvent: IEvent | null;
   setIsLoading(value: boolean): void;
-  setEvent(collectionId: string, eventId: string, value: IEvent): void;
-  setEvents(collectionId: string, value: Map<string, IEvent>): void;
+  setEvent(eventId: string, value: IEvent): void;
+  deleteEvent(eventId: string): void;
   clearEvents(): void;
   setSelectedEvent(value: IEvent): void;
 }
@@ -21,17 +21,12 @@ export const useEventStore = create<EventState>()(
     setIsLoading(value) {
       set({ isLoading: value });
     },
-    setEvent(collectionId, eventId, value) {
-      if (this.events.has(collectionId)) {
-        set({
-          events: this.events.set(collectionId, this.events.get(collectionId)!.set(eventId, value)),
-        });
-      } else {
-        set({ events: this.events.set(collectionId, new Map([[eventId, value]])) });
-      }
+    setEvent(eventId, value) {
+      set({ events: this.events.set(eventId, value) });
     },
-    setEvents(collectionId, value) {
-      set({ events: this.events.set(collectionId, value) });
+    deleteEvent(eventId) {
+      this.events.delete(eventId);
+      set({ events: new Map(this.events) });
     },
     clearEvents() {
       set({ events: new Map() });
