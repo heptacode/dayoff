@@ -20,8 +20,8 @@ export function useEventEdit({ onClose }: { onClose(): void }) {
 
   function handleTitleSave() {
     if (
-      eventStore.events.get(eventStore.selectedEvent!._id)?.subtitle ===
-      eventStore.selectedEvent!.subtitle
+      eventStore.events.get(eventStore.selectedEvent!._id)!.title !==
+      eventStore.selectedEvent!.title
     ) {
       updateEvent({
         eventId: eventStore.selectedEvent!._id,
@@ -39,7 +39,7 @@ export function useEventEdit({ onClose }: { onClose(): void }) {
 
   function handleSubtitleSave() {
     if (
-      eventStore.events.get(eventStore.selectedEvent!._id)?.subtitle ===
+      eventStore.events.get(eventStore.selectedEvent!._id)?.subtitle !==
       eventStore.selectedEvent!.subtitle
     ) {
       updateEvent({
