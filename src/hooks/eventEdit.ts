@@ -58,7 +58,7 @@ export function useEventEdit({ onClose }: { onClose(): void }) {
 
   function handleDateSave() {
     if (
-      dayjs(eventStore.events.get(eventStore.selectedEvent!._id)?.date).isSame(
+      !dayjs(eventStore.events.get(eventStore.selectedEvent!._id)?.date).isSame(
         dayjs(eventStore.selectedEvent!.date)
       )
     ) {
