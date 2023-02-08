@@ -39,9 +39,8 @@ export async function useMongoose(options?: mongoose.ConnectOptions) {
     }
     cachedMongoose.connected = await cachedMongoose.promise;
     return cachedMongoose.connected;
-  } catch (error: any) {
+  } catch (error) {
     console.error(error);
-    process.exit();
   }
 }
 
@@ -50,9 +49,13 @@ export function withMongoose(
   options?: mongoose.ConnectOptions
 ) {
   return async (req: NextApiRequestWithMongoose, res: NextApiResponse): Promise<void> => {
-    const client = await useMongoose(options);
+    try {
+      const client = await useMongoose(options);
 
-    (req as NextApiRequestWithMongoose).mongoose = client;
-    return handler(req, res);
+      (req as NextApiRequestWithMongoose).mongoose = client;
+      return handler(req, res);
+    } catch (error) {
+      console.error(error);
+    }
   };
 }
