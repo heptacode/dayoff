@@ -1,3 +1,4 @@
+import { useCollectionStore } from '@/stores/collectionStore';
 import { useEventStore } from '@/stores/eventStore';
 import { useGlobalStore } from '@/stores/globalStore';
 import { useMapStore } from '@/stores/mapStore';
@@ -7,6 +8,7 @@ import { useEffect, useRef } from 'react';
 export function useMap() {
   const globalStore = useGlobalStore();
   const mapStore = useMapStore();
+  const collectionStore = useCollectionStore();
   const eventStore = useEventStore();
   const mapRef = useRef<HTMLDivElement>(null);
 
@@ -48,11 +50,7 @@ export function useMap() {
 
   useEffect(() => {
     if (mapStore.map) {
-      [...mapStore.markers.entries()].forEach(([eventId, marker]) => {
-        if (!eventStore.events.has(eventId)) {
-          marker.setMap(null);
-        }
-      });
+      [...mapStore.markers.values()].forEach(marker => marker.setMap(null));
 
       [...eventStore.events.values()].forEach(event => {
         const index = [...eventStore.events.values()]
@@ -70,6 +68,19 @@ export function useMap() {
           },
         });
         mapStore.setMarker(event._id, marker);
+      });
+
+      mapStore.polylines.forEach(polyline => polyline.setMap(null));
+
+      [...collectionStore.collections.values()].forEach(collection => {
+        const polyline = new naver.maps.Polyline({
+          map: mapStore.map!,
+          path: [...eventStore.events.values()].filter(
+            event => String(event.collectionId) === collection._id
+          ),
+        });
+
+        mapStore.setPolylines(mapStore.polylines.concat(polyline));
       });
     }
   }, [eventStore.events.size]);
