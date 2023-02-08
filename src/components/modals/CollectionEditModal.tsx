@@ -67,9 +67,7 @@ export function CollectionEditModal(props: Partial<ModalProps>) {
                   <Input
                     value={collection.title}
                     fontWeight="semibold"
-                    onInput={e =>
-                      handleTitleInput(collection._id, (e.target as HTMLInputElement).value)
-                    }
+                    onChange={e => handleTitleInput(collection._id, e.target.value)}
                   />
                   <IconButton
                     aria-label={'컬렉션 삭제'}

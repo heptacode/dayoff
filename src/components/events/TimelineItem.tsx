@@ -43,13 +43,9 @@ export function TimelineItem({ event, index, ...props }: { event: IEvent; index:
       </Flex>
 
       <Flex position="relative" direction="column">
-        <Editable
-          value={event.title}
-          fontWeight="semibold"
-          onInput={e => handleTitleInput(event._id, (e.target as HTMLInputElement).value)}
-        >
+        <Editable value={event.title} fontWeight="semibold">
           <EditablePreview />
-          <EditableInput />
+          <EditableInput onChange={e => handleTitleInput(event._id, e.target.value)} />
         </Editable>
 
         <Text as="time" display="block" fontSize="xs">
@@ -59,12 +55,7 @@ export function TimelineItem({ event, index, ...props }: { event: IEvent; index:
             fontSize="sm"
             value={dayjs(event.date).format('YYYY-MM-DDTHH:mm')}
             onFocus={() => eventStore.setSelectedEvent(event)}
-            onInput={e =>
-              handleDateInput(
-                event._id,
-                new Date((e.target as HTMLInputElement).value).toISOString()
-              )
-            }
+            onChange={e => handleDateInput(event._id, new Date(e.target.value).toISOString())}
             onBlur={e =>
               handleDateSave(
                 event._id,
@@ -74,13 +65,9 @@ export function TimelineItem({ event, index, ...props }: { event: IEvent; index:
           />
         </Text>
 
-        <Editable
-          value={event.subtitle}
-          fontSize="sm"
-          onInput={e => handleSubtitleInput(event._id, (e.target as HTMLInputElement).value)}
-        >
+        <Editable value={event.subtitle} fontSize="sm">
           <EditablePreview />
-          <EditableInput />
+          <EditableInput onChange={e => handleSubtitleInput(event._id, e.target.value)} />
         </Editable>
 
         <IconButton

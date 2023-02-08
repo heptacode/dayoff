@@ -56,7 +56,7 @@ export function EventEditModal(props: Partial<ModalProps>) {
                 placeholder="제목 입력"
                 value={eventStore.selectedEvent?.title}
                 isDisabled={eventStore.isLoading}
-                onInput={e => handleTitleInput((e.target as HTMLInputElement).value)}
+                onChange={e => handleTitleInput(e.target.value)}
                 onBlur={() => handleTitleSave()}
               />
             </FormControl>
@@ -67,7 +67,7 @@ export function EventEditModal(props: Partial<ModalProps>) {
                 placeholder="부제목 입력"
                 value={eventStore.selectedEvent?.subtitle}
                 isDisabled={eventStore.isLoading}
-                onInput={e => handleSubtitleInput((e.target as HTMLInputElement).value)}
+                onChange={e => handleSubtitleInput(e.target.value)}
                 onBlur={() => handleSubtitleSave()}
               />
             </FormControl>
@@ -77,9 +77,7 @@ export function EventEditModal(props: Partial<ModalProps>) {
               <Input
                 type="datetime-local"
                 value={dayjs(eventStore.selectedEvent?.date).format('YYYY-MM-DDTHH:mm')}
-                onInput={e =>
-                  handleDateInput(new Date((e.target as HTMLInputElement).value).toISOString())
-                }
+                onChange={e => handleDateInput(new Date(e.target.value).toISOString())}
                 onBlur={() => handleDateSave()}
               />
             </FormControl>

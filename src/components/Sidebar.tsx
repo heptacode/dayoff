@@ -45,21 +45,13 @@ export function Sidebar() {
           <Progress size="xs" isIndeterminate />
         ) : null}
         <DrawerHeader borderBottomWidth="1px">
-          <Editable
-            value={planStore.title}
-            onInput={e => handleTitleInput((e.target as HTMLInputElement).value)}
-          >
+          <Editable value={planStore.title}>
             <EditablePreview />
-            <EditableInput />
+            <EditableInput onChange={e => handleTitleInput(e.target.value)} />
           </Editable>
-          <Editable
-            value={planStore.subtitle}
-            fontSize="sm"
-            fontWeight="normal"
-            onInput={e => handleSubtitleInput((e.target as HTMLInputElement).value)}
-          >
+          <Editable value={planStore.subtitle} fontSize="sm" fontWeight="normal">
             <EditablePreview />
-            <EditableInput />
+            <EditableInput onChange={e => handleSubtitleInput(e.target.value)} />
           </Editable>
         </DrawerHeader>
 
