@@ -1,8 +1,11 @@
 import { useCollectionQuery } from '@/hooks/queries/collections';
 import { useCollectionStore } from '@/stores/collectionStore';
+import { useEventStore } from '@/stores/eventStore';
 import { debounce } from '@/utils/debounce';
 import {
-  Flex,
+  FormControl,
+  FormHelperText,
+  HStack,
   Icon,
   IconButton,
   Input,
@@ -22,6 +25,7 @@ import { MdDeleteForever } from 'react-icons/md';
 
 export function CollectionEditModal(props: Partial<ModalProps>) {
   const collectionStore = useCollectionStore();
+  const eventStore = useEventStore();
   const { isOpen, onClose } = useDisclosure({
     ...props,
   });
@@ -60,23 +64,28 @@ export function CollectionEditModal(props: Partial<ModalProps>) {
           {collectionStore.collections?.size ? (
             <Stack divider={<StackDivider />} spacing="4">
               {[...collectionStore.collections.values()].map(collection => (
-                <Flex key={collection._id}>
-                  <Input
-                    value={collection.title}
-                    fontWeight="semibold"
-                    onInput={e =>
-                      handleTitleInput(collection._id, (e.target as HTMLInputElement).value)
-                    }
-                  />
-                  <IconButton
-                    aria-label={'컬렉션 삭제'}
-                    colorScheme="red"
-                    icon={<Icon as={MdDeleteForever} boxSize="5" />}
-                    variant="outline"
-                    disabled={collectionStore.isLoading}
-                    onClick={() => handleCollectionDelete(collection._id)}
-                  />
-                </Flex>
+                <FormControl key={collection._id}>
+                  <HStack>
+                    <Input
+                      value={collection.title}
+                      fontWeight="semibold"
+                      onInput={e =>
+                        handleTitleInput(collection._id, (e.target as HTMLInputElement).value)
+                      }
+                    />
+                    <IconButton
+                      aria-label={'컬렉션 삭제'}
+                      colorScheme="red"
+                      icon={<Icon as={MdDeleteForever} boxSize="5" />}
+                      variant="outline"
+                      disabled={collectionStore.isLoading}
+                      onClick={() => handleCollectionDelete(collection._id)}
+                    />
+                  </HStack>
+                  <FormHelperText>
+                    이벤트 {eventStore.events.get(collection._id)?.size ?? 0}개
+                  </FormHelperText>
+                </FormControl>
               ))}
             </Stack>
           ) : null}
