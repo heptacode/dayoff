@@ -1,6 +1,5 @@
 import { useCollectionQuery } from '@/hooks/queries/collections';
 import { useCollectionStore } from '@/stores/collectionStore';
-import { debounce } from '@/utils/debounce';
 import {
   HStack,
   Icon,
@@ -18,7 +17,6 @@ import {
   StackDivider,
   useDisclosure,
 } from '@chakra-ui/react';
-import { useCallback } from 'react';
 import { MdDeleteForever } from 'react-icons/md';
 
 export function CollectionEditModal(props: Partial<ModalProps>) {
@@ -29,20 +27,15 @@ export function CollectionEditModal(props: Partial<ModalProps>) {
 
   const { updateCollection, deleteCollection } = useCollectionQuery({});
 
-  const debounceTitle = useCallback(
-    debounce(
-      (collectionId: string, title: string) => updateCollection({ collectionId, title }),
-      500
-    ),
-    []
-  );
-
   function handleTitleInput(collectionId: string, value: string) {
     collectionStore.setCollections(collectionId, {
       ...collectionStore.collections.get(collectionId)!,
       title: value,
     });
-    debounceTitle(collectionId, value);
+  }
+
+  function handleTitleSave(collectionId: string, value: string) {
+    updateCollection({ collectionId, title: value });
   }
 
   async function handleCollectionDelete(collectionId: string) {
@@ -68,6 +61,7 @@ export function CollectionEditModal(props: Partial<ModalProps>) {
                     value={collection.title}
                     fontWeight="semibold"
                     onChange={e => handleTitleInput(collection._id, e.target.value)}
+                    onBlur={e => handleTitleSave(collection._id, e.target.value)}
                   />
                   <IconButton
                     aria-label={'컬렉션 삭제'}
