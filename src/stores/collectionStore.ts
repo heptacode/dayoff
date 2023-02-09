@@ -6,6 +6,7 @@ export interface CollectionState {
   isLoading: boolean;
   collections: Map<string, ICollection>;
   collectionId: string;
+  getCollections: () => ICollection[];
   setIsLoading(value: boolean): void;
   setCollections(collectionId: string, value: ICollection): void;
   clearCollections(): void;
@@ -13,10 +14,11 @@ export interface CollectionState {
 }
 
 export const useCollectionStore = create<CollectionState>()(
-  devtools(set => ({
+  devtools((set, get) => ({
     isLoading: true,
     collections: new Map(),
     collectionId: '',
+    getCollections: () => [...get().collections.values()],
     setIsLoading(value) {
       set({ isLoading: value });
     },

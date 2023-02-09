@@ -5,16 +5,18 @@ export interface MapState {
   map: naver.maps.Map | null;
   markers: Map<string, naver.maps.Marker>;
   polylines: naver.maps.Polyline[];
+  getMarkers: () => naver.maps.Marker[];
   setMap(value: naver.maps.Map): void;
   setMarker(eventId: string, value: naver.maps.Marker): void;
   setPolylines(value: naver.maps.Polyline[]): void;
 }
 
 export const useMapStore = create<MapState>()(
-  devtools(set => ({
+  devtools((set, get) => ({
     map: null,
     markers: new Map(),
     polylines: [],
+    getMarkers: () => [...get().markers.values()],
     setMap(value) {
       set({ map: value });
     },

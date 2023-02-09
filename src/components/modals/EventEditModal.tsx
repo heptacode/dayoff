@@ -89,7 +89,7 @@ export function EventEditModal(props: Partial<ModalProps>) {
                 isDisabled={eventStore.isLoading}
                 onChange={e => handleEventMove((e.target as HTMLSelectElement).value)}
               >
-                {[...collectionStore.collections.values()].map(collection => (
+                {collectionStore.getCollections().map(collection => (
                   <option
                     key={collection._id}
                     value={collection._id}

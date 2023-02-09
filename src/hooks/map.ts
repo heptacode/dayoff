@@ -50,12 +50,11 @@ export function useMap() {
 
   useEffect(() => {
     if (mapStore.map) {
-      [...mapStore.markers.values()].forEach(marker => marker.setMap(null));
+      mapStore.getMarkers().forEach(marker => marker.setMap(null));
 
-      [...eventStore.events.values()].forEach(event => {
-        const index = [...eventStore.events.values()]
-          .filter(_event => _event.collectionId === event.collectionId)
-          .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+      eventStore.getEvents().forEach(event => {
+        const index = eventStore
+          .getCollectionEvents(event.collectionId)
           .findIndex(_event => _event._id === event._id);
 
         const marker = new naver.maps.Marker({
@@ -72,12 +71,10 @@ export function useMap() {
 
       mapStore.polylines.forEach(polyline => polyline.setMap(null));
 
-      [...collectionStore.collections.values()].forEach(collection => {
+      collectionStore.getCollections().forEach(collection => {
         const polyline = new naver.maps.Polyline({
           map: mapStore.map!,
-          path: [...eventStore.events.values()].filter(
-            event => String(event.collectionId) === collection._id
-          ),
+          path: eventStore.getCollectionEvents(collection._id),
         });
 
         mapStore.setPolylines(mapStore.polylines.concat(polyline));

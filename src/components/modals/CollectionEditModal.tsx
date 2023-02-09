@@ -62,7 +62,7 @@ export function CollectionEditModal(props: Partial<ModalProps>) {
         <ModalBody mb="5">
           {collectionStore.collections?.size ? (
             <Stack divider={<StackDivider />} spacing="4">
-              {[...collectionStore.collections.values()].map(collection => (
+              {collectionStore.getCollections().map(collection => (
                 <HStack key={collection._id}>
                   <Input
                     value={collection.title}
