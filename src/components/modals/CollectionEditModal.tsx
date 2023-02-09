@@ -1,4 +1,4 @@
-import { useCollectionQuery } from '@/hooks/queries/collections';
+import { useCollectionEdit } from '@/hooks/collectionEdit';
 import { useCollectionStore } from '@/stores/collectionStore';
 import {
   HStack,
@@ -24,26 +24,9 @@ export function CollectionEditModal(props: Partial<ModalProps>) {
   const { isOpen, onClose } = useDisclosure({
     ...props,
   });
-
-  const { updateCollection, deleteCollection } = useCollectionQuery({});
-
-  function handleTitleInput(collectionId: string, value: string) {
-    collectionStore.setCollections(collectionId, {
-      ...collectionStore.collections.get(collectionId)!,
-      title: value,
-    });
-  }
-
-  function handleTitleSave(collectionId: string, value: string) {
-    updateCollection({ collectionId, title: value });
-  }
-
-  async function handleCollectionDelete(collectionId: string) {
-    if (confirm('컬렉션과 컬렉션에 포함된 모든 이벤트가 영구적으로 삭제됩니다. 계속할까요?')) {
-      await deleteCollection(collectionId);
-      onClose();
-    }
-  }
+  const { handleTitleInput, handleTitleSave, handleCollectionDelete } = useCollectionEdit({
+    onClose,
+  });
 
   return (
     <Modal isOpen={isOpen} isCentered onClose={onClose} {...props}>
