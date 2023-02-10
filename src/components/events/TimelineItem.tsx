@@ -1,3 +1,4 @@
+import { colors } from '@/contants';
 import { useEvent } from '@/hooks/event';
 import { useEventStore } from '@/stores/eventStore';
 import { useGlobalStore } from '@/stores/globalStore';
@@ -14,33 +15,41 @@ import {
 } from '@chakra-ui/react';
 import dayjs from 'dayjs';
 import { MdEdit } from 'react-icons/md';
-import type { IEvent } from '@/types';
+import type { ICollection, IEvent } from '@/types';
 
-export function TimelineItem({ event, index, ...props }: { event: IEvent; index: number }) {
+export function TimelineItem({
+  collection,
+  event,
+  index,
+  ...props
+}: {
+  collection: ICollection;
+  event: IEvent;
+  index: number;
+}) {
   const globalStore = useGlobalStore();
   const eventStore = useEventStore();
   const { handleTitleInput, handleSubtitleInput, handleDateInput, handleDateSave } = useEvent();
 
   return (
     <AccordionPanel as="li" ml="3" mb="3" {...props}>
-      <Flex
+      <IconButton
         position="absolute"
         left={-3}
         mt={1}
+        minWidth="6"
         w="6"
         h="6"
-        bgColor="blue.200"
+        aria-label={collection.color.toUpperCase()}
         borderRadius="full"
-        ring="8"
-        ringColor="white"
-        justifyContent="center"
-        alignItems="center"
-        _dark={{ ringColor: 'gray.900', bgColor: 'blue.800' }}
+        {...(colors.includes(collection.color)
+          ? { colorScheme: collection.color }
+          : { bgColor: collection.color })}
       >
         <Text fontSize="sm" fontWeight="semibold">
-          {index}
+          {index + 1}
         </Text>
-      </Flex>
+      </IconButton>
 
       <Flex position="relative" direction="column">
         <Editable value={event.title} fontWeight="semibold">

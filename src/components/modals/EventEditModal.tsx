@@ -45,7 +45,7 @@ export function EventEditModal(props: Partial<ModalProps>) {
     <Modal isOpen={isOpen} isCentered onClose={onClose} {...props}>
       <ModalOverlay />
       <ModalContent>
-        {eventStore.isLoading ? <Progress size="xs" isIndeterminate /> : null}
+        {eventStore.isLoading ? <Progress size="xs" isIndeterminate /> : <Box h="1" />}
         <ModalHeader>이벤트 편집</ModalHeader>
         <ModalCloseButton />
         <ModalBody mb="5">

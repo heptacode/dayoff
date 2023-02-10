@@ -16,6 +16,7 @@ export default withMongoose(async (req: NextApiRequestWithMongoose, res: NextApi
       const collection = await Collection.create({
         planId: req.query.planId,
         title: req.body.title ?? '새 컬렉션',
+        color: req.body.color ?? 'blue',
       });
       return res.status(201).send(collection);
     }

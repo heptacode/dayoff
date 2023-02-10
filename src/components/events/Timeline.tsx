@@ -1,3 +1,4 @@
+import { colors } from '@/contants';
 import { useCollectionStore } from '@/stores/collectionStore';
 import { useEventStore } from '@/stores/eventStore';
 import {
@@ -7,6 +8,8 @@ import {
   AccordionItem,
   AccordionProps,
   Box,
+  HStack,
+  IconButton,
   Progress,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
@@ -32,9 +35,19 @@ export function Timeline(props: AccordionProps) {
         <AccordionItem key={collection._id}>
           {eventStore.isLoading ? <Progress size="xs" isIndeterminate /> : null}
           <AccordionButton>
-            <Box flex="1" textAlign="left">
+            <HStack flex="1" textAlign="left">
+              <IconButton
+                aria-label={collection.color.toUpperCase()}
+                minWidth="4"
+                w="4"
+                h="4"
+                borderRadius="full"
+                {...(colors.includes(collection.color)
+                  ? { colorScheme: collection.color }
+                  : { bgColor: collection.color })}
+              />
               <h2>{collection.title}</h2>
-            </Box>
+            </HStack>
             <AccordionIcon />
           </AccordionButton>
 
@@ -44,10 +57,11 @@ export function Timeline(props: AccordionProps) {
             as="ol"
             borderLeftWidth={1}
             borderLeftColor="gray.200"
+            listStyleType="none"
             _dark={{ borderLeftColor: 'gray.600' }}
           >
             {eventStore.getCollectionEvents(collection._id).map((event, index) => (
-              <TimelineItem key={event._id} event={event} index={index} />
+              <TimelineItem key={event._id} collection={collection} event={event} index={index} />
             ))}
           </Box>
         </AccordionItem>

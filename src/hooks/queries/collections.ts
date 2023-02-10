@@ -40,9 +40,10 @@ export function useCollectionQuery({
   );
 
   const { isLoading: isUpdating, mutateAsync: updateCollection } = useMutation(
-    ({ collectionId, title }: { collectionId: string; title?: string }) =>
+    ({ collectionId, title, color }: { collectionId: string; title?: string; color?: string }) =>
       patchRequest(`/api/plans/${planStore.planId}/collections/${collectionId}`, {
         ...(title && { title }),
+        ...(color && { color }),
       }),
     {
       onSuccess() {

@@ -20,11 +20,13 @@ export interface ICollection {
   _id: string;
   planId: ObjectId;
   title: string;
+  color: string;
 }
 
 const collectionSchema = new Schema<ICollection>({
   planId: { type: Schema.Types.ObjectId, ref: 'Plan', required: true },
   title: { type: String, default: '', required: true },
+  color: { type: String, default: '' },
 });
 export const Collection = models.Collection ?? model<ICollection>('Collection', collectionSchema);
 
@@ -49,6 +51,19 @@ const eventSchema = new Schema<IEvent>({
   date: { type: Date, default: Date.now },
 });
 export const Event = models.Event ?? model<IEvent>('Event', eventSchema);
+
+export type Color =
+  | 'red'
+  | 'orange'
+  | 'yellow'
+  | 'green'
+  | 'teal'
+  | 'blue'
+  | 'cyan'
+  | 'purple'
+  | 'pink'
+  | 'blackAlpha'
+  | string;
 
 enum SortBy {
   DISTANCE = 'distance',

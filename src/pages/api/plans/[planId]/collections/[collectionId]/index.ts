@@ -7,6 +7,7 @@ export default withMongoose(async (req: NextApiRequestWithMongoose, res: NextApi
     case 'PATCH': {
       await Collection.findByIdAndUpdate(req.query.collectionId, {
         ...(req.body.title && { title: req.body.title }),
+        ...(req.body.color && { color: req.body.color }),
       });
       return res.status(204).send('');
     }
