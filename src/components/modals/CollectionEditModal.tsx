@@ -62,7 +62,12 @@ export function CollectionEditModal(props: Partial<ModalProps>) {
                     />
                   </HStack>
 
-                  <ButtonGroup size="xs" flexWrap="wrap" isDisabled={collectionStore.isLoading}>
+                  <ButtonGroup
+                    mt="2"
+                    size="xs"
+                    flexWrap="wrap"
+                    isDisabled={collectionStore.isLoading}
+                  >
                     {colors.map((color, index) => (
                       <Button
                         key={index}
