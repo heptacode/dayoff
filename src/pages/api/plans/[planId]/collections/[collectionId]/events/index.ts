@@ -9,7 +9,7 @@ export default withMongoose(async (req: NextApiRequestWithMongoose, res: NextApi
     }
     case 'POST': {
       const documentCount = await Event.countDocuments({ collectionId: req.query.collectionId });
-      if (documentCount >= 20) {
+      if (documentCount >= 50) {
         return res.status(402).send('');
       }
 

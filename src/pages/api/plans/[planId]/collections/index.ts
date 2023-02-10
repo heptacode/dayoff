@@ -9,7 +9,7 @@ export default withMongoose(async (req: NextApiRequestWithMongoose, res: NextApi
     }
     case 'POST': {
       const documentCount = await Collection.countDocuments({ planId: req.query.planId });
-      if (documentCount >= 3) {
+      if (documentCount >= 15) {
         return res.status(402).send('');
       }
 
