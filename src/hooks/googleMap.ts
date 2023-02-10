@@ -19,7 +19,9 @@ export function useGoogleMap() {
       center: { lat: -34.397, lng: 150.644 },
       fullscreenControl: false,
       mapTypeControl: false,
+      streetViewControl: false,
       zoom: 15,
+      zoomControl: false,
     });
     mapStore.setMap(map);
 
