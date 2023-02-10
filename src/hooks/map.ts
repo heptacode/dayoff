@@ -84,7 +84,7 @@ export function useMap() {
         mapStore.setPolylines(mapStore.polylines.concat(polyline));
       });
     }
-  }, [eventStore.events.size, colorTheme]);
+  }, [collectionStore.updatedAt, eventStore.updatedAt, colorTheme]);
 
   return { mapRef, initMap };
 }
