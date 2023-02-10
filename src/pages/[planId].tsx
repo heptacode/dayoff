@@ -45,6 +45,7 @@ export default function Plan() {
           top="8px"
           left="8px"
           zIndex="1"
+          colorScheme="telegram"
           onClick={() => globalStore.setIsSidebarOpen(true)}
         />
       ) : null}
