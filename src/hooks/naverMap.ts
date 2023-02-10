@@ -59,7 +59,7 @@ export function useNaverMap() {
           .getCollectionEvents(event.collectionId)
           .findIndex(_event => _event._id === event._id);
 
-        const color = collectionStore.collections.get(String(event.collectionId))!.color;
+        const color = collectionStore.collections.get(String(event.collectionId))?.color;
 
         const marker = new naver.maps.Marker({
           map: mapStore.map!,
