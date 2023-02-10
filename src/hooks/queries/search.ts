@@ -1,15 +1,15 @@
 import { getRequest } from '@heptacode/http-request';
 import { useQuery } from '@tanstack/react-query';
-import type { KeywordSearchDocument, KeywordSearchOptions, KeywordSearchResponse } from '@/types';
+import type { Place, MapType, SearchOptions, SearchResponse } from '@/types';
 
-export function useSearchQuery({ query }: { query: string }) {
-  return useQuery<KeywordSearchDocument[]>(
+export function useSearchQuery({ mapType, query }: { mapType: MapType; query: string }) {
+  return useQuery<Place[]>(
     ['get_search_data', query],
     async () => {
       try {
-        const options: KeywordSearchOptions = { query };
+        const options: SearchOptions = { mapType, query };
 
-        const { data, status } = await getRequest<KeywordSearchResponse>('/api/search', options);
+        const { data, status } = await getRequest<SearchResponse>('/api/search', options);
 
         switch (status) {
           case 200:

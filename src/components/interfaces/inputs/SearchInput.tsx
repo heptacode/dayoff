@@ -1,21 +1,24 @@
 import { useSearchQuery } from '@/hooks/queries/search';
+import { usePlanStore } from '@/stores/planStore';
 import { useDebounceValue } from '@/utils/debounce';
 import { Button, Card, Input } from '@chakra-ui/react';
 import React, { DetailedHTMLProps, HTMLAttributes, useState } from 'react';
-import type { KeywordSearchDocument } from '@/types';
+import type { Place } from '@/types';
 
 export function SearchInput({
   handlePlaceSelect,
   ...props
 }: {
-  handlePlaceSelect: (place: KeywordSearchDocument) => void;
+  handlePlaceSelect: (place: Place) => void;
 } & DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>) {
+  const planStore = usePlanStore();
   const [searchValue, setSearchValue] = useState<string>('');
   const [isComposing, setIsComposing] = useState<boolean>(false);
   const [hoveredIndex, setHoveredIndex] = useState<number>(-1);
   const debouncedSearchQuery = useDebounceValue(searchValue, 300);
   const { data: places, refetch: refetchSearch } = useSearchQuery({
     query: debouncedSearchQuery,
+    mapType: planStore.mapType!,
   });
 
   async function handleSearchFormSubmit(event: React.FormEvent) {
@@ -93,8 +96,8 @@ export function SearchInput({
               onMouseOver={() => setHoveredIndex(index)}
               onMouseLeave={() => setHoveredIndex(-1)}
             >
-              <strong>{place.place_name}</strong>
-              <small>{place.road_address_name}</small>
+              <strong>{place.name}</strong>
+              <small>{place.address}</small>
             </Button>
           ))}
         </Card>

@@ -81,7 +81,7 @@ enum SortBy {
  * @param size 한 페이지에 보여질 문서의 개수 (최소: 1, 최대: 45, 기본값: 15)
  * @param sort 결과 정렬 순서 (distance 또는 accuracy)
  */
-export interface KeywordSearchOptions {
+export interface KakaoSearchOptions {
   query: string;
   rect?: string;
   page?: number;
@@ -89,20 +89,20 @@ export interface KeywordSearchOptions {
   sort?: SortBy;
 }
 
-export interface KeywordSearchSameName {
+export interface KakaoSearchSameName {
   region: string[];
   keyword: string;
   selected_region: string;
 }
 
-export interface KeywordSearchMeta {
+export interface KakaoSearchMeta {
   total_count: number;
   pageable_count: number;
   is_end: boolean;
-  same_name: KeywordSearchSameName;
+  same_name: KakaoSearchSameName;
 }
 
-export interface KeywordSearchDocument {
+export interface KakaoSearchDocument {
   id: string;
   place_name: string;
   category_name: string;
@@ -116,12 +116,23 @@ export interface KeywordSearchDocument {
   place_url: string;
 }
 
-export interface KeywordSearchAPIResponse {
-  meta?: KeywordSearchMeta;
-  documents?: KeywordSearchDocument[];
+export interface KakaoSearchResponse {
+  meta?: KakaoSearchMeta;
+  documents?: KakaoSearchDocument[];
 }
 
-export interface KeywordSearchResponse {
-  meta?: KeywordSearchMeta;
-  places?: KeywordSearchDocument[];
+export interface Place {
+  id: string;
+  name: string;
+  address: string;
+  lat: number;
+  lng: number;
+}
+
+export interface SearchOptions extends KakaoSearchOptions {
+  query: string;
+  mapType: MapType;
+}
+export interface SearchResponse {
+  places?: Place[];
 }

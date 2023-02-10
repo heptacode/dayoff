@@ -5,7 +5,7 @@ import { useCallback } from 'react';
 import { useCollectionQuery } from './queries/collections';
 import { useEventQuery } from './queries/event';
 import { usePlanQuery } from './queries/plan';
-import type { KeywordSearchDocument } from '@/types';
+import type { Place } from '@/types';
 
 export function usePlan() {
   const planStore = usePlanStore();
@@ -42,13 +42,13 @@ export function usePlan() {
     debounceSubtitle(value);
   }
 
-  function handlePlaceSelect(place: KeywordSearchDocument) {
+  function handlePlaceSelect(place: Place) {
     createEvent({
       collectionId: collectionStore.collectionId,
-      title: place.place_name,
-      subtitle: place.road_address_name,
-      lat: place.y,
-      lng: place.x,
+      title: place.name,
+      subtitle: place.address,
+      lat: place.lat,
+      lng: place.lng,
     });
   }
 

@@ -28,7 +28,6 @@ export default function Plan() {
   });
 
   function renderMap() {
-    console.log(planStore.mapType);
     switch (planStore.mapType) {
       case 'naver':
         return <NaverMap />;
