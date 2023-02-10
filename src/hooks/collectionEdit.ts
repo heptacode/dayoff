@@ -30,6 +30,7 @@ export function useCollectionEdit({ onClose }: { onClose(): void }) {
   async function handleCollectionDelete(collectionId: string) {
     if (confirm('컬렉션과 컬렉션에 포함된 모든 이벤트가 영구적으로 삭제됩니다. 계속할까요?')) {
       await deleteCollection(collectionId);
+      collectionStore.setCollectionId(null);
       onClose();
     }
   }

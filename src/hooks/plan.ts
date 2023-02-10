@@ -43,13 +43,18 @@ export function usePlan() {
   }
 
   function handlePlaceSelect(place: Place) {
-    createEvent({
-      collectionId: collectionStore.collectionId,
-      title: place.name,
-      subtitle: place.address,
-      lat: place.lat,
-      lng: place.lng,
-    });
+    if (
+      collectionStore.collectionId &&
+      collectionStore.collections.has(collectionStore.collectionId)
+    ) {
+      createEvent({
+        collectionId: collectionStore.collectionId,
+        title: place.name,
+        subtitle: place.address,
+        lat: place.lat,
+        lng: place.lng,
+      });
+    }
   }
 
   return {

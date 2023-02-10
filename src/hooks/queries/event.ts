@@ -6,7 +6,7 @@ import { useMutation, useQueries } from '@tanstack/react-query';
 import { useEffect, useMemo } from 'react';
 import type { IEvent } from '@/types';
 
-export function useEventQuery({ collectionId }: { collectionId?: string }) {
+export function useEventQuery({ collectionId }: { collectionId?: string | null }) {
   const planStore = usePlanStore();
   const collectionStore = useCollectionStore();
   const eventStore = useEventStore();

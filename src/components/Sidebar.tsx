@@ -64,7 +64,9 @@ export function Sidebar() {
         </DrawerHeader>
 
         <Box p="5" overflowY="scroll">
-          <SearchInput handlePlaceSelect={handlePlaceSelect} />
+          {collectionStore.collections.size ? (
+            <SearchInput handlePlaceSelect={handlePlaceSelect} />
+          ) : null}
 
           <Timeline my="5" />
 

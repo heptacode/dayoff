@@ -8,8 +8,8 @@ import {
   AccordionItem,
   AccordionProps,
   Box,
+  Button,
   HStack,
-  IconButton,
   Progress,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
@@ -34,16 +34,19 @@ export function Timeline(props: AccordionProps) {
       {[...collectionStore.collections.values()].map(collection => (
         <AccordionItem key={collection._id}>
           {eventStore.isLoading ? <Progress size="xs" isIndeterminate /> : null}
-          <AccordionButton>
+          <AccordionButton onClick={() => collectionStore.setCollectionId(collection._id)}>
             <HStack flex="1" textAlign="left">
-              <IconButton
-                aria-label={collection.color.toUpperCase()}
+              <Button
                 minWidth="4"
                 w="4"
                 h="4"
+                size="xs"
                 borderRadius="full"
                 bgColor={colors[collection.color]}
-              />
+                color="#fff"
+              >
+                {collectionStore.collectionId === collection._id ? <>&#10003;</> : null}
+              </Button>
               <h2>{collection.title}</h2>
             </HStack>
             <AccordionIcon />
