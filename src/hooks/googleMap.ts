@@ -4,7 +4,7 @@ import { useGlobalStore } from '@/stores/globalStore';
 import { useGoogleMapStore } from '@/stores/googleMapStore';
 import { getCurrentPosition, watchPosition } from '@/utils/geolocation';
 import { useColorModeValue } from '@chakra-ui/react';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export function useGoogleMap() {
   const globalStore = useGlobalStore();
@@ -13,10 +13,10 @@ export function useGoogleMap() {
   const eventStore = useEventStore();
   const mapRef = useRef<HTMLDivElement>(null);
   const colorTheme = useColorModeValue(400, 200);
+  const [isMapCenterChanged, setIsMapCenterChanged] = useState<boolean>(false);
 
   async function initMap() {
     const map = new google.maps.Map(mapRef.current as HTMLDivElement, {
-      center: { lat: -34.397, lng: 150.644 },
       fullscreenControl: false,
       mapTypeControl: false,
       streetViewControl: false,
@@ -50,6 +50,16 @@ export function useGoogleMap() {
       globalStore.setUserLocation(position);
     });
   }
+
+  useEffect(() => {
+    if (!isMapCenterChanged && mapStore.map && eventStore.events.size) {
+      setIsMapCenterChanged(true);
+      const [event] = eventStore.events.values();
+      if (event) {
+        mapStore.map?.setCenter(new google.maps.LatLng(event.lat, event.lng));
+      }
+    }
+  }, [eventStore.events.size, mapStore.map]);
 
   useEffect(() => {
     if (mapStore.map) {

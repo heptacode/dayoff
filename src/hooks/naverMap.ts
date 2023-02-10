@@ -5,7 +5,7 @@ import { useGlobalStore } from '@/stores/globalStore';
 import { useNaverMapStore } from '@/stores/naverMapStore';
 import { getCurrentPosition, watchPosition } from '@/utils/geolocation';
 import { useColorMode } from '@chakra-ui/react';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export function useNaverMap() {
   const colorMode = useColorMode();
@@ -14,6 +14,7 @@ export function useNaverMap() {
   const collectionStore = useCollectionStore();
   const eventStore = useEventStore();
   const mapRef = useRef<HTMLDivElement>(null);
+  const [isMapCenterChanged, setIsMapCenterChanged] = useState<boolean>(false);
 
   async function initMap() {
     const map = new naver.maps.Map(mapRef.current as HTMLDivElement, {
@@ -50,6 +51,16 @@ export function useNaverMap() {
       globalStore.setUserLocation(position);
     });
   }
+
+  useEffect(() => {
+    if (!isMapCenterChanged && mapStore.map && eventStore.events.size) {
+      setIsMapCenterChanged(true);
+      const [event] = eventStore.events.values();
+      if (event) {
+        mapStore.map?.setCenter(new naver.maps.LatLng(event.lat, event.lng));
+      }
+    }
+  }, [eventStore.events.size, mapStore.map]);
 
   useEffect(() => {
     if (mapStore.map) {
