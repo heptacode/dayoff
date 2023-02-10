@@ -1,9 +1,12 @@
 import { model, models, ObjectId, Schema } from 'mongoose';
 
+export type MapType = 'google' | 'naver';
+
 export interface IPlan {
   _id: string;
   title: string;
   subtitle: string;
+  mapType: MapType;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -11,6 +14,7 @@ export interface IPlan {
 const planSchema = new Schema<IPlan>({
   title: { type: String, default: '', required: true },
   subtitle: { type: String, default: '', required: true },
+  mapType: { type: String, default: 'google', required: true },
   createdAt: [{ type: Date, default: new Date(), required: true }],
   updatedAt: [{ type: Date, default: new Date(), required: true }],
 });

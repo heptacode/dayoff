@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 
-export interface MapState {
+export interface NaverMapState {
   map: naver.maps.Map | null;
   markers: Map<string, naver.maps.Marker>;
   polylines: naver.maps.Polyline[];
@@ -11,7 +11,7 @@ export interface MapState {
   setPolylines(value: naver.maps.Polyline[]): void;
 }
 
-export const useMapStore = create<MapState>()(
+export const useNaverMapStore = create<NaverMapState>()(
   devtools((set, get) => ({
     map: null,
     markers: new Map(),

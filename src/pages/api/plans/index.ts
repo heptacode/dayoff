@@ -11,7 +11,7 @@ export default withMongoose(async (req: NextApiRequestWithMongoose, res: NextApi
       const plan = await Plan.create<IPlan>({
         title: req.body.title ?? '계획 이름',
         subtitle: req.body.subtitle ?? '새로운 계획',
-        collections: [],
+        mapType: req.body.mapType ?? 'google',
         createdAt: new Date(),
         updatedAt: new Date(),
       });

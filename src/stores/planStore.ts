@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
-import type { IPlan } from '@/types';
+import type { IPlan, MapType } from '@/types';
 
 export interface PlanState {
   isLoading: boolean;
@@ -8,11 +8,13 @@ export interface PlanState {
   planId: string;
   title: string;
   subtitle: string;
+  mapType: MapType | null;
   setIsLoading(value: boolean): void;
   setPlans(value: IPlan[]): void;
   setPlanId(value: string): void;
   setTitle(value: string): void;
   setSubtitle(value: string): void;
+  setMapType(value: MapType): void;
 }
 
 export const usePlanStore = create<PlanState>()(
@@ -22,6 +24,7 @@ export const usePlanStore = create<PlanState>()(
     planId: '',
     title: '',
     subtitle: '',
+    mapType: null,
     setIsLoading(value) {
       set({ isLoading: value });
     },
@@ -36,6 +39,9 @@ export const usePlanStore = create<PlanState>()(
     },
     setSubtitle(value) {
       set({ subtitle: value });
+    },
+    setMapType(value) {
+      set({ mapType: value });
     },
   }))
 );

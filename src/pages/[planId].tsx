@@ -1,5 +1,6 @@
 import { Sidebar } from '@/components/Sidebar';
-import { Map } from '@/components/maps/Map';
+import { GoogleMap } from '@/components/maps/GoogleMap';
+import { NaverMap } from '@/components/maps/NaverMap';
 import { CollectionEditModal } from '@/components/modals/CollectionEditModal';
 import { EventEditModal } from '@/components/modals/EventEditModal';
 import { usePlanQuery } from '@/hooks/queries/plan';
@@ -21,9 +22,22 @@ export default function Plan() {
     onFetchSuccess(data) {
       planStore.setTitle(data.title);
       planStore.setSubtitle(data.subtitle);
+      planStore.setMapType(data.mapType);
       planStore.setIsLoading(false);
     },
   });
+
+  function renderMap() {
+    console.log(planStore.mapType);
+    switch (planStore.mapType) {
+      case 'naver':
+        return <NaverMap />;
+      case 'google':
+        return <GoogleMap />;
+      default:
+        return null;
+    }
+  }
 
   useEffect(() => {
     if (router.isReady) {
@@ -49,7 +63,7 @@ export default function Plan() {
           onClick={() => globalStore.setIsSidebarOpen(true)}
         />
       ) : null}
-      <Map />
+      {renderMap()}
       <Sidebar />
       <CollectionEditModal
         isOpen={globalStore.isCollectionEditModalOpen}

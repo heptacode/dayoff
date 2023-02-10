@@ -1,26 +1,23 @@
 import { useCollectionStore } from '@/stores/collectionStore';
 import { useEventStore } from '@/stores/eventStore';
 import { useGlobalStore } from '@/stores/globalStore';
-import { useMapStore } from '@/stores/mapStore';
+import { useGoogleMapStore } from '@/stores/googleMapStore';
 import { getCurrentPosition, watchPosition } from '@/utils/geolocation';
 import { useColorModeValue } from '@chakra-ui/react';
 import { useEffect, useRef } from 'react';
 
-export function useMap() {
+export function useGoogleMap() {
   const globalStore = useGlobalStore();
-  const mapStore = useMapStore();
+  const mapStore = useGoogleMapStore();
   const collectionStore = useCollectionStore();
   const eventStore = useEventStore();
   const mapRef = useRef<HTMLDivElement>(null);
   const colorTheme = useColorModeValue(400, 200);
 
   async function initMap() {
-    const map = new naver.maps.Map(mapRef.current as HTMLDivElement, {
+    const map = new google.maps.Map(mapRef.current as HTMLDivElement, {
+      center: { lat: -34.397, lng: 150.644 },
       zoom: 15,
-      scaleControl: false,
-      logoControl: false,
-      mapDataControl: false,
-      mapTypeControl: false,
     });
     mapStore.setMap(map);
 
@@ -30,21 +27,21 @@ export function useMap() {
       globalStore.setUserLocation(position);
     }
 
-    const location = new naver.maps.LatLng(position.coords.latitude, position.coords.longitude);
+    const location = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
 
     map.setCenter(location);
 
-    const userPositionMarker = new naver.maps.Marker({
+    const userPositionMarker = new google.maps.Marker({
       map,
       position: location,
       icon: {
-        content: '<div class="dot-marker"></div>',
-        anchor: new naver.maps.Point(4, 24),
+        url: '/geolocation.svg',
+        anchor: new google.maps.Point(4, 24),
       },
     });
 
     watchPosition((position: GeolocationPosition) => {
-      const location = new naver.maps.LatLng(position.coords.latitude, position.coords.longitude);
+      const location = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
       userPositionMarker.setPosition(location);
       globalStore.setUserLocation(position);
     });
@@ -61,13 +58,20 @@ export function useMap() {
 
         const color = collectionStore.collections.get(String(event.collectionId))!.color;
 
-        const marker = new naver.maps.Marker({
+        const marker = new google.maps.Marker({
           map: mapStore.map!,
-          position: new naver.maps.LatLng(event.lat, event.lng),
-          title: event.title,
+          position: new google.maps.LatLng(event.lat, event.lng),
+          label: {
+            color: '#fff',
+            text: String(index + 1),
+          },
           icon: {
-            content: `<div class="marker" style="background:var(--chakra-colors-${color}-${colorTheme}"><span>${index}</span></div>`,
-            anchor: new naver.maps.Point(15.5, 35),
+            path: 'M14,0 C21.732,0 28,5.641 28,12.6 C28,23.963 14,36 14,36 C14,36 0,24.064 0,12.6 C0,5.641 6.268,0 14,0 Z',
+            fillColor: color ?? '#3182CE',
+            fillOpacity: 1,
+            strokeColor: 'transparent',
+            labelOrigin: new google.maps.Point(14, 15),
+            anchor: new google.maps.Point(14, 34.5),
           },
         });
         mapStore.setMarker(event._id, marker);
@@ -76,9 +80,10 @@ export function useMap() {
       mapStore.polylines.forEach(polyline => polyline.setMap(null));
 
       collectionStore.getCollections().forEach(collection => {
-        const polyline = new naver.maps.Polyline({
+        const polyline = new google.maps.Polyline({
           map: mapStore.map!,
           path: eventStore.getCollectionEvents(collection._id),
+          strokeColor: collection.color,
         });
 
         mapStore.setPolylines(mapStore.polylines.concat(polyline));
