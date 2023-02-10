@@ -2,6 +2,7 @@ module.exports = {
   root: true,
   parser: '@typescript-eslint/parser',
   extends: [
+    '@react-native-community',
     'eslint:recommended',
     'eslint-config-prettier',
     'next/core-web-vitals',
