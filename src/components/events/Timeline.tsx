@@ -37,6 +37,7 @@ export function Timeline(props: AccordionProps) {
           <AccordionButton onClick={() => collectionStore.setCollectionId(collection._id)}>
             <HStack flex="1" textAlign="left">
               <Button
+                as="div"
                 minWidth="4"
                 w="4"
                 h="4"
@@ -44,6 +45,7 @@ export function Timeline(props: AccordionProps) {
                 borderRadius="full"
                 bgColor={colors[collection.color]}
                 color="#fff"
+                _hover={{ bgColor: colors[collection.color], filter: 'brightness(0.8)' }}
               >
                 {collectionStore.collectionId === collection._id ? <>&#10003;</> : null}
               </Button>
