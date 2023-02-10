@@ -42,9 +42,7 @@ export function Timeline(props: AccordionProps) {
                 w="4"
                 h="4"
                 borderRadius="full"
-                {...(colors.includes(collection.color)
-                  ? { colorScheme: collection.color }
-                  : { bgColor: collection.color })}
+                bgColor={colors[collection.color]}
               />
               <h2>{collection.title}</h2>
             </HStack>

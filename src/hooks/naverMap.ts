@@ -1,18 +1,19 @@
+import { colors } from '@/contants';
 import { useCollectionStore } from '@/stores/collectionStore';
 import { useEventStore } from '@/stores/eventStore';
 import { useGlobalStore } from '@/stores/globalStore';
 import { useNaverMapStore } from '@/stores/naverMapStore';
 import { getCurrentPosition, watchPosition } from '@/utils/geolocation';
-import { useColorModeValue } from '@chakra-ui/react';
+import { useColorMode } from '@chakra-ui/react';
 import { useEffect, useRef } from 'react';
 
 export function useNaverMap() {
+  const colorMode = useColorMode();
   const globalStore = useGlobalStore();
   const mapStore = useNaverMapStore();
   const collectionStore = useCollectionStore();
   const eventStore = useEventStore();
   const mapRef = useRef<HTMLDivElement>(null);
-  const colorTheme = useColorModeValue(400, 200);
 
   async function initMap() {
     const map = new naver.maps.Map(mapRef.current as HTMLDivElement, {
@@ -66,7 +67,7 @@ export function useNaverMap() {
           position: new naver.maps.LatLng(event.lat, event.lng),
           title: event.title,
           icon: {
-            content: `<div class="marker" style="background:var(--chakra-colors-${color}-${colorTheme}"><span>${
+            content: `<div class="marker" style="background:${color ? colors[color] : ''}"><span>${
               index + 1
             }</span></div>`,
             anchor: new naver.maps.Point(15.5, 35),
@@ -87,7 +88,7 @@ export function useNaverMap() {
         mapStore.setPolylines(mapStore.polylines.concat(polyline));
       });
     }
-  }, [collectionStore.updatedAt, eventStore.updatedAt, colorTheme]);
+  }, [collectionStore.updatedAt, eventStore.updatedAt, colorMode]);
 
   return { mapRef, initMap };
 }

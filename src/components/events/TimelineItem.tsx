@@ -42,9 +42,7 @@ export function TimelineItem({
         h="6"
         aria-label={collection.color.toUpperCase()}
         borderRadius="full"
-        {...(colors.includes(collection.color)
-          ? { colorScheme: collection.color }
-          : { bgColor: collection.color })}
+        bgColor={colors[collection.color]}
       >
         <Text fontSize="sm" fontWeight="semibold">
           {index + 1}

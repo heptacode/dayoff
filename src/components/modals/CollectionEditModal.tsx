@@ -68,17 +68,19 @@ export function CollectionEditModal(props: Partial<ModalProps>) {
                     flexWrap="wrap"
                     isDisabled={collectionStore.isLoading}
                   >
-                    {colors.map((color, index) => (
+                    {Object.entries(colors).map(([colorType, color], index) => (
                       <Button
                         key={index}
                         w="6"
                         h="6"
                         borderRadius="full"
-                        title={color.toUpperCase()}
-                        {...(colors.includes(color) ? { colorScheme: color } : { bgColor: color })}
-                        onClick={() => handleColorChange(collection._id, color)}
+                        title={colorType.toUpperCase()}
+                        bgColor={color}
+                        color="#fff"
+                        _hover={{ bgColor: color, filter: 'brightness(0.8)' }}
+                        onClick={() => handleColorChange(collection._id, colorType)}
                       >
-                        {collection.color === color ? <>&#10003;</> : null}
+                        {collection.color === colorType ? <>&#10003;</> : null}
                       </Button>
                     ))}
                   </ButtonGroup>
