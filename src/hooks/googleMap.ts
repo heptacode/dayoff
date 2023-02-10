@@ -17,6 +17,8 @@ export function useGoogleMap() {
   async function initMap() {
     const map = new google.maps.Map(mapRef.current as HTMLDivElement, {
       center: { lat: -34.397, lng: 150.644 },
+      fullscreenControl: false,
+      mapTypeControl: false,
       zoom: 15,
     });
     mapStore.setMap(map);
