@@ -19,7 +19,7 @@ export function GoogleMap() {
   return (
     <>
       <Script
-        src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GCP_KEY}&callback=c&v=weekly`}
+        src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GCP_MAP_KEY}&callback=c&v=weekly`}
         defer
         strategy="lazyOnload"
         onLoad={initMap}

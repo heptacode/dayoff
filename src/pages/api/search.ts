@@ -21,7 +21,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
           inputtype: 'textquery',
           input: req.query.query ? String(req.query.query) : '',
           fields: 'name,formatted_address,geometry',
-          key: process.env.NEXT_PUBLIC_GCP_KEY,
+          key: process.env.GCP_PLACES_KEY,
         });
 
         return res
