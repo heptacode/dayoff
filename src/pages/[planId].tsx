@@ -6,7 +6,7 @@ import { EventEditModal } from '@/components/modals/EventEditModal';
 import { usePlanQuery } from '@/hooks/queries/plan';
 import { useGlobalStore } from '@/stores/globalStore';
 import { usePlanStore } from '@/stores/planStore';
-import { Icon, IconButton } from '@chakra-ui/react';
+import { Center, CircularProgress, Icon, IconButton } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { MdMenu } from 'react-icons/md';
@@ -34,7 +34,11 @@ export default function Plan() {
       case 'google':
         return <GoogleMap />;
       default:
-        return null;
+        return (
+          <Center h="full">
+            <CircularProgress isIndeterminate />
+          </Center>
+        );
     }
   }
 
