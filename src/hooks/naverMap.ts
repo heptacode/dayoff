@@ -69,7 +69,7 @@ export function useNaverMap() {
 
       map.fitBounds(bounds!);
     }
-  }, [collectionStore.selectedCollectionIds, eventStore.events.size, map]);
+  }, [map, collectionStore.selectedCollectionIds, eventStore.events.size]);
 
   useEffect(() => {
     if (map) {
