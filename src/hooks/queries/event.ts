@@ -15,7 +15,7 @@ export function useEventQuery({ collectionId }: { collectionId?: string | null }
 
   const eventQueries = useQueries({
     queries:
-      collectionStore.getCollections().map((collection, index) => {
+      collectionStore.getSelectedCollections().map((collection, index) => {
         queryMap.set(collection._id, index);
 
         return {
