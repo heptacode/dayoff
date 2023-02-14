@@ -2,16 +2,20 @@ import { colors } from '@/contants';
 import { useCollectionStore } from '@/stores/collectionStore';
 import { useEventStore } from '@/stores/eventStore';
 import { useGlobalStore } from '@/stores/globalStore';
-import { useGoogleMapStore } from '@/stores/googleMapStore';
 import { getCurrentPosition, watchPosition } from '@/utils/geolocation';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 export function useGoogleMap() {
   const globalStore = useGlobalStore();
-  const mapStore = useGoogleMapStore();
   const collectionStore = useCollectionStore();
   const eventStore = useEventStore();
   const mapRef = useRef<HTMLDivElement>(null);
+  const [map, setMap] = useState<google.maps.Map | null>(null);
+  const [markers, setMarkers] = useState<Map<string, google.maps.Marker>>(new Map());
+  const setMarker = useCallback((eventId: string, value: google.maps.Marker) => {
+    setMarkers(new Map(markers.set(eventId, value)));
+  }, []);
+  const [polylines, setPolylines] = useState<google.maps.Polyline[]>([]);
   const [isMapCenterChanged, setIsMapCenterChanged] = useState<boolean>(false);
 
   async function initMap() {
@@ -22,7 +26,9 @@ export function useGoogleMap() {
       zoom: 15,
       zoomControl: false,
     });
-    mapStore.setMap(map);
+    setMap(map);
+
+    // let bounds = new google.maps.LatLngBounds();
 
     const position = globalStore.userLocation ?? (await getCurrentPosition());
 
@@ -51,18 +57,18 @@ export function useGoogleMap() {
   }
 
   useEffect(() => {
-    if (!isMapCenterChanged && mapStore.map && eventStore.events.size) {
+    if (!isMapCenterChanged && map && eventStore.events.size) {
       setIsMapCenterChanged(true);
       const [event] = eventStore.events.values();
       if (event) {
-        mapStore.map?.setCenter(new google.maps.LatLng(event.lat, event.lng));
+        map.setCenter(new google.maps.LatLng(event.lat, event.lng));
       }
     }
-  }, [eventStore.events.size, mapStore.map]);
+  }, [eventStore.events.size, map]);
 
   useEffect(() => {
-    if (mapStore.map) {
-      mapStore.getMarkers().forEach(marker => marker.setMap(null));
+    if (map) {
+      markers.forEach(marker => marker.setMap(null));
 
       eventStore.getEvents().forEach(event => {
         if (!collectionStore.selectedCollectionIds.includes(String(event.collectionId))) {
@@ -76,7 +82,7 @@ export function useGoogleMap() {
         const color = collectionStore.collections.get(String(event.collectionId))?.color;
 
         const marker = new google.maps.Marker({
-          map: mapStore.map!,
+          map,
           position: new google.maps.LatLng(event.lat, event.lng),
           label: {
             color: '#fff',
@@ -91,20 +97,20 @@ export function useGoogleMap() {
             anchor: new google.maps.Point(14, 34.5),
           },
         });
-        mapStore.setMarker(event._id, marker);
+        setMarker(event._id, marker);
       });
 
-      mapStore.polylines.forEach(polyline => polyline.setMap(null));
-      mapStore.setPolylines([]);
+      polylines.forEach(polyline => polyline.setMap(null));
+      setPolylines([]);
 
       collectionStore.getSelectedCollections().forEach(collection => {
         const polyline = new google.maps.Polyline({
-          map: mapStore.map!,
+          map,
           path: eventStore.getCollectionEvents(collection._id),
           strokeColor: collection.color ? colors[collection.color] : '#3182CE',
         });
 
-        mapStore.setPolylines(mapStore.polylines.concat(polyline));
+        setPolylines(polylines.concat(polyline));
       });
     }
   }, [collectionStore.updatedAt, eventStore.updatedAt]);

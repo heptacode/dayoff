@@ -2,16 +2,20 @@ import { colors } from '@/contants';
 import { useCollectionStore } from '@/stores/collectionStore';
 import { useEventStore } from '@/stores/eventStore';
 import { useGlobalStore } from '@/stores/globalStore';
-import { useNaverMapStore } from '@/stores/naverMapStore';
 import { getCurrentPosition, watchPosition } from '@/utils/geolocation';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 export function useNaverMap() {
   const globalStore = useGlobalStore();
-  const mapStore = useNaverMapStore();
   const collectionStore = useCollectionStore();
   const eventStore = useEventStore();
   const mapRef = useRef<HTMLDivElement>(null);
+  const [map, setMap] = useState<naver.maps.Map | null>(null);
+  const [markers, setMarkers] = useState<Map<string, naver.maps.Marker>>(new Map());
+  const setMarker = useCallback((eventId: string, value: naver.maps.Marker) => {
+    setMarkers(new Map(markers.set(eventId, value)));
+  }, []);
+  const [polylines, setPolylines] = useState<naver.maps.Polyline[]>([]);
   const [isMapCenterChanged, setIsMapCenterChanged] = useState<boolean>(false);
 
   async function initMap() {
@@ -22,7 +26,7 @@ export function useNaverMap() {
       mapDataControl: false,
       mapTypeControl: false,
     });
-    mapStore.setMap(map);
+    setMap(map);
 
     const position = globalStore.userLocation ?? (await getCurrentPosition());
 
@@ -51,18 +55,18 @@ export function useNaverMap() {
   }
 
   useEffect(() => {
-    if (!isMapCenterChanged && mapStore.map && eventStore.events.size) {
+    if (!isMapCenterChanged && map && eventStore.events.size) {
       setIsMapCenterChanged(true);
       const [event] = eventStore.events.values();
       if (event) {
-        mapStore.map?.setCenter(new naver.maps.LatLng(event.lat, event.lng));
+        map.setCenter(new naver.maps.LatLng(event.lat, event.lng));
       }
     }
-  }, [eventStore.events.size, mapStore.map]);
+  }, [eventStore.events.size, map]);
 
   useEffect(() => {
-    if (mapStore.map) {
-      mapStore.getMarkers().forEach(marker => marker.setMap(null));
+    if (map) {
+      markers.forEach(marker => marker.setMap(null));
 
       eventStore.getEvents().forEach(event => {
         if (!collectionStore.selectedCollectionIds.includes(String(event.collectionId))) {
@@ -76,7 +80,7 @@ export function useNaverMap() {
         const color = collectionStore.collections.get(String(event.collectionId))?.color;
 
         const marker = new naver.maps.Marker({
-          map: mapStore.map!,
+          map,
           position: new naver.maps.LatLng(event.lat, event.lng),
           title: event.title,
           icon: {
@@ -86,20 +90,20 @@ export function useNaverMap() {
             anchor: new naver.maps.Point(15.5, 35),
           },
         });
-        mapStore.setMarker(event._id, marker);
+        setMarker(event._id, marker);
       });
 
-      mapStore.polylines.forEach(polyline => polyline.setMap(null));
-      mapStore.setPolylines([]);
+      polylines.forEach(polyline => polyline.setMap(null));
+      setPolylines([]);
 
       collectionStore.getSelectedCollections().forEach(collection => {
         const polyline = new naver.maps.Polyline({
-          map: mapStore.map!,
+          map,
           path: eventStore.getCollectionEvents(collection._id),
           strokeColor: collection.color ? colors[collection.color] : '#3182CE',
         });
 
-        mapStore.setPolylines(mapStore.polylines.concat(polyline));
+        setPolylines(polylines.concat(polyline));
       });
     }
   }, [collectionStore.updatedAt, eventStore.updatedAt]);
