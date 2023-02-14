@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
+import { useCollectionStore } from './collectionStore';
 import type { IEvent } from '@/types';
 import type { ObjectId } from 'mongoose';
 
@@ -9,6 +10,7 @@ export interface EventState {
   selectedEvent: IEvent | null;
   updatedAt: Date;
   getEvents: () => IEvent[];
+  getActiveEvents: () => IEvent[];
   getCollectionEvents(collectionIdResolvable: ObjectId | string): IEvent[];
   setIsLoading(value: boolean): void;
   setEvent(eventId: string, value: IEvent): void;
@@ -24,6 +26,10 @@ export const useEventStore = create<EventState>()(
     selectedEvent: null,
     updatedAt: new Date(),
     getEvents: () => [...get().events.values()],
+    getActiveEvents: () =>
+      [...get().events.values()].filter(event =>
+        useCollectionStore.getState().selectedCollectionIds.includes(String(event.collectionId))
+      ),
     getCollectionEvents(collectionIdResolvable) {
       return this.getEvents()
         .filter(event => String(event.collectionId) === String(collectionIdResolvable))

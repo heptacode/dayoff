@@ -16,7 +16,6 @@ export function useNaverMap() {
     setMarkers(new Map(markers.set(eventId, value)));
   }, []);
   const [polylines, setPolylines] = useState<naver.maps.Polyline[]>([]);
-  const [isMapCenterChanged, setIsMapCenterChanged] = useState<boolean>(false);
 
   async function initMap() {
     const map = new naver.maps.Map(mapRef.current as HTMLDivElement, {
@@ -55,24 +54,28 @@ export function useNaverMap() {
   }
 
   useEffect(() => {
-    if (!isMapCenterChanged && map && eventStore.events.size) {
-      setIsMapCenterChanged(true);
-      const [event] = eventStore.events.values();
-      if (event) {
-        map.setCenter(new naver.maps.LatLng(event.lat, event.lng));
-      }
+    if (map && collectionStore.selectedCollectionIds.length && eventStore.events.size) {
+      let bounds: naver.maps.LatLngBounds | null = null;
+      eventStore.getActiveEvents().forEach(event => {
+        if (bounds) {
+          bounds.extend(new naver.maps.LatLng(event.lat, event.lng));
+        } else {
+          bounds = new naver.maps.LatLngBounds(
+            new naver.maps.LatLng(event.lat, event.lng),
+            new naver.maps.LatLng(event.lat, event.lng)
+          );
+        }
+      });
+
+      map.fitBounds(bounds!);
     }
-  }, [eventStore.events.size, map]);
+  }, [collectionStore.selectedCollectionIds, eventStore.events.size, map]);
 
   useEffect(() => {
     if (map) {
       markers.forEach(marker => marker.setMap(null));
 
-      eventStore.getEvents().forEach(event => {
-        if (!collectionStore.selectedCollectionIds.includes(String(event.collectionId))) {
-          return;
-        }
-
+      eventStore.getActiveEvents().forEach(event => {
         const index = eventStore
           .getCollectionEvents(event.collectionId)
           .findIndex(_event => _event._id === event._id);

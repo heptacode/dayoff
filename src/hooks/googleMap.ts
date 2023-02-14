@@ -16,7 +16,6 @@ export function useGoogleMap() {
     setMarkers(new Map(markers.set(eventId, value)));
   }, []);
   const [polylines, setPolylines] = useState<google.maps.Polyline[]>([]);
-  const [isMapCenterChanged, setIsMapCenterChanged] = useState<boolean>(false);
 
   async function initMap() {
     const map = new google.maps.Map(mapRef.current as HTMLDivElement, {
@@ -27,8 +26,6 @@ export function useGoogleMap() {
       zoomControl: false,
     });
     setMap(map);
-
-    // let bounds = new google.maps.LatLngBounds();
 
     const position = globalStore.userLocation ?? (await getCurrentPosition());
 
@@ -57,24 +54,21 @@ export function useGoogleMap() {
   }
 
   useEffect(() => {
-    if (!isMapCenterChanged && map && eventStore.events.size) {
-      setIsMapCenterChanged(true);
-      const [event] = eventStore.events.values();
-      if (event) {
-        map.setCenter(new google.maps.LatLng(event.lat, event.lng));
-      }
+    if (map && collectionStore.selectedCollectionIds.length && eventStore.events.size) {
+      const bounds = new google.maps.LatLngBounds();
+      eventStore.getActiveEvents().forEach(event => {
+        bounds.extend(new google.maps.LatLng(event.lat, event.lng));
+      });
+
+      map.fitBounds(bounds);
     }
-  }, [eventStore.events.size, map]);
+  }, [collectionStore.selectedCollectionIds, eventStore.events.size, map]);
 
   useEffect(() => {
     if (map) {
       markers.forEach(marker => marker.setMap(null));
 
-      eventStore.getEvents().forEach(event => {
-        if (!collectionStore.selectedCollectionIds.includes(String(event.collectionId))) {
-          return;
-        }
-
+      eventStore.getActiveEvents().forEach(event => {
         const index = eventStore
           .getCollectionEvents(event.collectionId)
           .findIndex(_event => _event._id === event._id);
