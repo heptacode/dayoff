@@ -15,18 +15,18 @@ export function useEventQuery({ collectionId }: { collectionId?: string | null }
 
   const eventQueries = useQueries({
     queries:
-      collectionStore.getSelectedCollections().map((collection, index) => {
-        queryMap.set(collection._id, index);
+      collectionStore.selectedCollectionIds.map((collectionId, index) => {
+        queryMap.set(collectionId, index);
 
         return {
-          queryKey: ['plan.collection', { collectionId: collection._id }],
+          queryKey: ['plan.collection', { collectionId: collectionId }],
           queryFn: async () =>
             (
               await getRequest<IEvent[]>(
-                `/api/plans/${planStore.planId}/collections/${collection._id}/events`
+                `/api/plans/${planStore.planId}/collections/${collectionId}/events`
               )
             ).data,
-          enabled: Boolean(collection._id),
+          enabled: Boolean(collectionId),
           onSuccess(data: IEvent[]) {
             data.forEach(event => eventStore.setEvent(event._id, event));
           },
