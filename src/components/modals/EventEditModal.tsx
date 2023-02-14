@@ -19,6 +19,7 @@ import {
   Select,
   Stack,
   StackDivider,
+  Textarea,
   useDisclosure,
 } from '@chakra-ui/react';
 import dayjs from 'dayjs';
@@ -33,6 +34,7 @@ export function EventEditModal(props: Partial<ModalProps>) {
   const {
     handleTitleInput,
     handleTitleSave,
+    handleDescriptionResize,
     handleDescriptionInput,
     handleDescriptionSave,
     handleDateInput,
@@ -63,11 +65,15 @@ export function EventEditModal(props: Partial<ModalProps>) {
 
             <FormControl>
               <FormLabel>이벤트 설명</FormLabel>
-              <Input
+              <Textarea
                 placeholder="설명 입력"
                 value={eventStore.selectedEvent?.description}
                 isDisabled={eventStore.isLoading}
-                onChange={e => handleDescriptionInput(e.target.value)}
+                onFocus={e => handleDescriptionResize(e)}
+                onChange={e => {
+                  handleDescriptionResize(e);
+                  handleDescriptionInput(e.target.value);
+                }}
                 onBlur={() => handleDescriptionSave()}
               />
             </FormControl>

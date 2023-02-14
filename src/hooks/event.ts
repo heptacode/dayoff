@@ -26,6 +26,13 @@ export function useEvent() {
     debounceTitle(eventId, value);
   }
 
+  function handleDescriptionResize(
+    e: React.ChangeEvent<HTMLTextAreaElement> | React.FocusEvent<HTMLTextAreaElement>
+  ) {
+    e.target.style.height = 'auto';
+    e.target.style.height = `${e.target.scrollHeight}px`;
+  }
+
   const debounceDescription = useCallback(
     debounce((eventId: string, description: string) => updateEvent({ eventId, description }), 1000),
     []
@@ -54,6 +61,7 @@ export function useEvent() {
 
   return {
     handleTitleInput,
+    handleDescriptionResize,
     handleDescriptionInput,
     handleDateInput,
     handleDateSave,

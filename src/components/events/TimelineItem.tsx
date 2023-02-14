@@ -7,6 +7,7 @@ import {
   Editable,
   EditableInput,
   EditablePreview,
+  EditableTextarea,
   Flex,
   Icon,
   IconButton,
@@ -29,7 +30,13 @@ export function TimelineItem({
 }) {
   const globalStore = useGlobalStore();
   const eventStore = useEventStore();
-  const { handleTitleInput, handleDescriptionInput, handleDateInput, handleDateSave } = useEvent();
+  const {
+    handleTitleInput,
+    handleDescriptionResize,
+    handleDescriptionInput,
+    handleDateInput,
+    handleDateSave,
+  } = useEvent();
 
   return (
     <AccordionPanel as="li" ml="3" mb="3" {...props}>
@@ -74,7 +81,13 @@ export function TimelineItem({
 
         <Editable value={event.description} fontSize="sm">
           <EditablePreview />
-          <EditableInput onChange={e => handleDescriptionInput(event._id, e.target.value)} />
+          <EditableTextarea
+            onFocus={e => handleDescriptionResize(e)}
+            onChange={e => {
+              handleDescriptionResize(e);
+              handleDescriptionInput(event._id, e.target.value);
+            }}
+          />
         </Editable>
 
         <IconButton

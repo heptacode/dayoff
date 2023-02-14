@@ -30,6 +30,13 @@ export function useEventEdit({ onClose }: { onClose(): void }) {
     }
   }
 
+  function handleDescriptionResize(
+    e: React.ChangeEvent<HTMLTextAreaElement> | React.FocusEvent<HTMLTextAreaElement>
+  ) {
+    e.target.style.height = 'auto';
+    e.target.style.height = `${e.target.scrollHeight}px`;
+  }
+
   function handleDescriptionInput(value: string) {
     eventStore.setSelectedEvent({
       ...eventStore.selectedEvent!,
@@ -89,6 +96,7 @@ export function useEventEdit({ onClose }: { onClose(): void }) {
   return {
     handleTitleInput,
     handleTitleSave,
+    handleDescriptionResize,
     handleDescriptionInput,
     handleDescriptionSave,
     handleDateInput,
