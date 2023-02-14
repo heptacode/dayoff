@@ -29,9 +29,9 @@ export const useCollectionStore = create<CollectionState>()(
     updatedAt: new Date(),
     getCollections: () => [...get().collections.values()],
     getSelectedCollections: () =>
-      [...get().collections.values()].filter(collection =>
-        get().selectedCollectionIds.includes(collection._id)
-      ),
+      get()
+        .getCollections()
+        .filter(collection => get().selectedCollectionIds.includes(collection._id)),
     setIsLoading(value) {
       set({ isLoading: value });
     },

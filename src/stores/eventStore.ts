@@ -25,7 +25,7 @@ export const useEventStore = create<EventState>()(
     updatedAt: new Date(),
     getEvents: () => [...get().events.values()],
     getCollectionEvents(collectionIdResolvable) {
-      return [...this.events.values()]
+      return this.getEvents()
         .filter(event => String(event.collectionId) === String(collectionIdResolvable))
         .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
     },
