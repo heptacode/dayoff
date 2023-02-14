@@ -1,3 +1,4 @@
+import { colors } from '@/contants';
 import { useCollectionStore } from '@/stores/collectionStore';
 import { useEventStore } from '@/stores/eventStore';
 import { useGlobalStore } from '@/stores/globalStore';
@@ -81,7 +82,7 @@ export function useGoogleMap() {
           },
           icon: {
             path: 'M14,0 C21.732,0 28,5.641 28,12.6 C28,23.963 14,36 14,36 C14,36 0,24.064 0,12.6 C0,5.641 6.268,0 14,0 Z',
-            fillColor: color ?? '#3182CE',
+            fillColor: color ? colors[color] : '#3182CE',
             fillOpacity: 1,
             strokeColor: 'transparent',
             labelOrigin: new google.maps.Point(14, 15),
@@ -97,7 +98,7 @@ export function useGoogleMap() {
         const polyline = new google.maps.Polyline({
           map: mapStore.map!,
           path: eventStore.getCollectionEvents(collection._id),
-          strokeColor: collection.color,
+          strokeColor: collection.color ? colors[collection.color] : '#3182CE',
         });
 
         mapStore.setPolylines(mapStore.polylines.concat(polyline));

@@ -78,9 +78,9 @@ export function useNaverMap() {
           position: new naver.maps.LatLng(event.lat, event.lng),
           title: event.title,
           icon: {
-            content: `<div class="marker" style="background:${color ? colors[color] : ''}"><span>${
-              index + 1
-            }</span></div>`,
+            content: `<div class="marker" style="background:${
+              color ? colors[color] : '#3182CE'
+            }"><span>${index + 1}</span></div>`,
             anchor: new naver.maps.Point(15.5, 35),
           },
         });
@@ -93,7 +93,7 @@ export function useNaverMap() {
         const polyline = new naver.maps.Polyline({
           map: mapStore.map!,
           path: eventStore.getCollectionEvents(collection._id),
-          strokeColor: collection.color,
+          strokeColor: collection.color ? colors[collection.color] : '#3182CE',
         });
 
         mapStore.setPolylines(mapStore.polylines.concat(polyline));
