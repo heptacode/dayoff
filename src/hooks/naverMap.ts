@@ -109,7 +109,7 @@ export function useNaverMap() {
         setPolylines(polylines.concat(polyline));
       });
     }
-  }, [collectionStore.updatedAt, eventStore.updatedAt]);
+  }, [map, collectionStore.updatedAt, eventStore.updatedAt]);
 
   return { mapRef, initMap };
 }
