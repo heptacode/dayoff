@@ -1,7 +1,6 @@
 import { Sidebar } from '@/components/Sidebar';
 import { GoogleMap } from '@/components/maps/GoogleMap';
 import { NaverMap } from '@/components/maps/NaverMap';
-import { CollectionEditModal } from '@/components/modals/CollectionEditModal';
 import { EventEditModal } from '@/components/modals/EventEditModal';
 import { usePlanQuery } from '@/hooks/queries/plan';
 import { useGlobalStore } from '@/stores/globalStore';
@@ -68,10 +67,6 @@ export default function Plan() {
       ) : null}
       {renderMap()}
       <Sidebar />
-      <CollectionEditModal
-        isOpen={globalStore.isCollectionEditModalOpen}
-        onClose={() => globalStore.setIsCollectionEditModalOpen(false)}
-      />
       <EventEditModal
         isOpen={globalStore.isEventEditModalOpen}
         onClose={() => globalStore.setIsEventEditModalOpen(false)}

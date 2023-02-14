@@ -1,4 +1,5 @@
 import { Timeline } from '@/components/events/Timeline';
+import { TimelineEdit } from '@/components/events/TimelineEdit';
 import { SearchInput } from '@/components/interfaces/inputs/SearchInput';
 import { usePlan } from '@/hooks/plan';
 import { useCollectionQuery } from '@/hooks/queries/collections';
@@ -21,7 +22,7 @@ import {
   Skeleton,
   useDisclosure,
 } from '@chakra-ui/react';
-import { MdAdd, MdEdit } from 'react-icons/md';
+import { MdAdd, MdCheck, MdEdit } from 'react-icons/md';
 
 export function Sidebar() {
   const globalStore = useGlobalStore();
@@ -64,11 +65,11 @@ export function Sidebar() {
         </DrawerHeader>
 
         <Box p="5" overflowY="scroll">
-          {collectionStore.collections.size ? (
+          {collectionStore.collections.size && !collectionStore.isEditing ? (
             <SearchInput handlePlaceSelect={handlePlaceSelect} />
           ) : null}
 
-          <Timeline my="5" />
+          {!collectionStore.isEditing ? <Timeline my="5" /> : <TimelineEdit my="3" mb="5" />}
 
           <HStack justify="center">
             <Button onClick={() => createCollection()}>
@@ -76,10 +77,17 @@ export function Sidebar() {
               추가
             </Button>
             {collectionStore.collections.size ? (
-              <Button onClick={() => globalStore.setIsCollectionEditModalOpen(true)}>
-                <Icon as={MdEdit} mr="1" />
-                편집
-              </Button>
+              !collectionStore.isEditing ? (
+                <Button onClick={() => collectionStore.setIsEditing(true)}>
+                  <Icon as={MdEdit} mr="1" />
+                  편집
+                </Button>
+              ) : (
+                <Button colorScheme="blue" onClick={() => collectionStore.setIsEditing(false)}>
+                  <Icon as={MdCheck} mr="1" />
+                  완료
+                </Button>
+              )
             ) : null}
           </HStack>
         </Box>

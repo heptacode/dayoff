@@ -4,11 +4,13 @@ import type { ICollection } from '@/types';
 
 export interface CollectionState {
   isLoading: boolean;
+  isEditing: boolean;
   collections: Map<string, ICollection>;
   collectionId: string | null;
   updatedAt: Date;
   getCollections: () => ICollection[];
   setIsLoading(value: boolean): void;
+  setIsEditing(value: boolean): void;
   setCollections(collectionId: string, value: ICollection): void;
   clearCollections(): void;
   setCollectionId(value: string | null): void;
@@ -17,12 +19,16 @@ export interface CollectionState {
 export const useCollectionStore = create<CollectionState>()(
   devtools((set, get) => ({
     isLoading: true,
+    isEditing: false,
     collections: new Map(),
     collectionId: '',
     updatedAt: new Date(),
     getCollections: () => [...get().collections.values()],
     setIsLoading(value) {
       set({ isLoading: value });
+    },
+    setIsEditing(value) {
+      set({ isEditing: value });
     },
     setCollections(collectionId, value) {
       set({ collections: this.collections.set(collectionId, value) });
