@@ -26,7 +26,7 @@ export function useEventQuery({ collectionId }: { collectionId?: string | null }
                 `/api/plans/${planStore.planId}/collections/${collectionId}/events`
               )
             ).data,
-          enabled: Boolean(collectionId),
+          enabled: Boolean(planStore.planId) && Boolean(collectionId),
           onSuccess(data: IEvent[]) {
             data.forEach(event => eventStore.setEvent(event._id, event));
           },
