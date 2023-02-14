@@ -80,7 +80,7 @@ export function TimelineItem({
         </Text>
 
         <Editable value={event.description} fontSize="sm">
-          <EditablePreview />
+          <EditablePreview whiteSpace="pre-wrap" />
           <EditableTextarea
             onFocus={e => handleDescriptionResize(e)}
             onChange={e => {
