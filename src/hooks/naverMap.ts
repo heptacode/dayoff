@@ -88,6 +88,7 @@ export function useNaverMap() {
       });
 
       mapStore.polylines.forEach(polyline => polyline.setMap(null));
+      mapStore.setPolylines([]);
 
       collectionStore.getCollections().forEach(collection => {
         const polyline = new naver.maps.Polyline({

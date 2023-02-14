@@ -93,6 +93,7 @@ export function useGoogleMap() {
       });
 
       mapStore.polylines.forEach(polyline => polyline.setMap(null));
+      mapStore.setPolylines([]);
 
       collectionStore.getCollections().forEach(collection => {
         const polyline = new google.maps.Polyline({
