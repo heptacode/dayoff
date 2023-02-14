@@ -7,13 +7,16 @@ export interface CollectionState {
   isEditing: boolean;
   collections: Map<string, ICollection>;
   collectionId: string | null;
+  selectedCollectionIds: string[];
   updatedAt: Date;
   getCollections: () => ICollection[];
+  getSelectedCollections: () => ICollection[];
   setIsLoading(value: boolean): void;
   setIsEditing(value: boolean): void;
   setCollections(collectionId: string, value: ICollection): void;
   clearCollections(): void;
   setCollectionId(value: string | null): void;
+  setSelectedCollectionIds(value: string[]): void;
 }
 
 export const useCollectionStore = create<CollectionState>()(
@@ -22,8 +25,13 @@ export const useCollectionStore = create<CollectionState>()(
     isEditing: false,
     collections: new Map(),
     collectionId: '',
+    selectedCollectionIds: [],
     updatedAt: new Date(),
     getCollections: () => [...get().collections.values()],
+    getSelectedCollections: () =>
+      [...get().collections.values()].filter(collection =>
+        get().selectedCollectionIds.includes(collection._id)
+      ),
     setIsLoading(value) {
       set({ isLoading: value });
     },
@@ -40,6 +48,10 @@ export const useCollectionStore = create<CollectionState>()(
     },
     setCollectionId(value) {
       set({ collectionId: value });
+    },
+    setSelectedCollectionIds(value) {
+      set({ selectedCollectionIds: value });
+      set({ updatedAt: new Date() });
     },
   }))
 );

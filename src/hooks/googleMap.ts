@@ -4,7 +4,6 @@ import { useEventStore } from '@/stores/eventStore';
 import { useGlobalStore } from '@/stores/globalStore';
 import { useGoogleMapStore } from '@/stores/googleMapStore';
 import { getCurrentPosition, watchPosition } from '@/utils/geolocation';
-import { useColorModeValue } from '@chakra-ui/react';
 import { useEffect, useRef, useState } from 'react';
 
 export function useGoogleMap() {
@@ -13,7 +12,6 @@ export function useGoogleMap() {
   const collectionStore = useCollectionStore();
   const eventStore = useEventStore();
   const mapRef = useRef<HTMLDivElement>(null);
-  const colorTheme = useColorModeValue(400, 200);
   const [isMapCenterChanged, setIsMapCenterChanged] = useState<boolean>(false);
 
   async function initMap() {
@@ -67,6 +65,10 @@ export function useGoogleMap() {
       mapStore.getMarkers().forEach(marker => marker.setMap(null));
 
       eventStore.getEvents().forEach(event => {
+        if (!collectionStore.selectedCollectionIds.includes(String(event.collectionId))) {
+          return;
+        }
+
         const index = eventStore
           .getCollectionEvents(event.collectionId)
           .findIndex(_event => _event._id === event._id);
@@ -95,7 +97,7 @@ export function useGoogleMap() {
       mapStore.polylines.forEach(polyline => polyline.setMap(null));
       mapStore.setPolylines([]);
 
-      collectionStore.getCollections().forEach(collection => {
+      collectionStore.getSelectedCollections().forEach(collection => {
         const polyline = new google.maps.Polyline({
           map: mapStore.map!,
           path: eventStore.getCollectionEvents(collection._id),
@@ -105,7 +107,7 @@ export function useGoogleMap() {
         mapStore.setPolylines(mapStore.polylines.concat(polyline));
       });
     }
-  }, [collectionStore.updatedAt, eventStore.updatedAt, colorTheme]);
+  }, [collectionStore.updatedAt, eventStore.updatedAt]);
 
   return { mapRef, initMap };
 }

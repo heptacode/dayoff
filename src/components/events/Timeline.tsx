@@ -12,26 +12,37 @@ import {
   HStack,
   Progress,
 } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
+import { useMemo } from 'react';
 import { TimelineItem } from './TimelineItem';
 
 export function Timeline(props: AccordionProps) {
   const collectionStore = useCollectionStore();
   const eventStore = useEventStore();
-  const [indices, setIndices] = useState<number[]>([]);
 
-  useEffect(() => {
-    setIndices([...Array(collectionStore.collections?.size).keys()]);
-  }, [collectionStore.collections.size]);
+  const indices = useMemo(
+    () =>
+      collectionStore.selectedCollectionIds.map(collectionId =>
+        collectionStore.getCollections().findIndex(collection => collection._id === collectionId)
+      ),
+    [collectionStore.selectedCollectionIds]
+  );
+
+  function handleIndiciesChange(indices: number[]) {
+    const collectionIds: string[] = [];
+    indices.forEach(index => {
+      collectionIds.push(collectionStore.getCollections()[index]._id);
+    });
+    collectionStore.setSelectedCollectionIds(collectionIds);
+  }
 
   return (
     <Accordion
       allowMultiple
       index={indices}
-      onChange={(idx: number[]) => setIndices(idx)}
+      onChange={(idx: number[]) => handleIndiciesChange(idx)}
       {...props}
     >
-      {[...collectionStore.collections.values()].map(collection => (
+      {collectionStore.getCollections().map(collection => (
         <AccordionItem key={collection._id}>
           {eventStore.isLoading ? <Progress size="xs" isIndeterminate /> : null}
           <AccordionButton onClick={() => collectionStore.setCollectionId(collection._id)}>
