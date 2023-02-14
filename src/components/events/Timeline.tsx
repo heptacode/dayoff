@@ -34,6 +34,10 @@ export function Timeline(props: AccordionProps) {
   function handleIndiciesChange(indices: number[]) {
     const collectionIds: string[] = [];
     indices.forEach(index => {
+      if (index === -1) {
+        return;
+      }
+
       collectionIds.push(collectionStore.getCollections()[index]._id);
     });
     collectionStore.setSelectedCollectionIds(collectionIds);
