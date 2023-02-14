@@ -21,10 +21,14 @@ export function Timeline(props: AccordionProps) {
 
   const indices = useMemo(
     () =>
-      collectionStore.selectedCollectionIds.map(collectionId =>
-        collectionStore.getCollections().findIndex(collection => collection._id === collectionId)
-      ),
-    [collectionStore.selectedCollectionIds]
+      collectionStore.collections.size
+        ? collectionStore.selectedCollectionIds.map(collectionId =>
+            collectionStore
+              .getCollections()
+              .findIndex(collection => collection._id === collectionId)
+          )
+        : [],
+    [collectionStore.collections.size, collectionStore.selectedCollectionIds]
   );
 
   function handleIndiciesChange(indices: number[]) {
