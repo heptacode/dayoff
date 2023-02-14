@@ -7,7 +7,6 @@ export default withMongoose(async (req: NextApiRequestWithMongoose, res: NextApi
     case 'PATCH': {
       await Event.findByIdAndUpdate(req.query.eventId, {
         ...(req.body.title && { title: req.body.title }),
-        ...(req.body.subtitle && { subtitle: req.body.subtitle }),
         ...(req.body.description && { description: req.body.description }),
         ...(req.body.lat && { lat: req.body.lat }),
         ...(req.body.lng && { lng: req.body.lng }),

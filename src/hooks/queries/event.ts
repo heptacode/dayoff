@@ -50,21 +50,21 @@ export function useEventQuery({ collectionId }: { collectionId?: string | null }
     ({
       collectionId,
       title,
-      subtitle,
+      description,
       lat,
       lng,
       date,
     }: {
       collectionId: string;
       title?: string;
-      subtitle?: string;
+      description?: string;
       lat?: number;
       lng?: number;
       date?: Date;
     }) =>
       postRequest<IEvent>(`/api/plans/${planStore.planId}/collections/${collectionId}/events`, {
         ...(title && { title }),
-        ...(subtitle && { subtitle }),
+        ...(description && { description }),
         ...(lat && { lat }),
         ...(lng && { lng }),
         ...(date && { date }),
@@ -84,7 +84,7 @@ export function useEventQuery({ collectionId }: { collectionId?: string | null }
     ({
       eventId,
       title,
-      subtitle,
+      description,
       lat,
       lng,
       date,
@@ -92,7 +92,7 @@ export function useEventQuery({ collectionId }: { collectionId?: string | null }
     }: {
       eventId: string;
       title?: string;
-      subtitle?: string;
+      description?: string;
       lat?: number;
       lng?: number;
       date?: string;
@@ -100,7 +100,7 @@ export function useEventQuery({ collectionId }: { collectionId?: string | null }
     }) =>
       patchRequest(`/api/plans/${planStore.planId}/collections/${collectionId}/events/${eventId}`, {
         ...(title && { title }),
-        ...(subtitle && { subtitle }),
+        ...(description && { description }),
         ...(lat && { lat }),
         ...(lng && { lng }),
         ...(date && { date }),

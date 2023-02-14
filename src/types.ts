@@ -51,7 +51,7 @@ export interface IEvent {
   planId: ObjectId;
   collectionId: ObjectId;
   title: string;
-  subtitle: string;
+  description: string;
   lat: number;
   lng: number;
   date: Date | string;
@@ -61,7 +61,7 @@ const eventSchema = new Schema<IEvent>({
   planId: { type: Schema.Types.ObjectId, ref: 'Plan', required: true },
   collectionId: { type: Schema.Types.ObjectId, ref: 'Collection', required: true },
   title: { type: String, default: '', required: true },
-  subtitle: { type: String, default: '', required: true },
+  description: { type: String, default: '', required: true },
   lat: { type: Number },
   lng: { type: Number },
   date: { type: Date, default: Date.now },

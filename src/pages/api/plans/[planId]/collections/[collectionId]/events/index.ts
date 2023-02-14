@@ -17,7 +17,7 @@ export default withMongoose(async (req: NextApiRequestWithMongoose, res: NextApi
         planId: req.query.planId,
         collectionId: req.query.collectionId,
         title: req.body.title ?? '이벤트 제목',
-        subtitle: req.body.subtitle ?? '이벤트 부제목',
+        description: req.body.description ?? '이벤트 설명',
         lat: req.body.lat ?? 0,
         lng: req.body.lng ?? 0,
         date: req.body.date ?? new Date(),

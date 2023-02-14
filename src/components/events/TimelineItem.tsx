@@ -29,7 +29,7 @@ export function TimelineItem({
 }) {
   const globalStore = useGlobalStore();
   const eventStore = useEventStore();
-  const { handleTitleInput, handleSubtitleInput, handleDateInput, handleDateSave } = useEvent();
+  const { handleTitleInput, handleDescriptionInput, handleDateInput, handleDateSave } = useEvent();
 
   return (
     <AccordionPanel as="li" ml="3" mb="3" {...props}>
@@ -72,9 +72,9 @@ export function TimelineItem({
           />
         </Text>
 
-        <Editable value={event.subtitle} fontSize="sm">
+        <Editable value={event.description} fontSize="sm">
           <EditablePreview />
-          <EditableInput onChange={e => handleSubtitleInput(event._id, e.target.value)} />
+          <EditableInput onChange={e => handleDescriptionInput(event._id, e.target.value)} />
         </Editable>
 
         <IconButton

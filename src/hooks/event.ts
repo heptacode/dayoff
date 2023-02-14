@@ -26,17 +26,17 @@ export function useEvent() {
     debounceTitle(eventId, value);
   }
 
-  const debounceSubtitle = useCallback(
-    debounce((eventId: string, subtitle: string) => updateEvent({ eventId, subtitle }), 1000),
+  const debounceDescription = useCallback(
+    debounce((eventId: string, description: string) => updateEvent({ eventId, description }), 1000),
     []
   );
 
-  function handleSubtitleInput(eventId: string, value: string) {
+  function handleDescriptionInput(eventId: string, value: string) {
     eventStore.setEvent(eventId, {
       ...eventStore.events.get(eventId)!,
-      subtitle: value,
+      description: value,
     });
-    debounceSubtitle(eventId, value);
+    debounceDescription(eventId, value);
   }
 
   function handleDateInput(eventId: string, value: string) {
@@ -54,7 +54,7 @@ export function useEvent() {
 
   return {
     handleTitleInput,
-    handleSubtitleInput,
+    handleDescriptionInput,
     handleDateInput,
     handleDateSave,
   };

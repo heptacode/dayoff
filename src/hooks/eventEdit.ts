@@ -30,21 +30,21 @@ export function useEventEdit({ onClose }: { onClose(): void }) {
     }
   }
 
-  function handleSubtitleInput(value: string) {
+  function handleDescriptionInput(value: string) {
     eventStore.setSelectedEvent({
       ...eventStore.selectedEvent!,
-      subtitle: value,
+      description: value,
     });
   }
 
-  function handleSubtitleSave() {
+  function handleDescriptionSave() {
     if (
-      eventStore.events.get(eventStore.selectedEvent!._id)?.subtitle !==
-      eventStore.selectedEvent!.subtitle
+      eventStore.events.get(eventStore.selectedEvent!._id)?.description !==
+      eventStore.selectedEvent!.description
     ) {
       updateEvent({
         eventId: eventStore.selectedEvent!._id,
-        subtitle: eventStore.selectedEvent!.subtitle,
+        description: eventStore.selectedEvent!.description,
       });
     }
   }
@@ -89,8 +89,8 @@ export function useEventEdit({ onClose }: { onClose(): void }) {
   return {
     handleTitleInput,
     handleTitleSave,
-    handleSubtitleInput,
-    handleSubtitleSave,
+    handleDescriptionInput,
+    handleDescriptionSave,
     handleDateInput,
     handleDateSave,
     handleEventMove,

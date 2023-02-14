@@ -33,8 +33,8 @@ export function EventEditModal(props: Partial<ModalProps>) {
   const {
     handleTitleInput,
     handleTitleSave,
-    handleSubtitleInput,
-    handleSubtitleSave,
+    handleDescriptionInput,
+    handleDescriptionSave,
     handleDateInput,
     handleDateSave,
     handleEventMove,
@@ -62,13 +62,13 @@ export function EventEditModal(props: Partial<ModalProps>) {
             </FormControl>
 
             <FormControl>
-              <FormLabel>이벤트 부제목</FormLabel>
+              <FormLabel>이벤트 설명</FormLabel>
               <Input
-                placeholder="부제목 입력"
-                value={eventStore.selectedEvent?.subtitle}
+                placeholder="설명 입력"
+                value={eventStore.selectedEvent?.description}
                 isDisabled={eventStore.isLoading}
-                onChange={e => handleSubtitleInput(e.target.value)}
-                onBlur={() => handleSubtitleSave()}
+                onChange={e => handleDescriptionInput(e.target.value)}
+                onBlur={() => handleDescriptionSave()}
               />
             </FormControl>
 

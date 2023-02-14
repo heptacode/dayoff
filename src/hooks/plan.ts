@@ -50,7 +50,7 @@ export function usePlan() {
       createEvent({
         collectionId: collectionStore.collectionId,
         title: place.name,
-        subtitle: place.address,
+        description: place.address,
         lat: place.lat,
         lng: place.lng,
       });
