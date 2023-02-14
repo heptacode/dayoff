@@ -44,7 +44,7 @@ export function TimelineItem({
         borderRadius="full"
         bgColor={colors[collection.color]}
       >
-        <Text fontSize="sm" fontWeight="semibold">
+        <Text fontSize="sm" fontWeight="semibold" color="#fff">
           {index + 1}
         </Text>
       </IconButton>
