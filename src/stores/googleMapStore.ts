@@ -6,7 +6,7 @@ export interface GoogleMapState {
   markers: Map<string, google.maps.Marker>;
   polylines: google.maps.Polyline[];
   getMarkers: () => google.maps.Marker[];
-  setMap(value: google.maps.Map): void;
+  setMap(value: google.maps.Map | null): void;
   setMarker(eventId: string, value: google.maps.Marker): void;
   setPolylines(value: google.maps.Polyline[]): void;
 }

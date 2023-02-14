@@ -6,7 +6,7 @@ export interface NaverMapState {
   markers: Map<string, naver.maps.Marker>;
   polylines: naver.maps.Polyline[];
   getMarkers: () => naver.maps.Marker[];
-  setMap(value: naver.maps.Map): void;
+  setMap(value: naver.maps.Map | null): void;
   setMarker(eventId: string, value: naver.maps.Marker): void;
   setPolylines(value: naver.maps.Polyline[]): void;
 }
