@@ -13,6 +13,7 @@ import {
   DrawerCloseButton,
   DrawerContent,
   DrawerHeader,
+  DrawerOverlay,
   Editable,
   EditableInput,
   EditablePreview,
@@ -29,7 +30,12 @@ export function Sidebar() {
   const planStore = usePlanStore();
   const collectionStore = useCollectionStore();
   const { handleTitleInput, handleSubtitleInput, handlePlaceSelect } = usePlan();
-  const { isOpen, onClose } = useDisclosure({ isOpen: globalStore.isSidebarOpen });
+  const { isOpen, onClose } = useDisclosure({
+    isOpen: globalStore.isSidebarOpen,
+    onClose() {
+      collectionStore.setIsEditing(false);
+    },
+  });
 
   const { createCollection } = useCollectionQuery({});
 
@@ -41,6 +47,7 @@ export function Sidebar() {
       variant="transparent"
       onClose={onClose}
     >
+      {collectionStore.isEditing ? <DrawerOverlay /> : null}
       <DrawerContent>
         <DrawerCloseButton onClick={() => globalStore.setIsSidebarOpen(false)} />
         {planStore.isLoading || collectionStore.isLoading ? (
