@@ -72,10 +72,12 @@ export function Sidebar() {
           {!collectionStore.isEditing ? <Timeline my="5" /> : <TimelineEdit my="3" mb="5" />}
 
           <HStack justify="center">
-            <Button onClick={() => createCollection()}>
-              <Icon as={MdAdd} mr="1" />
-              추가
-            </Button>
+            {!collectionStore.isEditing && collectionStore.collections.size < 15 ? (
+              <Button onClick={() => createCollection()}>
+                <Icon as={MdAdd} mr="1" />
+                추가
+              </Button>
+            ) : null}
             {collectionStore.collections.size ? (
               !collectionStore.isEditing ? (
                 <Button onClick={() => collectionStore.setIsEditing(true)}>
