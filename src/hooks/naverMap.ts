@@ -67,7 +67,9 @@ export function useNaverMap() {
         }
       });
 
-      map.fitBounds(bounds!);
+      if (bounds) {
+        map.fitBounds(bounds);
+      }
     }
   }, [map, collectionStore.selectedCollectionIds, eventStore.events.size]);
 
