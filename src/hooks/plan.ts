@@ -23,7 +23,7 @@ export function usePlan() {
   });
 
   const debounceTitle = useCallback(
-    debounce((title: string) => updatePlan({ title }), 300),
+    debounce((title: string) => updatePlan({ planId: planStore.planId!, title }), 300),
     []
   );
 
@@ -33,7 +33,7 @@ export function usePlan() {
   }
 
   const debounceSubtitle = useCallback(
-    debounce((subtitle: string) => updatePlan({ subtitle }), 300),
+    debounce((subtitle: string) => updatePlan({ planId: planStore.planId!, subtitle }), 300),
     []
   );
 
