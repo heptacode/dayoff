@@ -12,20 +12,25 @@ import {
   Drawer,
   DrawerCloseButton,
   DrawerContent,
+  DrawerFooter,
   DrawerHeader,
   DrawerOverlay,
   Editable,
   EditableInput,
   EditablePreview,
+  Flex,
   HStack,
   Icon,
+  IconButton,
   Progress,
   Skeleton,
   useDisclosure,
 } from '@chakra-ui/react';
-import { MdAdd, MdCheck, MdEdit } from 'react-icons/md';
+import { useRouter } from 'next/router';
+import { MdAdd, MdCheck, MdEdit, MdGridView, MdSettings } from 'react-icons/md';
 
 export function Sidebar() {
+  const router = useRouter();
   const globalStore = useGlobalStore();
   const planStore = usePlanStore();
   const collectionStore = useCollectionStore();
@@ -55,7 +60,7 @@ export function Sidebar() {
         ) : (
           <Box h="1" />
         )}
-        <DrawerHeader borderBottomWidth="1px">
+        <DrawerHeader mt="3" borderBottomWidth="1px">
           <Skeleton mr="20" isLoaded={Boolean(planStore.title)}>
             <Editable value={planStore.title} variant="flushed">
               <EditablePreview />
@@ -100,6 +105,21 @@ export function Sidebar() {
             ) : null}
           </HStack>
         </Box>
+
+        <Flex flex="1" />
+
+        <DrawerFooter justifyContent="space-between" borderTopWidth="1px">
+          <IconButton
+            aria-label="홈으로"
+            icon={<Icon as={MdGridView} boxSize="5" />}
+            onClick={() => router.push('/')}
+          />
+          <IconButton
+            aria-label="설정"
+            icon={<Icon as={MdSettings} boxSize="5" />}
+            onClick={() => globalStore.setIsPlanEditModalOpen(true)}
+          />
+        </DrawerFooter>
       </DrawerContent>
     </Drawer>
   );

@@ -16,8 +16,12 @@ export default withMongoose(async (req: NextApiRequestWithMongoose, res: NextApi
       });
       return res.status(204).send('');
     }
+    case 'DELETE': {
+      await Plan.findByIdAndDelete(req.query.planId);
+      return res.status(204).send('');
+    }
     default:
-      res.setHeader('Allow', ['GET', 'PATCH']);
+      res.setHeader('Allow', ['GET', 'PATCH', 'DELETE']);
       res.status(405).end(`Method ${req.method} Not Allowed`);
   }
 });

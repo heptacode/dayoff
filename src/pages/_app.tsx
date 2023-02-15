@@ -30,7 +30,7 @@ export default function App({ Component, pageProps }: AppProps) {
           <Suspense fallback={<Progress size="xs" isIndeterminate />}>
             <QueryClientProvider client={queryClient}>
               <Component {...pageProps} />
-              <ReactQueryDevtools initialIsOpen={false} />
+              <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
             </QueryClientProvider>
           </Suspense>
         </ErrorBoundary>

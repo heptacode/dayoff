@@ -5,13 +5,13 @@ import type { IPlan, MapType } from '@/types';
 export interface PlanState {
   isLoading: boolean;
   plans: IPlan[];
-  planId: string;
+  planId: string | null;
   title: string;
   subtitle: string;
   mapType: MapType | null;
   setIsLoading(value: boolean): void;
   setPlans(value: IPlan[]): void;
-  setPlanId(value: string): void;
+  setPlanId(value: string | null): void;
   setTitle(value: string): void;
   setSubtitle(value: string): void;
   setMapType(value: MapType): void;
@@ -21,7 +21,7 @@ export const usePlanStore = create<PlanState>()(
   devtools(set => ({
     isLoading: true,
     plans: [],
-    planId: '',
+    planId: null,
     title: '',
     subtitle: '',
     mapType: null,
