@@ -16,7 +16,7 @@ export function usePlanQuery({
   const planStore = usePlanStore();
 
   const { isLoading: isFetching, data: plan } = useQuery<IPlan>(
-    ['plan', { planId: planStore.planId }],
+    ['plan', planStore.planId],
     async () => (await getRequest<IPlan>(`/api/plans/${planStore.planId}`)).data,
     {
       enabled: router.isReady && planStore.planId?.length === 24,

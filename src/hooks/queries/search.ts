@@ -4,7 +4,7 @@ import type { Place, MapType, SearchOptions, SearchResponse } from '@/types';
 
 export function useSearchQuery({ mapType, query }: { mapType: MapType; query: string }) {
   return useQuery<Place[]>(
-    ['get_search_data', query],
+    ['search', query],
     async () => {
       try {
         const options: SearchOptions = { mapType, query };

@@ -18,7 +18,7 @@ export function useCollectionQuery({
     data: collections,
     refetch,
   } = useQuery<ICollection[]>(
-    ['plan.collections', { planId: planStore.planId }],
+    ['plan.collections', planStore.planId],
     async () => (await getRequest(`/api/plans/${planStore.planId}/collections`)).data,
     {
       enabled: Boolean(planStore.planId),

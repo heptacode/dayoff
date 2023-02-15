@@ -14,24 +14,23 @@ export function useEventQuery({ collectionId }: { collectionId?: string | null }
   const queryMap: Map<string, number> = new Map();
 
   const eventQueries = useQueries({
-    queries:
-      collectionStore.selectedCollectionIds.map((collectionId, index) => {
-        queryMap.set(collectionId, index);
+    queries: collectionStore.selectedCollectionIds.map((collectionId, index) => {
+      queryMap.set(collectionId, index);
 
-        return {
-          queryKey: ['plan.collection', { collectionId: collectionId }],
-          queryFn: async () =>
-            (
-              await getRequest<IEvent[]>(
-                `/api/plans/${planStore.planId}/collections/${collectionId}/events`
-              )
-            ).data,
-          enabled: Boolean(planStore.planId) && Boolean(collectionId),
-          onSuccess(data: IEvent[]) {
-            data.forEach(event => eventStore.setEvent(event._id, event));
-          },
-        };
-      }) ?? [],
+      return {
+        queryKey: ['plan.collection.events', collectionId],
+        queryFn: async () =>
+          (
+            await getRequest<IEvent[]>(
+              `/api/plans/${planStore.planId}/collections/${collectionId}/events`
+            )
+          ).data,
+        enabled: Boolean(planStore.planId) && Boolean(collectionId),
+        onSuccess(data: IEvent[]) {
+          data.forEach(event => eventStore.setEvent(event._id, event));
+        },
+      };
+    }),
   });
 
   function refetchEvent(collectionId: string) {
