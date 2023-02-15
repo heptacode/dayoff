@@ -5,6 +5,7 @@ import {
   Button,
   FormControl,
   FormLabel,
+  HStack,
   Icon,
   Input,
   Modal,
@@ -17,6 +18,7 @@ import {
   Progress,
   Stack,
   StackDivider,
+  Tooltip,
   useDisclosure,
 } from '@chakra-ui/react';
 import { MdDeleteForever } from 'react-icons/md';
@@ -27,7 +29,8 @@ export function PlanEditModal(props: Partial<ModalProps>) {
   const { isOpen, onClose } = useDisclosure({
     ...props,
   });
-  const { handleTitleSave, handleSubtitleSave, handlePlanDelete } = usePlanEdit();
+  const { handleTitleSave, handleSubtitleSave, handleMapTypeChange, handlePlanDelete } =
+    usePlanEdit();
 
   return (
     <Modal isOpen={isOpen} isCentered onClose={onClose} {...props}>
@@ -58,6 +61,33 @@ export function PlanEditModal(props: Partial<ModalProps>) {
                 onChange={e => planStore.setSubtitle(e.target.value)}
                 onBlur={() => handleSubtitleSave()}
               />
+            </FormControl>
+
+            <FormControl>
+              <FormLabel>계획 유형</FormLabel>
+              <HStack>
+                <Tooltip label="네이버 지도">
+                  <Button
+                    placeholder="부제목 입력"
+                    isDisabled={planStore.isLoading}
+                    variant={planStore.mapType === 'naver' ? 'solid' : 'outline'}
+                    onClick={() => handleMapTypeChange('naver')}
+                  >
+                    🇰🇷 전국
+                  </Button>
+                </Tooltip>
+
+                <Tooltip label="Google 지도">
+                  <Button
+                    placeholder="부제목 입력"
+                    isDisabled={planStore.isLoading}
+                    variant={planStore.mapType === 'google' ? 'solid' : 'outline'}
+                    onClick={() => handleMapTypeChange('google')}
+                  >
+                    🌏 전세계
+                  </Button>
+                </Tooltip>
+              </HStack>
             </FormControl>
 
             <Box>

@@ -5,7 +5,7 @@ import { deleteRequest, getRequest, patchRequest } from '@heptacode/http-request
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
-import type { IPlan } from '@/types';
+import type { IPlan, MapType } from '@/types';
 
 export function usePlanQuery({
   onFetchError,
@@ -34,10 +34,21 @@ export function usePlanQuery({
   );
 
   const { isLoading: isUpdating, mutateAsync: updatePlan } = useMutation(
-    ({ planId, title, subtitle }: { planId: string; title?: string; subtitle?: string }) =>
+    ({
+      planId,
+      title,
+      subtitle,
+      mapType,
+    }: {
+      planId: string;
+      title?: string;
+      subtitle?: string;
+      mapType?: MapType;
+    }) =>
       patchRequest(`/api/plans/${planId}`, {
         ...(title && { title }),
         ...(subtitle && { subtitle }),
+        ...(mapType && { mapType }),
       })
   );
 

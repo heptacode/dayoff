@@ -2,6 +2,7 @@ import { useCollectionStore } from '@/stores/collectionStore';
 import { useEventStore } from '@/stores/eventStore';
 import { usePlanStore } from '@/stores/planStore';
 import { usePlanQuery } from './queries/plan';
+import type { MapType } from '@/types';
 
 export function usePlanEdit() {
   const planStore = usePlanStore();
@@ -16,6 +17,13 @@ export function usePlanEdit() {
 
   function handleSubtitleSave() {
     updatePlan({ planId: planStore.planId!, subtitle: planStore.subtitle });
+  }
+
+  function handleMapTypeChange(value: MapType) {
+    if (planStore.mapType !== value) {
+      planStore.setMapType(value);
+      updatePlan({ planId: planStore.planId!, mapType: value });
+    }
   }
 
   async function handlePlanDelete() {
@@ -33,6 +41,7 @@ export function usePlanEdit() {
   return {
     handleTitleSave,
     handleSubtitleSave,
+    handleMapTypeChange,
     handlePlanDelete,
   };
 }
