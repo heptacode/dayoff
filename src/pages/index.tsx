@@ -1,7 +1,7 @@
 import { PlanCard } from '@/components/plans/PlanCard';
 import { usePlansQuery } from '@/hooks/queries/plans';
 import { usePlanStore } from '@/stores/planStore';
-import { Box, Container, Heading, HStack, SimpleGrid } from '@chakra-ui/react';
+import { Box, Container, Fade, Heading, HStack, SimpleGrid, Skeleton } from '@chakra-ui/react';
 
 export default function Home() {
   const planStore = usePlanStore();
@@ -19,11 +19,23 @@ export default function Home() {
         </Box>
       </Box>
 
-      <SimpleGrid spacing={4} templateColumns="repeat(auto-fill, minmax(300px, 1fr))">
-        {planStore.plans.map(plan => (
-          <PlanCard key={plan._id} plan={plan} />
-        ))}
-      </SimpleGrid>
+      <Container>
+        <SimpleGrid spacing={4} templateColumns="repeat(auto-fill, minmax(250px, 1fr))">
+          {planStore.plans.length
+            ? planStore.plans.map(plan => (
+                <Fade key={plan._id} in>
+                  <PlanCard
+                    plan={plan}
+                    cursor="pointer"
+                    _hover={{
+                      boxShadow: 'md',
+                    }}
+                  />
+                </Fade>
+              ))
+            : [...Array(4)].map(n => <Skeleton key={n} height="152px" borderRadius="md" />)}
+        </SimpleGrid>
+      </Container>
     </>
   );
 }
