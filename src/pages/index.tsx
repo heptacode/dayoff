@@ -33,7 +33,7 @@ export default function Home() {
                   />
                 </Fade>
               ))
-            : [...Array(4)].map(n => <Skeleton key={n} height="152px" borderRadius="md" />)}
+            : [...Array(4).keys()].map(n => <Skeleton key={n} height="152px" borderRadius="md" />)}
         </SimpleGrid>
       </Container>
     </>
