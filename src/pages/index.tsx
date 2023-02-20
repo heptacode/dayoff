@@ -1,11 +1,18 @@
 import { PlanCard } from '@/components/plans/PlanCard';
 import { usePlansQuery } from '@/hooks/queries/plans';
+import { useCollectionStore } from '@/stores/collectionStore';
 import { usePlanStore } from '@/stores/planStore';
 import { Box, Container, Fade, Heading, HStack, SimpleGrid, Skeleton } from '@chakra-ui/react';
+import { useEffect } from 'react';
 
 export default function Home() {
   const planStore = usePlanStore();
+  const collectionStore = useCollectionStore();
   usePlansQuery();
+
+  useEffect(() => {
+    collectionStore.clearCollections();
+  }, []);
 
   return (
     <>
