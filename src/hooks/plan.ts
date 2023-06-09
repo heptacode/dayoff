@@ -1,16 +1,17 @@
 import { useCollectionStore } from '@/stores/collectionStore';
+import { useEventStore } from '@/stores/eventStore';
 import { usePlanStore } from '@/stores/planStore';
-import { debounce } from '@/utils/debounce';
-import { useCallback } from 'react';
+import { useEffect, useState } from 'react';
 import { useCollectionQuery } from './queries/collections';
 import { useEventQuery } from './queries/event';
 import { usePlanQuery } from './queries/plan';
-import type { Place } from '@/types';
+import type { MapType, Place } from '@/types';
 
 export function usePlan() {
+  const eventStore = useEventStore();
   const planStore = usePlanStore();
   const collectionStore = useCollectionStore();
-  const { updatePlan } = usePlanQuery({});
+  const { updatePlan, deletePlan } = usePlanQuery({});
   useCollectionQuery({
     onFetchSuccess(data) {
       if (data?.length) {
@@ -21,25 +22,37 @@ export function usePlan() {
   const { createEvent } = useEventQuery({
     collectionId: collectionStore.collectionId,
   });
+  const [title, setTitle] = useState<string>(planStore.title);
+  const [subtitle, setSubtitle] = useState<string>(planStore.subtitle);
 
-  const debounceTitle = useCallback(
-    debounce((title: string) => updatePlan({ planId: planStore.planId!, title }), 300),
-    []
-  );
+  useEffect(() => {
+    setTitle(planStore.title);
+  }, [planStore.title]);
+
+  useEffect(() => {
+    setSubtitle(planStore.subtitle);
+  }, [planStore.subtitle]);
 
   function handleTitleInput(value: string) {
-    planStore.setTitle(value);
-    debounceTitle(value);
+    setTitle(value);
   }
 
-  const debounceSubtitle = useCallback(
-    debounce((subtitle: string) => updatePlan({ planId: planStore.planId!, subtitle }), 300),
-    []
-  );
+  function handleTitleSave() {
+    if (title !== planStore.title) {
+      planStore.setTitle(title);
+      updatePlan({ planId: planStore.planId!, title });
+    }
+  }
 
   function handleSubtitleInput(value: string) {
-    planStore.setSubtitle(value);
-    debounceSubtitle(value);
+    setSubtitle(value);
+  }
+
+  function handleSubtitleSave() {
+    if (subtitle !== planStore.subtitle) {
+      planStore.setSubtitle(subtitle);
+      updatePlan({ planId: planStore.planId!, subtitle });
+    }
   }
 
   function handlePlaceSelect(place: Place) {
@@ -57,9 +70,34 @@ export function usePlan() {
     }
   }
 
+  function handleMapTypeChange(value: MapType) {
+    if (planStore.mapType !== value) {
+      planStore.setMapType(value);
+      updatePlan({ planId: planStore.planId!, mapType: value });
+    }
+  }
+
+  async function handlePlanDelete() {
+    if (collectionStore.collections.size) {
+      alert('계획을 삭제하려면 남아있는 컬렉션이 없어야 합니다.');
+      return;
+    } else if (confirm('계획이 영구적으로 삭제됩니다. 계속할까요?')) {
+      await deletePlan(planStore.planId!);
+      collectionStore.clearCollections();
+      collectionStore.setCollectionId(null);
+      eventStore.clearEvents();
+    }
+  }
+
   return {
+    title,
+    subtitle,
     handleTitleInput,
+    handleTitleSave,
     handleSubtitleInput,
+    handleSubtitleSave,
     handlePlaceSelect,
+    handleMapTypeChange,
+    handlePlanDelete,
   };
 }

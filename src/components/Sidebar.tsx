@@ -34,7 +34,15 @@ export function Sidebar() {
   const globalStore = useGlobalStore();
   const planStore = usePlanStore();
   const collectionStore = useCollectionStore();
-  const { handleTitleInput, handleSubtitleInput, handlePlaceSelect } = usePlan();
+  const {
+    title,
+    subtitle,
+    handleTitleInput,
+    handleTitleSave,
+    handleSubtitleInput,
+    handleSubtitleSave,
+    handlePlaceSelect,
+  } = usePlan();
   const { isOpen, onClose } = useDisclosure({
     isOpen: globalStore.isSidebarOpen,
     onClose() {
@@ -61,17 +69,23 @@ export function Sidebar() {
           <Box h="1" />
         )}
         <DrawerHeader mt="3" borderBottomWidth="1px">
-          <Skeleton mr="20" isLoaded={Boolean(planStore.title)}>
-            <Editable value={planStore.title} variant="flushed">
+          <Skeleton mr="20" isLoaded={Boolean(title)}>
+            <Editable value={title} variant="flushed">
               <EditablePreview />
-              <EditableInput onChange={e => handleTitleInput(e.target.value)} />
+              <EditableInput
+                onChange={e => handleTitleInput(e.target.value)}
+                onBlur={handleTitleSave}
+              />
             </Editable>
           </Skeleton>
 
-          <Skeleton my="1" mr="10" isLoaded={Boolean(planStore.subtitle)}>
-            <Editable value={planStore.subtitle} fontSize="sm" fontWeight="normal">
+          <Skeleton my="1" mr="10" isLoaded={Boolean(subtitle)}>
+            <Editable value={subtitle} fontSize="sm" fontWeight="normal">
               <EditablePreview />
-              <EditableInput onChange={e => handleSubtitleInput(e.target.value)} />
+              <EditableInput
+                onChange={e => handleSubtitleInput(e.target.value)}
+                onBlur={handleSubtitleSave}
+              />
             </Editable>
           </Skeleton>
         </DrawerHeader>

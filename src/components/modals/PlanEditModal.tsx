@@ -1,4 +1,4 @@
-import { usePlanEdit } from '@/hooks/planEdit';
+import { usePlan } from '@/hooks/plan';
 import { usePlanStore } from '@/stores/planStore';
 import {
   Box,
@@ -29,8 +29,16 @@ export function PlanEditModal(props: Partial<ModalProps>) {
   const { isOpen, onClose } = useDisclosure({
     ...props,
   });
-  const { handleTitleSave, handleSubtitleSave, handleMapTypeChange, handlePlanDelete } =
-    usePlanEdit();
+  const {
+    title,
+    subtitle,
+    handleTitleInput,
+    handleTitleSave,
+    handleSubtitleInput,
+    handleSubtitleSave,
+    handleMapTypeChange,
+    handlePlanDelete,
+  } = usePlan();
 
   return (
     <Modal isOpen={isOpen} isCentered onClose={onClose} {...props}>
@@ -45,10 +53,10 @@ export function PlanEditModal(props: Partial<ModalProps>) {
               <FormLabel>계획 제목</FormLabel>
               <Input
                 placeholder="제목 입력"
-                value={planStore.title}
+                value={title}
                 isDisabled={planStore.isLoading}
-                onChange={e => planStore.setTitle(e.target.value)}
-                onBlur={() => handleTitleSave()}
+                onChange={e => handleTitleInput(e.target.value)}
+                onBlur={handleTitleSave}
               />
             </FormControl>
 
@@ -56,10 +64,10 @@ export function PlanEditModal(props: Partial<ModalProps>) {
               <FormLabel>계획 부제목</FormLabel>
               <Input
                 placeholder="부제목 입력"
-                value={planStore.subtitle}
+                value={subtitle}
                 isDisabled={planStore.isLoading}
-                onChange={e => planStore.setSubtitle(e.target.value)}
-                onBlur={() => handleSubtitleSave()}
+                onChange={e => handleSubtitleInput(e.target.value)}
+                onBlur={handleSubtitleSave}
               />
             </FormControl>
 
@@ -91,11 +99,7 @@ export function PlanEditModal(props: Partial<ModalProps>) {
             </FormControl>
 
             <Box>
-              <Button
-                colorScheme="red"
-                disabled={planStore.isLoading}
-                onClick={() => handlePlanDelete()}
-              >
+              <Button colorScheme="red" disabled={planStore.isLoading} onClick={handlePlanDelete}>
                 <Icon as={MdDeleteForever} boxSize="5" />
                 삭제
               </Button>
