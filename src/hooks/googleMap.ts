@@ -18,6 +18,10 @@ export function useGoogleMap() {
   const [polylines, setPolylines] = useState<google.maps.Polyline[]>([]);
 
   async function initMap() {
+    if (!google.maps) {
+      return;
+    }
+
     const map = new google.maps.Map(mapRef.current as HTMLDivElement, {
       fullscreenControl: false,
       mapTypeControl: false,
@@ -47,6 +51,10 @@ export function useGoogleMap() {
     });
 
     watchPosition((position: GeolocationPosition) => {
+      if (!google.maps) {
+        return;
+      }
+
       const location = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
       userPositionMarker.setPosition(location);
       globalStore.setUserLocation(position);

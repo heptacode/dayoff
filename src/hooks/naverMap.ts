@@ -18,6 +18,10 @@ export function useNaverMap() {
   const [polylines, setPolylines] = useState<naver.maps.Polyline[]>([]);
 
   async function initMap() {
+    if (!naver.maps) {
+      return;
+    }
+
     const map = new naver.maps.Map(mapRef.current as HTMLDivElement, {
       zoom: 15,
       scaleControl: false,
@@ -25,6 +29,7 @@ export function useNaverMap() {
       mapDataControl: false,
       mapTypeControl: false,
     });
+
     setMap(map);
 
     const position = globalStore.userLocation ?? (await getCurrentPosition());
@@ -47,6 +52,10 @@ export function useNaverMap() {
     });
 
     watchPosition((position: GeolocationPosition) => {
+      if (!naver.maps) {
+        return;
+      }
+
       const location = new naver.maps.LatLng(position.coords.latitude, position.coords.longitude);
       userPositionMarker.setPosition(location);
       globalStore.setUserLocation(position);
