@@ -1,29 +1,51 @@
-import { useCollectionStore } from '@/stores/collectionStore';
 import { useEventStore } from '@/stores/eventStore';
-import { debounce } from '@/utils/debounce';
 import dayjs from 'dayjs';
-import { useCallback } from 'react';
+import { useEffect, useState } from 'react';
 import { useEventQuery } from './queries/event';
+import type { IEvent } from '@/types';
 
-export function useEvent() {
-  const collectionStore = useCollectionStore();
+export function useEvent({ onClose }: { onClose?(): void }) {
   const eventStore = useEventStore();
+  const { updateEvent, deleteEvent } = useEventQuery();
 
-  const { updateEvent } = useEventQuery({
-    collectionId: collectionStore.collectionId,
-  });
+  const [events, setEvents] = useState<Record<string, IEvent>>({});
 
-  const debounceTitle = useCallback(
-    debounce((eventId: string, title: string) => updateEvent({ eventId, title }), 1000),
-    []
-  );
+  useEffect(() => {
+    setEvents(eventStore.events);
+  }, [eventStore.events]);
 
   function handleTitleInput(eventId: string, value: string) {
-    eventStore.setEvent(eventId, {
-      ...eventStore.events.get(eventId)!,
-      title: value,
+    setEvents({
+      ...events,
+      [eventId]: {
+        ...events[eventId],
+        title: value,
+      },
     });
-    debounceTitle(eventId, value);
+  }
+
+  function handleTitleSave(eventId: string, value: string) {
+    if (events[eventId].title !== eventStore.events[eventId].title) {
+      eventStore.setEventTitle(eventId, value);
+      updateEvent({ collectionId: String(events[eventId].collectionId), eventId, title: value });
+    }
+  }
+
+  function handleDescriptionInput(eventId: string, value: string) {
+    setEvents({
+      ...events,
+      [eventId]: {
+        ...events[eventId],
+        description: value,
+      },
+    });
+  }
+
+  function handleDescriptionSave(eventId: string, value: string) {
+    if (events[eventId].description !== eventStore.events[eventId].description) {
+      eventStore.setEventDescription(eventId, value);
+      updateEvent({ eventId, description: value });
+    }
   }
 
   function handleDescriptionResize(
@@ -33,37 +55,53 @@ export function useEvent() {
     e.target.style.height = `${e.target.scrollHeight}px`;
   }
 
-  const debounceDescription = useCallback(
-    debounce((eventId: string, description: string) => updateEvent({ eventId, description }), 1000),
-    []
-  );
-
-  function handleDescriptionInput(eventId: string, value: string) {
-    eventStore.setEvent(eventId, {
-      ...eventStore.events.get(eventId)!,
-      description: value,
-    });
-    debounceDescription(eventId, value);
-  }
-
   function handleDateInput(eventId: string, value: string) {
-    eventStore.setEvent(eventId, {
-      ...eventStore.events.get(eventId)!,
-      date: value,
+    setEvents({
+      ...events,
+      [eventId]: {
+        ...events[eventId],
+        date: value,
+      },
     });
   }
 
   function handleDateSave(eventId: string, value: string) {
-    if (eventStore.selectedEvent && !dayjs(eventStore.selectedEvent.date).isSame(dayjs(value))) {
+    if (events[eventId].date && !dayjs(eventStore.events[eventId].date).isSame(dayjs(value))) {
+      eventStore.setEventDate(eventId, value);
       updateEvent({ eventId, date: value });
     }
   }
 
+  async function handleEventMove(eventId: string, collectionId: string) {
+    eventStore.clearEvents();
+    await updateEvent({
+      eventId,
+      collectionId,
+    });
+    onClose?.();
+  }
+
+  function handleEventDelete(collectionId: string, eventId: string) {
+    if (confirm('이벤트가 영구적으로 삭제됩니다. 계속할까요?')) {
+      eventStore.deleteEvent(eventId);
+      deleteEvent({
+        collectionId,
+        eventId,
+      });
+      onClose?.();
+    }
+  }
+
   return {
+    events,
     handleTitleInput,
-    handleDescriptionResize,
+    handleTitleSave,
     handleDescriptionInput,
+    handleDescriptionSave,
+    handleDescriptionResize,
     handleDateInput,
     handleDateSave,
+    handleEventMove,
+    handleEventDelete,
   };
 }

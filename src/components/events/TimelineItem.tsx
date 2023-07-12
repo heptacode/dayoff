@@ -31,12 +31,15 @@ export function TimelineItem({
   const globalStore = useGlobalStore();
   const eventStore = useEventStore();
   const {
+    events,
     handleTitleInput,
-    handleDescriptionResize,
+    handleTitleSave,
     handleDescriptionInput,
+    handleDescriptionSave,
+    handleDescriptionResize,
     handleDateInput,
     handleDateSave,
-  } = useEvent();
+  } = useEvent({});
 
   return (
     <AccordionPanel as="li" ml="3" mb="3" {...props}>
@@ -57,9 +60,12 @@ export function TimelineItem({
       </IconButton>
 
       <Flex position="relative" direction="column">
-        <Editable value={event.title} fontWeight="semibold">
+        <Editable value={events[event._id]?.title} fontWeight="semibold">
           <EditablePreview />
-          <EditableInput onChange={e => handleTitleInput(event._id, e.target.value)} />
+          <EditableInput
+            onChange={e => handleTitleInput(event._id, e.target.value)}
+            onBlur={e => handleTitleSave(event._id, e.target.value)}
+          />
         </Editable>
 
         <Text as="time" display="block" fontSize="xs">
@@ -67,8 +73,7 @@ export function TimelineItem({
             type="datetime-local"
             variant="unstyled"
             fontSize="sm"
-            value={dayjs(event.date).format('YYYY-MM-DDTHH:mm')}
-            onFocus={() => eventStore.setSelectedEvent(event)}
+            value={dayjs(events[event._id]?.date).format('YYYY-MM-DDTHH:mm')}
             onChange={e => handleDateInput(event._id, new Date(e.target.value).toISOString())}
             onBlur={e =>
               handleDateSave(
@@ -79,7 +84,7 @@ export function TimelineItem({
           />
         </Text>
 
-        <Editable value={event.description} fontSize="sm">
+        <Editable value={events[event._id]?.description} fontSize="sm">
           <EditablePreview whiteSpace="pre-wrap" />
           <EditableTextarea
             onFocus={e => handleDescriptionResize(e)}
@@ -87,6 +92,7 @@ export function TimelineItem({
               handleDescriptionResize(e);
               handleDescriptionInput(event._id, e.target.value);
             }}
+            onBlur={e => handleDescriptionSave(event._id, e.target.value)}
           />
         </Editable>
 
@@ -99,7 +105,7 @@ export function TimelineItem({
           borderRadius="full"
           variant="ghost"
           onClick={() => {
-            eventStore.setSelectedEvent(event);
+            eventStore.setSelectedEventId(event._id);
             globalStore.setIsEventEditModalOpen(true);
           }}
         />

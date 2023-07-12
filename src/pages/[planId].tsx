@@ -50,7 +50,7 @@ export default function Plan() {
         router.replace('/');
       }
     }
-  }, [router]);
+  }, [router.query.planId]);
 
   return (
     <>

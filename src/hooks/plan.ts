@@ -19,9 +19,7 @@ export function usePlan() {
       }
     },
   });
-  const { createEvent } = useEventQuery({
-    collectionId: collectionStore.collectionId,
-  });
+  const { createEvent } = useEventQuery();
   const [title, setTitle] = useState<string>(planStore.title);
   const [subtitle, setSubtitle] = useState<string>(planStore.subtitle);
 

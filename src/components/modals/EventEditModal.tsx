@@ -1,4 +1,4 @@
-import { useEventEdit } from '@/hooks/eventEdit';
+import { useEvent } from '@/hooks/event';
 import { useCollectionStore } from '@/stores/collectionStore';
 import { useEventStore } from '@/stores/eventStore';
 import {
@@ -32,6 +32,7 @@ export function EventEditModal(props: Partial<ModalProps>) {
     ...props,
   });
   const {
+    events,
     handleTitleInput,
     handleTitleSave,
     handleDescriptionResize,
@@ -41,7 +42,11 @@ export function EventEditModal(props: Partial<ModalProps>) {
     handleDateSave,
     handleEventMove,
     handleEventDelete,
-  } = useEventEdit({ onClose });
+  } = useEvent({ onClose });
+
+  if (!eventStore.selectedEventId) {
+    return null;
+  }
 
   return (
     <Modal isOpen={isOpen} isCentered onClose={onClose} {...props}>
@@ -56,10 +61,10 @@ export function EventEditModal(props: Partial<ModalProps>) {
               <FormLabel>이벤트 제목</FormLabel>
               <Input
                 placeholder="제목 입력"
-                value={eventStore.selectedEvent?.title}
+                value={events[eventStore.selectedEventId].title}
                 isDisabled={eventStore.isLoading}
-                onChange={e => handleTitleInput(e.target.value)}
-                onBlur={() => handleTitleSave()}
+                onChange={e => handleTitleInput(eventStore.selectedEventId!, e.target.value)}
+                onBlur={e => handleTitleSave(eventStore.selectedEventId!, e.target.value)}
               />
             </FormControl>
 
@@ -67,14 +72,14 @@ export function EventEditModal(props: Partial<ModalProps>) {
               <FormLabel>이벤트 설명</FormLabel>
               <Textarea
                 placeholder="설명 입력"
-                value={eventStore.selectedEvent?.description}
+                value={events[eventStore.selectedEventId].description}
                 isDisabled={eventStore.isLoading}
                 onFocus={e => handleDescriptionResize(e)}
                 onChange={e => {
                   handleDescriptionResize(e);
-                  handleDescriptionInput(e.target.value);
+                  handleDescriptionInput(eventStore.selectedEventId!, e.target.value);
                 }}
-                onBlur={() => handleDescriptionSave()}
+                onBlur={e => handleDescriptionSave(eventStore.selectedEventId!, e.target.value)}
               />
             </FormControl>
 
@@ -82,9 +87,14 @@ export function EventEditModal(props: Partial<ModalProps>) {
               <FormLabel>이벤트 날짜</FormLabel>
               <Input
                 type="datetime-local"
-                value={dayjs(eventStore.selectedEvent?.date).format('YYYY-MM-DDTHH:mm')}
-                onChange={e => handleDateInput(new Date(e.target.value).toISOString())}
-                onBlur={() => handleDateSave()}
+                value={dayjs(events[eventStore.selectedEventId].date).format('YYYY-MM-DDTHH:mm')}
+                onChange={e =>
+                  handleDateInput(
+                    eventStore.selectedEventId!,
+                    new Date(e.target.value).toISOString()
+                  )
+                }
+                onBlur={e => handleDateSave(eventStore.selectedEventId!, e.target.value)}
               />
             </FormControl>
 
@@ -93,13 +103,20 @@ export function EventEditModal(props: Partial<ModalProps>) {
               <Select
                 placeholder="컬렉션 선택"
                 isDisabled={eventStore.isLoading}
-                onChange={e => handleEventMove((e.target as HTMLSelectElement).value)}
+                onChange={e =>
+                  handleEventMove(
+                    eventStore.selectedEventId!,
+                    (e.target as HTMLSelectElement).value
+                  )
+                }
               >
                 {collectionStore.getCollections().map(collection => (
                   <option
                     key={collection._id}
                     value={collection._id}
-                    disabled={String(eventStore.selectedEvent?.collectionId) === collection._id}
+                    disabled={
+                      String(events[eventStore.selectedEventId!].collectionId) === collection._id
+                    }
                   >
                     {collection.title}
                   </option>
@@ -111,7 +128,12 @@ export function EventEditModal(props: Partial<ModalProps>) {
               <Button
                 colorScheme="red"
                 disabled={eventStore.isLoading}
-                onClick={() => handleEventDelete(eventStore.selectedEvent!._id)}
+                onClick={() =>
+                  handleEventDelete(
+                    String(events[eventStore.selectedEventId!].collectionId),
+                    eventStore.selectedEventId!
+                  )
+                }
               >
                 <Icon as={MdDeleteForever} boxSize="5" />
                 삭제

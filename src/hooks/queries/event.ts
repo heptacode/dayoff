@@ -6,7 +6,7 @@ import { useMutation, useQueries } from '@tanstack/react-query';
 import { useEffect, useMemo } from 'react';
 import type { IEvent } from '@/types';
 
-export function useEventQuery({ collectionId }: { collectionId?: string | null }) {
+export function useEventQuery() {
   const planStore = usePlanStore();
   const collectionStore = useCollectionStore();
   const eventStore = useEventStore();
@@ -46,7 +46,7 @@ export function useEventQuery({ collectionId }: { collectionId?: string | null }
   }
 
   const { isLoading: isCreating, mutateAsync: createEvent } = useMutation(
-    ({
+    async ({
       collectionId,
       title,
       description,
@@ -60,27 +60,27 @@ export function useEventQuery({ collectionId }: { collectionId?: string | null }
       lat?: number;
       lng?: number;
       date?: Date;
-    }) =>
-      postRequest<IEvent>(`/api/plans/${planStore.planId}/collections/${collectionId}/events`, {
-        ...(title && { title }),
-        ...(description && { description }),
-        ...(lat && { lat }),
-        ...(lng && { lng }),
-        ...(date && { date }),
-      }),
-    {
-      onSuccess() {
-        if (collectionId) {
-          refetchEvent(collectionId);
-        } else {
-          refetchEvents();
+    }) => {
+      await postRequest<IEvent>(
+        `/api/plans/${planStore.planId}/collections/${collectionId}/events`,
+        {
+          ...(title && { title }),
+          ...(description && { description }),
+          ...(lat && { lat }),
+          ...(lng && { lng }),
+          ...(date && { date }),
         }
-      },
+      );
+      if (collectionId) {
+        refetchEvent(collectionId);
+      } else {
+        refetchEvents();
+      }
     }
   );
 
   const { isLoading: isUpdating, mutateAsync: updateEvent } = useMutation(
-    ({
+    async ({
       eventId,
       title,
       description,
@@ -96,34 +96,33 @@ export function useEventQuery({ collectionId }: { collectionId?: string | null }
       lng?: number;
       date?: string;
       collectionId?: string;
-    }) =>
-      patchRequest(`/api/plans/${planStore.planId}/collections/${collectionId}/events/${eventId}`, {
-        ...(title && { title }),
-        ...(description && { description }),
-        ...(lat && { lat }),
-        ...(lng && { lng }),
-        ...(date && { date }),
-        ...(collectionId && { collectionId }),
-      }),
-    {
-      onSuccess() {
-        refetchEvents();
-      },
+    }) => {
+      await patchRequest(
+        `/api/plans/${planStore.planId}/collections/${collectionId}/events/${eventId}`,
+        {
+          ...(title && { title }),
+          ...(description && { description }),
+          ...(lat && { lat }),
+          ...(lng && { lng }),
+          ...(date && { date }),
+          ...(collectionId && { collectionId }),
+        }
+      );
+      refetchEvents();
     }
   );
 
   const { isLoading: isDeleting, mutateAsync: deleteEvent } = useMutation(
-    (eventId: string) =>
-      deleteRequest(`/api/plans/${planStore.planId}/collections/${collectionId}/events/${eventId}`),
-    {
-      onSuccess() {
-        if (collectionId) {
-          refetchEvent(collectionId);
-        } else {
-          eventStore.clearEvents();
-          refetchEvents();
-        }
-      },
+    async ({ collectionId, eventId }: { collectionId: string; eventId: string }) => {
+      await deleteRequest(
+        `/api/plans/${planStore.planId}/collections/${collectionId}/events/${eventId}`
+      );
+      if (collectionId) {
+        refetchEvent(collectionId);
+      } else {
+        eventStore.clearEvents();
+        refetchEvents();
+      }
     }
   );
 

@@ -1,14 +1,18 @@
 import { PlanCard } from '@/components/plans/PlanCard';
-import { usePlansQuery } from '@/hooks/queries/plans';
 import { useCollectionStore } from '@/stores/collectionStore';
-import { usePlanStore } from '@/stores/planStore';
+import { IPlan } from '@/types';
 import { Box, Container, Fade, Heading, HStack, SimpleGrid, Skeleton } from '@chakra-ui/react';
 import { useEffect } from 'react';
+import { getPlans } from './api/plans';
 
-export default function Home() {
-  const planStore = usePlanStore();
+export async function getServerSideProps() {
+  const plans = await getPlans();
+
+  return { props: { plans: JSON.parse(JSON.stringify(plans)) } };
+}
+
+export default function Home({ plans }: { plans: IPlan[] }) {
   const collectionStore = useCollectionStore();
-  usePlansQuery();
 
   useEffect(() => {
     collectionStore.clearCollections();
@@ -28,8 +32,8 @@ export default function Home() {
 
       <Container>
         <SimpleGrid spacing={4} templateColumns="repeat(auto-fill, minmax(250px, 1fr))">
-          {planStore.plans.length
-            ? planStore.plans.map(plan => (
+          {plans.length
+            ? plans.map(plan => (
                 <Fade key={plan._id} in>
                   <PlanCard
                     plan={plan}

@@ -6,28 +6,31 @@ import type { ObjectId } from 'mongoose';
 
 export interface EventState {
   isLoading: boolean;
-  events: Map<string, IEvent>;
-  selectedEvent: IEvent | null;
+  events: Record<string, IEvent>;
+  selectedEventId: string | null;
   updatedAt: Date;
   getEvents: () => IEvent[];
   getActiveEvents: () => IEvent[];
   getCollectionEvents(collectionIdResolvable: ObjectId | string): IEvent[];
   setIsLoading(value: boolean): void;
   setEvent(eventId: string, value: IEvent): void;
+  setEventTitle(eventId: string, value: string): void;
+  setEventDescription(eventId: string, value: string): void;
+  setEventDate(eventId: string, value: string): void;
   deleteEvent(eventId: string): void;
   clearEvents(): void;
-  setSelectedEvent(value: IEvent): void;
+  setSelectedEventId(value: string): void;
 }
 
 export const useEventStore = create<EventState>()(
   devtools((set, get) => ({
     isLoading: true,
-    events: new Map(),
-    selectedEvent: null,
+    events: {},
+    selectedEventId: null,
     updatedAt: new Date(),
-    getEvents: () => [...get().events.values()],
+    getEvents: () => Object.values(get().events),
     getActiveEvents: () =>
-      [...get().events.values()].filter(event =>
+      Object.values(get().events).filter(event =>
         useCollectionStore.getState().selectedCollectionIds.includes(String(event.collectionId))
       ),
     getCollectionEvents(collectionIdResolvable) {
@@ -39,20 +42,60 @@ export const useEventStore = create<EventState>()(
       set({ isLoading: value });
     },
     setEvent(eventId, value) {
-      set({ events: this.events.set(eventId, value) });
+      set({
+        events: {
+          ...this.events,
+          [eventId]: value,
+        },
+      });
+      set({ updatedAt: new Date() });
+    },
+    setEventTitle(eventId, value) {
+      set({
+        events: {
+          ...this.events,
+          [eventId]: {
+            ...this.events[eventId],
+            title: value,
+          },
+        },
+      });
+      set({ updatedAt: new Date() });
+    },
+    setEventDescription(eventId, value) {
+      set({
+        events: {
+          ...this.events,
+          [eventId]: {
+            ...this.events[eventId],
+            description: value,
+          },
+        },
+      });
+      set({ updatedAt: new Date() });
+    },
+    setEventDate(eventId, value) {
+      set({
+        events: {
+          ...this.events,
+          [eventId]: {
+            ...this.events[eventId],
+            date: value,
+          },
+        },
+      });
       set({ updatedAt: new Date() });
     },
     deleteEvent(eventId) {
-      this.events.delete(eventId);
-      set({ events: new Map(this.events) });
+      delete this.events[eventId];
       set({ updatedAt: new Date() });
     },
     clearEvents() {
-      set({ events: new Map() });
+      set({ events: {} });
       set({ updatedAt: new Date() });
     },
-    setSelectedEvent(value) {
-      set({ selectedEvent: value });
+    setSelectedEventId(value) {
+      set({ selectedEventId: value });
     },
   }))
 );
