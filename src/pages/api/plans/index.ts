@@ -1,18 +1,15 @@
-import { NextApiRequestWithMongoose, useMongoose, withMongoose } from '@/hooks/mongoose';
+import { NextApiRequestWithMongoose, withMongoose } from '@/hooks/mongoose';
 import { IPlan, Plan } from '@/types';
 import type { NextApiResponse } from 'next';
-
-export async function getPlans() {
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const client = await useMongoose();
-  const plans = await client.models.Plan.find();
-  return plans;
-}
 
 export default withMongoose(async (req: NextApiRequestWithMongoose, res: NextApiResponse<any>) => {
   switch (req.method) {
     case 'GET': {
-      return res.status(200).json(await Plan.find());
+      const plans = await Plan.find().where({ deletedAt: null });
+      if (plans) {
+        return res.status(200).json(plans);
+      }
+      return res.status(404).json('');
     }
     case 'POST': {
       const plan = await Plan.create<IPlan>({
@@ -21,6 +18,7 @@ export default withMongoose(async (req: NextApiRequestWithMongoose, res: NextApi
         mapType: req.body.mapType ?? 'google',
         createdAt: new Date(),
         updatedAt: new Date(),
+        deletedAt: null,
       });
       return res.status(201).send(plan);
     }

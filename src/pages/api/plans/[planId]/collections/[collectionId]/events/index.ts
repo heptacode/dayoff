@@ -5,8 +5,13 @@ import type { NextApiResponse } from 'next';
 export default withMongoose(async (req: NextApiRequestWithMongoose, res: NextApiResponse<any>) => {
   switch (req.method) {
     case 'GET': {
-      return res.status(200).json(await Event.find({ collectionId: req.query.collectionId }));
+      const event = await Event.find({ collectionId: req.query.collectionId, deletedAt: null });
+      if (event) {
+        return res.status(200).json(event);
+      }
+      return res.status(404).send('');
     }
+
     case 'POST': {
       const documentCount = await Event.countDocuments({ collectionId: req.query.collectionId });
       if (documentCount >= 50) {
@@ -21,6 +26,9 @@ export default withMongoose(async (req: NextApiRequestWithMongoose, res: NextApi
         lat: req.body.lat ?? 0,
         lng: req.body.lng ?? 0,
         date: req.body.date ?? new Date(),
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        deletedAt: null,
       });
       return res.status(201).send(event);
     }

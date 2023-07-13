@@ -5,7 +5,11 @@ import type { NextApiResponse } from 'next';
 export default withMongoose(async (req: NextApiRequestWithMongoose, res: NextApiResponse<any>) => {
   switch (req.method) {
     case 'GET': {
-      return res.status(200).json(await Collection.find({ planId: req.query.planId }));
+      const collection = await Collection.find({ planId: req.query.planId, deletedAt: null });
+      if (collection) {
+        return res.status(200).json(collection);
+      }
+      return res.status(404).send('');
     }
     case 'POST': {
       const documentCount = await Collection.countDocuments({ planId: req.query.planId });
@@ -17,6 +21,9 @@ export default withMongoose(async (req: NextApiRequestWithMongoose, res: NextApi
         planId: req.query.planId,
         title: req.body.title ?? '새 컬렉션',
         color: req.body.color ?? 'blue',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        deletedAt: null,
       });
       return res.status(201).send(collection);
     }

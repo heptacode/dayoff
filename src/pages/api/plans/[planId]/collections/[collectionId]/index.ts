@@ -5,18 +5,27 @@ import type { NextApiResponse } from 'next';
 export default withMongoose(async (req: NextApiRequestWithMongoose, res: NextApiResponse<any>) => {
   switch (req.method) {
     case 'PATCH': {
-      await Collection.findByIdAndUpdate(req.query.collectionId, {
+      const collection = await Collection.findByIdAndUpdate(req.query.collectionId, {
         ...(req.body.title && { title: req.body.title }),
         ...(req.body.color && { color: req.body.color }),
+        updatedAt: new Date(),
       });
-      return res.status(204).send('');
+      if (collection) {
+        return res.status(202).send(collection);
+      }
+      return res.status(404).send('');
     }
     case 'DELETE': {
       const session = await req.mongoose.startSession();
       session.startTransaction();
 
-      await Collection.findByIdAndDelete(req.query.collectionId).session(session);
-      await Event.deleteMany({ collectionId: req.query.collectionId }).session(session);
+      await Collection.findByIdAndUpdate(req.query.collectionId, {
+        deletedAt: new Date(),
+      }).session(session);
+      await Event.updateMany(
+        { collectionId: req.query.collectionId },
+        { deletedAt: new Date() }
+      ).session(session);
 
       await session.commitTransaction();
       session.endSession();

@@ -5,7 +5,7 @@ import type { NextApiResponse } from 'next';
 export default withMongoose(async (req: NextApiRequestWithMongoose, res: NextApiResponse<any>) => {
   switch (req.method) {
     case 'PATCH': {
-      await Event.findByIdAndUpdate(req.query.eventId, {
+      const event = await Event.findByIdAndUpdate(req.query.eventId, {
         ...(req.body.title && { title: req.body.title }),
         ...(req.body.description && { description: req.body.description }),
         ...(req.body.lat && { lat: req.body.lat }),
@@ -13,11 +13,17 @@ export default withMongoose(async (req: NextApiRequestWithMongoose, res: NextApi
         ...(req.body.date && { date: new Date(req.body.date) }),
         ...(req.body.collectionId && { collectionId: req.body.collectionId }),
       });
-      return res.status(204).send('');
+      if (event) {
+        return res.status(202).json(event);
+      }
+      return res.status(404).send('');
     }
     case 'DELETE': {
-      await Event.findByIdAndDelete(req.query.eventId);
-      return res.status(204).send('');
+      const event = await Event.findByIdAndUpdate(req.query.eventId, { deletedAt: new Date() });
+      if (event) {
+        return res.status(204).send('');
+      }
+      return res.status(404).send('');
     }
     default:
       res.setHeader('Allow', ['PATCH', 'DELETE']);

@@ -3,10 +3,9 @@ import { useCollectionStore } from '@/stores/collectionStore';
 import { IPlan } from '@/types';
 import { Box, Container, Fade, Heading, HStack, SimpleGrid, Skeleton } from '@chakra-ui/react';
 import { useEffect } from 'react';
-import { getPlans } from './api/plans';
 
 export async function getServerSideProps() {
-  const plans = await getPlans();
+  const plans = await (await fetch('http://localhost:3000/api/plans')).json();
 
   return { props: { plans: JSON.parse(JSON.stringify(plans)) } };
 }

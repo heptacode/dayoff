@@ -21,6 +21,7 @@ export interface IPlan {
   mapType: MapType;
   createdAt: Date;
   updatedAt: Date;
+  deletedAt: Date | null;
 }
 
 const planSchema = new Schema<IPlan>({
@@ -29,6 +30,7 @@ const planSchema = new Schema<IPlan>({
   mapType: { type: String, default: 'google', required: true },
   createdAt: [{ type: Date, default: new Date(), required: true }],
   updatedAt: [{ type: Date, default: new Date(), required: true }],
+  deletedAt: { type: Date, default: null },
 });
 export const Plan = models.Plan ?? model<IPlan>('Plan', planSchema);
 
@@ -37,12 +39,18 @@ export interface ICollection {
   planId: ObjectId;
   title: string;
   color: ColorType;
+  createdAt: Date;
+  updatedAt: Date;
+  deletedAt: Date | null;
 }
 
 const collectionSchema = new Schema<ICollection>({
   planId: { type: Schema.Types.ObjectId, ref: 'Plan', required: true },
   title: { type: String, default: '', required: true },
-  color: { type: String, default: '' },
+  color: { type: String, default: '', required: true },
+  createdAt: [{ type: Date, default: new Date(), required: true }],
+  updatedAt: [{ type: Date, default: new Date(), required: true }],
+  deletedAt: { type: Date, default: null },
 });
 export const Collection = models.Collection ?? model<ICollection>('Collection', collectionSchema);
 
@@ -55,6 +63,9 @@ export interface IEvent {
   lat: number;
   lng: number;
   date: Date | string;
+  createdAt: Date;
+  updatedAt: Date;
+  deletedAt: Date | null;
 }
 
 const eventSchema = new Schema<IEvent>({
@@ -65,6 +76,9 @@ const eventSchema = new Schema<IEvent>({
   lat: { type: Number },
   lng: { type: Number },
   date: { type: Date, default: Date.now },
+  createdAt: [{ type: Date, default: new Date(), required: true }],
+  updatedAt: [{ type: Date, default: new Date(), required: true }],
+  deletedAt: { type: Date, default: null },
 });
 export const Event = models.Event ?? model<IEvent>('Event', eventSchema);
 
