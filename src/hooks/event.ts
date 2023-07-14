@@ -44,7 +44,11 @@ export function useEvent({ onClose }: { onClose?(): void }) {
   function handleDescriptionSave(eventId: string, value: string) {
     if (events[eventId].description !== eventStore.events[eventId].description) {
       eventStore.setEventDescription(eventId, value);
-      updateEvent({ eventId, description: value });
+      updateEvent({
+        collectionId: String(events[eventId].collectionId),
+        eventId,
+        description: value,
+      });
     }
   }
 
