@@ -1,7 +1,7 @@
 import { useCollectionStore } from '@/stores/collectionStore';
 import { useEventStore } from '@/stores/eventStore';
 import { usePlanStore } from '@/stores/planStore';
-import { deleteRequest, getRequest, patchRequest } from '@heptacode/http-request';
+import { deleteRequest, getRequest, patchRequest, postRequest } from '@heptacode/http-request';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
@@ -19,7 +19,11 @@ export function usePlanQuery({
   const collectionStore = useCollectionStore();
   const eventStore = useEventStore();
 
-  const { isLoading: isFetching, data: plan } = useQuery<IPlan>(
+  const {
+    isLoading: isFetching,
+    data: plan,
+    refetch,
+  } = useQuery<IPlan>(
     ['plan', planStore.planId],
     async () => (await getRequest<IPlan>(`/api/plans/${planStore.planId}`)).data,
     {
@@ -29,6 +33,16 @@ export function usePlanQuery({
       },
       onSuccess(data) {
         onFetchSuccess?.(data);
+      },
+    }
+  );
+
+  const { isLoading: isCreating, mutateAsync: createPlan } = useMutation(
+    async () => (await postRequest<IPlan>(`/api/plans`)).data,
+    {
+      onSuccess(data) {
+        refetch();
+        router.push(`/${data._id}`);
       },
     }
   );
@@ -65,11 +79,12 @@ export function usePlanQuery({
   );
 
   useEffect(() => {
-    planStore.setIsLoading(isFetching || isUpdating || isDeleting);
-  }, [isFetching, isUpdating, isDeleting]);
+    planStore.setIsLoading(isFetching || isCreating || isUpdating || isDeleting);
+  }, [isFetching, isCreating, isUpdating, isDeleting]);
 
   return {
     plan,
+    createPlan,
     updatePlan,
     deletePlan,
   };

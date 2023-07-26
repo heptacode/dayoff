@@ -1,8 +1,20 @@
 import { PlanCard } from '@/components/plans/PlanCard';
+import { usePlanQuery } from '@/hooks/queries/plan';
 import { useCollectionStore } from '@/stores/collectionStore';
 import { IPlan } from '@/types';
-import { Box, Container, Fade, Heading, HStack, SimpleGrid, Skeleton } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Container,
+  Fade,
+  Heading,
+  HStack,
+  Icon,
+  SimpleGrid,
+  Skeleton,
+} from '@chakra-ui/react';
 import { useEffect } from 'react';
+import { MdAdd } from 'react-icons/md';
 
 export async function getServerSideProps() {
   const plans = await (await fetch('http://localhost:3000/api/plans')).json();
@@ -12,6 +24,7 @@ export async function getServerSideProps() {
 
 export default function Home({ plans }: { plans: IPlan[] }) {
   const collectionStore = useCollectionStore();
+  const { createPlan } = usePlanQuery({});
 
   useEffect(() => {
     collectionStore.clearCollections();
@@ -28,6 +41,11 @@ export default function Home({ plans }: { plans: IPlan[] }) {
           </Container>
         </Box>
       </Box>
+
+      <Button onClick={() => createPlan()}>
+        <Icon as={MdAdd} mr="1" />
+        추가
+      </Button>
 
       <Container>
         <SimpleGrid spacing={4} templateColumns="repeat(auto-fill, minmax(250px, 1fr))">
