@@ -26,8 +26,6 @@ export default withMongoose(async (req: NextApiRequestWithMongoose, res: NextApi
         lat: req.body.lat ?? 0,
         lng: req.body.lng ?? 0,
         date: req.body.date ?? new Date(),
-        createdAt: new Date(),
-        updatedAt: new Date(),
         deletedAt: null,
       });
       return res.status(201).send(event);

@@ -24,14 +24,15 @@ export interface IPlan {
   deletedAt: Date | null;
 }
 
-const planSchema = new Schema<IPlan>({
-  title: { type: String, default: '', required: true },
-  subtitle: { type: String, default: '', required: true },
-  mapType: { type: String, default: 'google', required: true },
-  createdAt: [{ type: Date, default: new Date(), required: true }],
-  updatedAt: [{ type: Date, default: new Date(), required: true }],
-  deletedAt: { type: Date, default: null },
-});
+const planSchema = new Schema<IPlan>(
+  {
+    title: { type: String, default: '', required: true },
+    subtitle: { type: String, default: '', required: true },
+    mapType: { type: String, default: 'google', required: true },
+    deletedAt: { type: Date, default: null },
+  },
+  { timestamps: true }
+);
 export const Plan = models.Plan ?? model<IPlan>('Plan', planSchema);
 
 export interface ICollection {
@@ -44,14 +45,15 @@ export interface ICollection {
   deletedAt: Date | null;
 }
 
-const collectionSchema = new Schema<ICollection>({
-  planId: { type: Schema.Types.ObjectId, ref: 'Plan', required: true },
-  title: { type: String, default: '', required: true },
-  color: { type: String, default: '', required: true },
-  createdAt: [{ type: Date, default: new Date(), required: true }],
-  updatedAt: [{ type: Date, default: new Date(), required: true }],
-  deletedAt: { type: Date, default: null },
-});
+const collectionSchema = new Schema<ICollection>(
+  {
+    planId: { type: Schema.Types.ObjectId, ref: 'Plan', required: true },
+    title: { type: String, default: '', required: true },
+    color: { type: String, default: '', required: true },
+    deletedAt: { type: Date, default: null },
+  },
+  { timestamps: true }
+);
 export const Collection = models.Collection ?? model<ICollection>('Collection', collectionSchema);
 
 export interface IEvent {
@@ -68,18 +70,19 @@ export interface IEvent {
   deletedAt: Date | null;
 }
 
-const eventSchema = new Schema<IEvent>({
-  planId: { type: Schema.Types.ObjectId, ref: 'Plan', required: true },
-  collectionId: { type: Schema.Types.ObjectId, ref: 'Collection', required: true },
-  title: { type: String, default: '', required: true },
-  description: { type: String, default: '', required: true },
-  lat: { type: Number },
-  lng: { type: Number },
-  date: { type: Date, default: Date.now },
-  createdAt: [{ type: Date, default: new Date(), required: true }],
-  updatedAt: [{ type: Date, default: new Date(), required: true }],
-  deletedAt: { type: Date, default: null },
-});
+const eventSchema = new Schema<IEvent>(
+  {
+    planId: { type: Schema.Types.ObjectId, ref: 'Plan', required: true },
+    collectionId: { type: Schema.Types.ObjectId, ref: 'Collection', required: true },
+    title: { type: String, default: '', required: true },
+    description: { type: String, default: '', required: true },
+    lat: { type: Number },
+    lng: { type: Number },
+    date: { type: Date, default: Date.now },
+    deletedAt: { type: Date, default: null },
+  },
+  { timestamps: true }
+);
 export const Event = models.Event ?? model<IEvent>('Event', eventSchema);
 
 enum SortBy {

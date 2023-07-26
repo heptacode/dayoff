@@ -16,8 +16,6 @@ export default withMongoose(async (req: NextApiRequestWithMongoose, res: NextApi
         title: req.body.title ?? '계획 이름',
         subtitle: req.body.subtitle ?? '새로운 계획',
         mapType: req.body.mapType ?? 'google',
-        createdAt: new Date(),
-        updatedAt: new Date(),
         deletedAt: null,
       });
       return res.status(201).send(plan);

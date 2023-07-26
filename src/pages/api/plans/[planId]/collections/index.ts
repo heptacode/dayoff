@@ -12,7 +12,10 @@ export default withMongoose(async (req: NextApiRequestWithMongoose, res: NextApi
       return res.status(404).send('');
     }
     case 'POST': {
-      const documentCount = await Collection.countDocuments({ planId: req.query.planId });
+      const documentCount = await Collection.countDocuments({
+        planId: req.query.planId,
+        deletedAt: null,
+      });
       if (documentCount >= 15) {
         return res.status(402).send('');
       }
@@ -21,8 +24,6 @@ export default withMongoose(async (req: NextApiRequestWithMongoose, res: NextApi
         planId: req.query.planId,
         title: req.body.title ?? '새 컬렉션',
         color: req.body.color ?? 'blue',
-        createdAt: new Date(),
-        updatedAt: new Date(),
         deletedAt: null,
       });
       return res.status(201).send(collection);
