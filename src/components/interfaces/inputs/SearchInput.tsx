@@ -50,9 +50,11 @@ export function SearchInput({
           break;
         }
         case 'Enter': {
-          handlePlaceSelect(places[hoveredIndex]);
-          setSearchValue('');
-          setHoveredIndex(0);
+          if (hoveredIndex !== -1) {
+            handlePlaceSelect(places[hoveredIndex]);
+            setSearchValue('');
+            setHoveredIndex(0);
+          }
           return;
         }
         default: {
