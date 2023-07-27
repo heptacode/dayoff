@@ -28,18 +28,10 @@ export function useCollectionEdit() {
   }
 
   function handleColorChange(collectionId: string, value: string) {
-    if (collections[collectionId].color !== collectionStore.collections[collectionId].color) {
+    if (collections[collectionId]?.color !== collectionStore.collections[collectionId].color) {
       collectionStore.setCollectionColor(collectionId, value);
       updateCollection({ collectionId, color: value });
     }
-
-    // if (collectionStore.collections.get(collectionId)!.color !== value) {
-    //   collectionStore.setCollections(collectionId, {
-    //     ...collectionStore.collections.get(collectionId)!,
-    //     color: value,
-    //   });
-    //   updateCollection({ collectionId, color: value });
-    // }
   }
 
   async function handleCollectionDelete(collectionId: string) {
