@@ -1,7 +1,7 @@
 import { PlanCard } from '@/components/plans/PlanCard';
 import { usePlanQuery } from '@/hooks/queries/plan';
 import { useCollectionStore } from '@/stores/collectionStore';
-import { IPlan } from '@/types';
+import { usePlanStore } from '@/stores/planStore';
 import {
   Box,
   Button,
@@ -16,19 +16,34 @@ import {
 import { useEffect } from 'react';
 import { MdAdd } from 'react-icons/md';
 
-export async function getServerSideProps() {
-  const plans = await (await fetch('http://localhost:3000/api/plans')).json();
-
-  return { props: { plans: JSON.parse(JSON.stringify(plans)) } };
-}
-
-export default function Home({ plans }: { plans: IPlan[] }) {
+export default function Home() {
+  const planStore = usePlanStore();
   const collectionStore = useCollectionStore();
-  const { createPlan } = usePlanQuery({});
+  const { plans, createPlan } = usePlanQuery({});
 
   useEffect(() => {
     collectionStore.clearCollections();
   }, []);
+
+  function renderPlanTiles() {
+    if (planStore.isLoading) {
+      return [...Array(4).keys()].map(n => <Skeleton key={n} height="152px" borderRadius="md" />);
+    } else if (plans?.length) {
+      return plans.map(plan => (
+        <Fade key={plan._id} in>
+          <PlanCard
+            plan={plan}
+            cursor="pointer"
+            _hover={{
+              boxShadow: 'md',
+            }}
+          />
+        </Fade>
+      ));
+    } else {
+      return <></>;
+    }
+  }
 
   return (
     <>
@@ -49,19 +64,7 @@ export default function Home({ plans }: { plans: IPlan[] }) {
 
       <Container>
         <SimpleGrid spacing={4} templateColumns="repeat(auto-fill, minmax(250px, 1fr))">
-          {plans.length
-            ? plans.map(plan => (
-                <Fade key={plan._id} in>
-                  <PlanCard
-                    plan={plan}
-                    cursor="pointer"
-                    _hover={{
-                      boxShadow: 'md',
-                    }}
-                  />
-                </Fade>
-              ))
-            : [...Array(4).keys()].map(n => <Skeleton key={n} height="152px" borderRadius="md" />)}
+          {renderPlanTiles()}
         </SimpleGrid>
       </Container>
     </>

@@ -20,10 +20,12 @@ export function usePlanQuery({
   const eventStore = useEventStore();
 
   const {
-    isLoading: isFetching,
-    data: plan,
-    refetch,
-  } = useQuery<IPlan>(
+    isFetching: isPlansFetching,
+    data: plans,
+    refetch: refetchPlans,
+  } = useQuery(['plans'], async () => (await getRequest<IPlan[]>(`/api/plans`)).data);
+
+  const { isFetching: isPlanFetching, data: plan } = useQuery(
     ['plan', planStore.planId],
     async () => (await getRequest<IPlan>(`/api/plans/${planStore.planId}`)).data,
     {
@@ -41,7 +43,7 @@ export function usePlanQuery({
     async () => (await postRequest<IPlan>(`/api/plans`)).data,
     {
       onSuccess(data) {
-        refetch();
+        refetchPlans();
         router.push(`/${data._id}`);
       },
     }
@@ -79,10 +81,13 @@ export function usePlanQuery({
   );
 
   useEffect(() => {
-    planStore.setIsLoading(isFetching || isCreating || isUpdating || isDeleting);
-  }, [isFetching, isCreating, isUpdating, isDeleting]);
+    planStore.setIsLoading(
+      isPlansFetching || isPlanFetching || isCreating || isUpdating || isDeleting
+    );
+  }, [isPlansFetching, isPlanFetching, isCreating, isUpdating, isDeleting]);
 
   return {
+    plans,
     plan,
     createPlan,
     updatePlan,
