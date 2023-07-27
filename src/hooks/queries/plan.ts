@@ -1,5 +1,6 @@
 import { useCollectionStore } from '@/stores/collectionStore';
 import { useEventStore } from '@/stores/eventStore';
+import { useGlobalStore } from '@/stores/globalStore';
 import { usePlanStore } from '@/stores/planStore';
 import { deleteRequest, getRequest, patchRequest, postRequest } from '@heptacode/http-request';
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -15,6 +16,7 @@ export function usePlanQuery({
   onFetchSuccess?(data: IPlan): void;
 }) {
   const router = useRouter();
+  const globalStore = useGlobalStore();
   const planStore = usePlanStore();
   const collectionStore = useCollectionStore();
   const eventStore = useEventStore();
@@ -43,8 +45,8 @@ export function usePlanQuery({
     async () => (await postRequest<IPlan>(`/api/plans`)).data,
     {
       onSuccess(data) {
-        refetchPlans();
         router.push(`/${data._id}`);
+        refetchPlans();
       },
     }
   );
@@ -72,7 +74,9 @@ export function usePlanQuery({
     (planId: string) => deleteRequest(`/api/plans/${planId}`),
     {
       onSuccess() {
+        router.replace('/');
         planStore.setPlanId(null);
+        globalStore.setIsPlanEditModalOpen(false);
         collectionStore.clearCollections();
         collectionStore.setCollectionId(null);
         eventStore.clearEvents();
