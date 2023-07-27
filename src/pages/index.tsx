@@ -52,15 +52,14 @@ export default function Home() {
           <Container py={{ base: '4', lg: '5' }}>
             <HStack spacing="10" justify="space-between">
               <Heading size="lg">Dayoff</Heading>
+              <Button onClick={() => createPlan()}>
+                <Icon as={MdAdd} mr="1" />
+                만들기
+              </Button>
             </HStack>
           </Container>
         </Box>
       </Box>
-
-      <Button onClick={() => createPlan()}>
-        <Icon as={MdAdd} mr="1" />
-        추가
-      </Button>
 
       <Container>
         <SimpleGrid spacing={4} templateColumns="repeat(auto-fill, minmax(250px, 1fr))">
