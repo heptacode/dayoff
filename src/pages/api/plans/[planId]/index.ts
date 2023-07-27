@@ -1,8 +1,13 @@
 import { NextApiRequestWithMongoose, withMongoose } from '@/hooks/mongoose';
 import { Plan } from '@/types';
+import { isValidObjectId } from 'mongoose';
 import type { NextApiResponse } from 'next';
 
 export default withMongoose(async (req: NextApiRequestWithMongoose, res: NextApiResponse<any>) => {
+  if (!isValidObjectId(req.query.planId)) {
+    return res.status(400).send('');
+  }
+
   switch (req.method) {
     case 'GET': {
       const plan = await Plan.findOne({ _id: req.query.planId, deletedAt: null });

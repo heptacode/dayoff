@@ -1,8 +1,17 @@
 import { NextApiRequestWithMongoose, withMongoose } from '@/hooks/mongoose';
 import { Event } from '@/types';
+import { isValidObjectId } from 'mongoose';
 import type { NextApiResponse } from 'next';
 
 export default withMongoose(async (req: NextApiRequestWithMongoose, res: NextApiResponse<any>) => {
+  if (
+    !isValidObjectId(req.query.planId) ||
+    !isValidObjectId(req.query.collectionId) ||
+    !isValidObjectId(req.query.eventId)
+  ) {
+    return res.status(400).send('');
+  }
+
   switch (req.method) {
     case 'PATCH': {
       const event = await Event.findByIdAndUpdate(req.query.eventId, {
