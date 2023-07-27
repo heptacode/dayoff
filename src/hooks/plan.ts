@@ -56,7 +56,7 @@ export function usePlan() {
   function handlePlaceSelect(place: Place) {
     if (
       collectionStore.collectionId &&
-      collectionStore.collections.has(collectionStore.collectionId)
+      Object.hasOwn(collectionStore.collections, collectionStore.collectionId)
     ) {
       createEvent({
         collectionId: collectionStore.collectionId,
@@ -76,7 +76,7 @@ export function usePlan() {
   }
 
   async function handlePlanDelete() {
-    if (collectionStore.collections.size) {
+    if (Object.keys(collectionStore.collections).length) {
       alert('계획을 삭제하려면 남아있는 컬렉션이 없어야 합니다.');
       return;
     } else if (confirm('계획이 영구적으로 삭제됩니다. 계속할까요?')) {

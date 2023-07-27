@@ -1,4 +1,6 @@
 import { useCollectionStore } from '@/stores/collectionStore';
+import { ICollection } from '@/types';
+import { useState } from 'react';
 import { useCollectionQuery } from './queries/collections';
 
 export function useCollectionEdit() {
@@ -6,25 +8,38 @@ export function useCollectionEdit() {
 
   const { updateCollection, deleteCollection } = useCollectionQuery({});
 
+  const [collections, setCollections] = useState<Record<string, ICollection>>({});
+
   function handleTitleInput(collectionId: string, value: string) {
-    collectionStore.setCollections(collectionId, {
-      ...collectionStore.collections.get(collectionId)!,
-      title: value,
+    setCollections({
+      ...collections,
+      [collectionId]: {
+        ...collections[collectionId],
+        title: value,
+      },
     });
   }
 
   function handleTitleSave(collectionId: string, value: string) {
-    updateCollection({ collectionId, title: value });
+    if (collections[collectionId].title !== collectionStore.collections[collectionId].title) {
+      collectionStore.setCollectionTitle(collectionId, value);
+      updateCollection({ collectionId, title: value });
+    }
   }
 
   function handleColorChange(collectionId: string, value: string) {
-    if (collectionStore.collections.get(collectionId)!.color !== value) {
-      collectionStore.setCollections(collectionId, {
-        ...collectionStore.collections.get(collectionId)!,
-        color: value,
-      });
+    if (collections[collectionId].color !== collectionStore.collections[collectionId].color) {
+      collectionStore.setCollectionColor(collectionId, value);
       updateCollection({ collectionId, color: value });
     }
+
+    // if (collectionStore.collections.get(collectionId)!.color !== value) {
+    //   collectionStore.setCollections(collectionId, {
+    //     ...collectionStore.collections.get(collectionId)!,
+    //     color: value,
+    //   });
+    //   updateCollection({ collectionId, color: value });
+    // }
   }
 
   async function handleCollectionDelete(collectionId: string) {

@@ -61,7 +61,7 @@ export function EventEditModal(props: Partial<ModalProps>) {
               <FormLabel>이벤트 제목</FormLabel>
               <Input
                 placeholder="제목 입력"
-                value={events[eventStore.selectedEventId].title}
+                value={events[eventStore.selectedEventId]?.title}
                 isDisabled={eventStore.isLoading}
                 onChange={e => handleTitleInput(eventStore.selectedEventId!, e.target.value)}
                 onBlur={e => handleTitleSave(eventStore.selectedEventId!, e.target.value)}
@@ -72,7 +72,7 @@ export function EventEditModal(props: Partial<ModalProps>) {
               <FormLabel>이벤트 설명</FormLabel>
               <Textarea
                 placeholder="설명 입력"
-                value={events[eventStore.selectedEventId].description}
+                value={events[eventStore.selectedEventId]?.description}
                 isDisabled={eventStore.isLoading}
                 onFocus={e => handleDescriptionResize(e)}
                 onChange={e => {
@@ -87,7 +87,7 @@ export function EventEditModal(props: Partial<ModalProps>) {
               <FormLabel>이벤트 날짜</FormLabel>
               <Input
                 type="datetime-local"
-                value={dayjs(events[eventStore.selectedEventId].date).format('YYYY-MM-DDTHH:mm')}
+                value={dayjs(events[eventStore.selectedEventId]?.date).format('YYYY-MM-DDTHH:mm')}
                 onChange={e =>
                   handleDateInput(
                     eventStore.selectedEventId!,
@@ -115,7 +115,7 @@ export function EventEditModal(props: Partial<ModalProps>) {
                     key={collection._id}
                     value={collection._id}
                     disabled={
-                      String(events[eventStore.selectedEventId!].collectionId) === collection._id
+                      String(events[eventStore.selectedEventId!]?.collectionId) === collection._id
                     }
                   >
                     {collection.title}

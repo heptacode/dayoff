@@ -23,7 +23,7 @@ export function TimelineEdit(props: StackProps) {
 
   return (
     <Stack {...props}>
-      {collectionStore.collections?.size ? (
+      {Object.keys(collectionStore.collections).length ? (
         <Stack divider={<StackDivider />} spacing="4">
           {collectionStore.getCollections().map(collection => (
             <Box key={collection._id}>

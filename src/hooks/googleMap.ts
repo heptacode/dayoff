@@ -62,7 +62,11 @@ export function useGoogleMap() {
   }
 
   useEffect(() => {
-    if (map && collectionStore.selectedCollectionIds.length && eventStore.events.size) {
+    if (
+      map &&
+      collectionStore.selectedCollectionIds.length &&
+      Object.keys(eventStore.events).length
+    ) {
       const bounds = new google.maps.LatLngBounds();
       eventStore.getActiveEvents().forEach(event => {
         bounds.extend(new google.maps.LatLng(event.lat, event.lng));
@@ -70,7 +74,7 @@ export function useGoogleMap() {
 
       map.fitBounds(bounds);
     }
-  }, [map, collectionStore.selectedCollectionIds, eventStore.events.size]);
+  }, [map, collectionStore.selectedCollectionIds, eventStore.events]);
 
   useEffect(() => {
     if (map) {
@@ -81,7 +85,7 @@ export function useGoogleMap() {
           .getCollectionEvents(event.collectionId)
           .findIndex(_event => _event._id === event._id);
 
-        const color = collectionStore.collections.get(String(event.collectionId))?.color;
+        const color = collectionStore.collections[String(event.collectionId)]?.color;
 
         const marker = new google.maps.Marker({
           map,

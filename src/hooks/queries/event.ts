@@ -14,7 +14,7 @@ export function useEventQuery() {
   const queryMap: Map<string, number> = new Map();
 
   const eventQueries = useQueries({
-    queries: collectionStore.selectedCollectionIds.map((collectionId, index) => {
+    queries: collectionStore.selectedCollectionIds.map((collectionId: string, index) => {
       queryMap.set(collectionId, index);
 
       return {

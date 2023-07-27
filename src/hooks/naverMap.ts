@@ -63,7 +63,11 @@ export function useNaverMap() {
   }
 
   useEffect(() => {
-    if (map && collectionStore.selectedCollectionIds.length && eventStore.events.size) {
+    if (
+      map &&
+      collectionStore.selectedCollectionIds.length &&
+      Object.keys(eventStore.events).length
+    ) {
       let bounds: naver.maps.LatLngBounds | null = null;
       eventStore.getActiveEvents().forEach(event => {
         if (bounds) {
@@ -80,7 +84,7 @@ export function useNaverMap() {
         map.fitBounds(bounds);
       }
     }
-  }, [map, collectionStore.selectedCollectionIds, eventStore.events.size]);
+  }, [map, collectionStore.selectedCollectionIds, eventStore.events]);
 
   useEffect(() => {
     if (map) {
@@ -91,7 +95,7 @@ export function useNaverMap() {
           .getCollectionEvents(event.collectionId)
           .findIndex(_event => _event._id === event._id);
 
-        const color = collectionStore.collections.get(String(event.collectionId))?.color;
+        const color = collectionStore.collections[String(event.collectionId)]?.color;
 
         const marker = new naver.maps.Marker({
           map,

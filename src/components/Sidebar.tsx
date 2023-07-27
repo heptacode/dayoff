@@ -91,20 +91,20 @@ export function Sidebar() {
         </DrawerHeader>
 
         <Box p="5" overflowY="scroll">
-          {collectionStore.collections.size && !collectionStore.isEditing ? (
+          {Object.keys(collectionStore.collections).length && !collectionStore.isEditing ? (
             <SearchInput handlePlaceSelect={handlePlaceSelect} />
           ) : null}
 
           {!collectionStore.isEditing ? <Timeline my="5" /> : <TimelineEdit my="3" mb="5" />}
 
           <HStack justify="center">
-            {collectionStore.collections.size < 15 ? (
+            {Object.keys(collectionStore.collections).length < 15 ? (
               <Button onClick={() => createCollection()}>
                 <Icon as={MdAdd} mr="1" />
                 추가
               </Button>
             ) : null}
-            {collectionStore.collections.size ? (
+            {Object.keys(collectionStore.collections).length ? (
               !collectionStore.isEditing ? (
                 <Button onClick={() => collectionStore.setIsEditing(true)}>
                   <Icon as={MdEdit} mr="1" />

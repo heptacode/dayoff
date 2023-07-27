@@ -23,7 +23,7 @@ export function useCollectionQuery({
     {
       enabled: Boolean(planStore.planId),
       onSuccess(data) {
-        data.forEach(collection => collectionStore.setCollections(collection._id, collection));
+        data.forEach(collection => collectionStore.setCollection(collection._id, collection));
 
         onFetchSuccess?.(data);
       },
