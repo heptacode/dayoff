@@ -34,7 +34,8 @@ export const useEventStore = create<EventState>()(
         useCollectionStore.getState().selectedCollectionIds.includes(String(event.collectionId))
       ),
     getCollectionEvents(collectionIdResolvable) {
-      return this.getEvents()
+      return get()
+        .getEvents()
         .filter(event => String(event.collectionId) === String(collectionIdResolvable))
         .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
     },
@@ -44,7 +45,7 @@ export const useEventStore = create<EventState>()(
     setEvent(eventId, value) {
       set({
         events: {
-          ...this.events,
+          ...get().events,
           [eventId]: value,
         },
       });
@@ -53,9 +54,9 @@ export const useEventStore = create<EventState>()(
     setEventTitle(eventId, value) {
       set({
         events: {
-          ...this.events,
+          ...get().events,
           [eventId]: {
-            ...this.events[eventId],
+            ...get().events[eventId],
             title: value,
           },
         },
@@ -65,9 +66,9 @@ export const useEventStore = create<EventState>()(
     setEventDescription(eventId, value) {
       set({
         events: {
-          ...this.events,
+          ...get().events,
           [eventId]: {
-            ...this.events[eventId],
+            ...get().events[eventId],
             description: value,
           },
         },
@@ -77,9 +78,9 @@ export const useEventStore = create<EventState>()(
     setEventDate(eventId, value) {
       set({
         events: {
-          ...this.events,
+          ...get().events,
           [eventId]: {
-            ...this.events[eventId],
+            ...get().events[eventId],
             date: value,
           },
         },
@@ -87,7 +88,7 @@ export const useEventStore = create<EventState>()(
       set({ updatedAt: new Date() });
     },
     deleteEvent(eventId) {
-      delete this.events[eventId];
+      delete get().events[eventId];
       set({ updatedAt: new Date() });
     },
     clearEvents() {

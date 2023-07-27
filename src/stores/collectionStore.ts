@@ -44,7 +44,7 @@ export const useCollectionStore = create<CollectionState>()(
       setCollection(collectionId, value) {
         set({
           collections: {
-            ...this.collections,
+            ...get().collections,
             [collectionId]: value,
           },
         });
@@ -53,9 +53,9 @@ export const useCollectionStore = create<CollectionState>()(
       setCollectionTitle(collectionId, value) {
         set({
           collections: {
-            ...this.collections,
+            ...get().collections,
             [collectionId]: {
-              ...this.collections[collectionId],
+              ...get().collections[collectionId],
               title: value,
             },
           },
@@ -65,9 +65,9 @@ export const useCollectionStore = create<CollectionState>()(
       setCollectionColor(collectionId, value) {
         set({
           collections: {
-            ...this.collections,
+            ...get().collections,
             [collectionId]: {
-              ...this.collections[collectionId],
+              ...get().collections[collectionId],
               color: value,
             },
           },
