@@ -31,9 +31,16 @@ export function useGoogleMap() {
     });
     setMap(map);
 
-    const position = globalStore.userLocation ?? (await getCurrentPosition());
+    const position = globalStore.userLocation?.coords?.latitude
+      ? globalStore.userLocation
+      : (await getCurrentPosition()) ?? {
+          coords: {
+            latitude: 33.3846,
+            longitude: 126.5535,
+          },
+        };
 
-    if (!globalStore.userLocation) {
+    if (!globalStore.userLocation?.coords?.latitude) {
       globalStore.setUserLocation(position);
     }
 

@@ -5,10 +5,7 @@
  */
 export async function getCurrentPosition(): Promise<GeolocationPosition> {
   return new Promise<GeolocationPosition>(
-    (
-      resolve: (position: GeolocationPosition) => void,
-      reject: (positionError: GeolocationPositionError) => void
-    ) => {
+    (resolve: PositionCallback, reject: PositionErrorCallback | null) => {
       navigator.geolocation.getCurrentPosition(resolve, reject, {
         enableHighAccuracy: true,
         timeout: 10000,
