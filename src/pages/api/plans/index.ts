@@ -15,7 +15,7 @@ export default withMongoose(async (req: NextApiRequestWithMongoose, res: NextApi
       const plan = await Plan.create<IPlan>({
         title: req.body.title ?? '계획 이름',
         subtitle: req.body.subtitle ?? '새로운 계획',
-        mapType: req.body.mapType ?? 'google',
+        mapType: req.body.mapType ?? 'naver',
         deletedAt: null,
       });
       return res.status(201).send(plan);
