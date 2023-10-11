@@ -1,11 +1,11 @@
 import { Timeline } from '@/components/events/Timeline';
 import { TimelineEdit } from '@/components/events/TimelineEdit';
 import { SearchInput } from '@/components/interfaces/inputs/SearchInput';
-import { usePlan } from '@/hooks/plan';
+import { useProject } from '@/hooks/project';
 import { useCollectionQuery } from '@/hooks/queries/collections';
 import { useCollectionStore } from '@/stores/collectionStore';
 import { useGlobalStore } from '@/stores/globalStore';
-import { usePlanStore } from '@/stores/planStore';
+import { useProjectStore } from '@/stores/projectStore';
 import {
   Box,
   Button,
@@ -32,7 +32,7 @@ import { MdAdd, MdCheck, MdEdit, MdGridView, MdSettings } from 'react-icons/md';
 export function Sidebar() {
   const router = useRouter();
   const globalStore = useGlobalStore();
-  const planStore = usePlanStore();
+  const projectStore = useProjectStore();
   const collectionStore = useCollectionStore();
   const {
     title,
@@ -42,7 +42,7 @@ export function Sidebar() {
     handleSubtitleInput,
     handleSubtitleSave,
     handlePlaceSelect,
-  } = usePlan();
+  } = useProject();
   const { isOpen, onClose } = useDisclosure({
     isOpen: globalStore.isSidebarOpen,
     onClose() {
@@ -63,7 +63,7 @@ export function Sidebar() {
       {collectionStore.isEditing ? <DrawerOverlay /> : null}
       <DrawerContent>
         <DrawerCloseButton onClick={() => globalStore.setIsSidebarOpen(false)} />
-        {planStore.isLoading || collectionStore.isLoading ? (
+        {projectStore.isLoading || collectionStore.isLoading ? (
           <Progress size="xs" isIndeterminate />
         ) : (
           <Box h="1" />
@@ -131,7 +131,7 @@ export function Sidebar() {
           <IconButton
             aria-label="설정"
             icon={<Icon as={MdSettings} boxSize="5" />}
-            onClick={() => globalStore.setIsPlanEditModalOpen(true)}
+            onClick={() => globalStore.setIsProjectEditModalOpen(true)}
           />
         </DrawerFooter>
       </DrawerContent>

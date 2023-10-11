@@ -1,22 +1,22 @@
 import { NextApiRequestWithMongoose, withMongoose } from '@/hooks/mongoose';
-import { Collection, ICollection, Plan } from '@/types';
+import { Collection, ICollection, Project } from '@/types';
 import { isValidObjectId } from 'mongoose';
 import type { NextApiResponse } from 'next';
 
 interface ApiRequest extends NextApiRequestWithMongoose {
   query: {
-    planId: string;
+    projectId: string;
   };
 }
 
 export default withMongoose(async (req: ApiRequest, res: NextApiResponse<any>) => {
-  if (!isValidObjectId(req.query.planId)) {
+  if (!isValidObjectId(req.query.projectId)) {
     return res.status(400).send('');
   }
 
   switch (req.method) {
     case 'GET': {
-      const collection = await Collection.find({ planId: req.query.planId, deletedAt: null });
+      const collection = await Collection.find({ projectId: req.query.projectId, deletedAt: null });
       if (collection) {
         return res.status(200).json(collection);
       }
@@ -24,7 +24,7 @@ export default withMongoose(async (req: ApiRequest, res: NextApiResponse<any>) =
     }
     case 'POST': {
       const documentCount = await Collection.countDocuments({
-        planId: req.query.planId,
+        projectId: req.query.projectId,
         deletedAt: null,
       });
       if (documentCount >= 15) {
@@ -32,13 +32,13 @@ export default withMongoose(async (req: ApiRequest, res: NextApiResponse<any>) =
       }
 
       const collection = await Collection.create({
-        planId: req.query.planId,
+        projectId: req.query.projectId,
         title: req.body.title ?? '새 컬렉션',
         color: req.body.color ?? 'blue',
         deletedAt: null,
       } satisfies Partial<ICollection>);
 
-      await Plan.findByIdAndUpdate(req.query.planId, {
+      await Project.findByIdAndUpdate(req.query.projectId, {
         $push: { collectionIds: collection.id },
       });
 

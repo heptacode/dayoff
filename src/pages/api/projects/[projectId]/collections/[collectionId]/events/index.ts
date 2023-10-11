@@ -5,13 +5,13 @@ import type { NextApiResponse } from 'next';
 
 interface ApiRequest extends NextApiRequestWithMongoose {
   query: {
-    planId: string;
+    projectId: string;
     collectionId: string;
   };
 }
 
 export default withMongoose(async (req: ApiRequest, res: NextApiResponse<any>) => {
-  if (!isValidObjectId(req.query.planId) || !isValidObjectId(req.query.collectionId)) {
+  if (!isValidObjectId(req.query.projectId) || !isValidObjectId(req.query.collectionId)) {
     return res.status(400).send('');
   }
 
@@ -31,7 +31,7 @@ export default withMongoose(async (req: ApiRequest, res: NextApiResponse<any>) =
       }
 
       const event = await Event.create({
-        planId: req.query.planId,
+        projectId: req.query.projectId,
         collectionId: req.query.collectionId,
         title: req.body.title ?? '이벤트 제목',
         description: req.body.description ?? '이벤트 설명',

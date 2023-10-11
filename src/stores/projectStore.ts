@@ -1,38 +1,38 @@
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
-import type { IPlan, MapType } from '@/types';
+import type { IProject, MapType } from '@/types';
 
-export interface PlanState {
+export interface ProjectState {
   isLoading: boolean;
-  plans: IPlan[];
-  planId: string | null;
+  projects: IProject[];
+  projectId: string | null;
   title: string;
   subtitle: string;
   mapType: MapType | null;
   setIsLoading(value: boolean): void;
-  setPlans(value: IPlan[]): void;
-  setPlanId(value: string | null): void;
+  setProjects(value: IProject[]): void;
+  setProjectId(value: string | null): void;
   setTitle(value: string): void;
   setSubtitle(value: string): void;
   setMapType(value: MapType): void;
 }
 
-export const usePlanStore = create<PlanState>()(
+export const useProjectStore = create<ProjectState>()(
   devtools(set => ({
     isLoading: true,
-    plans: [],
-    planId: null,
+    projects: [],
+    projectId: null,
     title: '',
     subtitle: '',
     mapType: null,
     setIsLoading(value) {
       set({ isLoading: value });
     },
-    setPlans(value) {
-      set({ plans: value });
+    setProjects(value) {
+      set({ projects: value });
     },
-    setPlanId(value) {
-      set({ planId: value });
+    setProjectId(value) {
+      set({ projectId: value });
     },
     setTitle(value) {
       set({ title: value });

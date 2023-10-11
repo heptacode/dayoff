@@ -1,5 +1,5 @@
-import { usePlan } from '@/hooks/plan';
-import { usePlanStore } from '@/stores/planStore';
+import { useProject } from '@/hooks/project';
+import { useProjectStore } from '@/stores/projectStore';
 import {
   Box,
   Button,
@@ -23,8 +23,8 @@ import {
 } from '@chakra-ui/react';
 import { MdDeleteForever } from 'react-icons/md';
 
-export function PlanEditModal(props: Partial<ModalProps>) {
-  const planStore = usePlanStore();
+export function ProjectEditModal(props: Partial<ModalProps>) {
+  const projectStore = useProjectStore();
 
   const { isOpen, onClose } = useDisclosure({
     ...props,
@@ -37,48 +37,48 @@ export function PlanEditModal(props: Partial<ModalProps>) {
     handleSubtitleInput,
     handleSubtitleSave,
     handleMapTypeChange,
-    handlePlanDelete,
-  } = usePlan();
+    handleProjectDelete,
+  } = useProject();
 
   return (
     <Modal isOpen={isOpen} isCentered onClose={onClose} {...props}>
       <ModalOverlay />
       <ModalContent>
-        {planStore.isLoading ? <Progress size="xs" isIndeterminate /> : <Box h="1" />}
-        <ModalHeader>계획 편집</ModalHeader>
+        {projectStore.isLoading ? <Progress size="xs" isIndeterminate /> : <Box h="1" />}
+        <ModalHeader>프로젝트 편집</ModalHeader>
         <ModalCloseButton />
         <ModalBody mb="5">
           <Stack divider={<StackDivider />} spacing="4">
             <FormControl>
-              <FormLabel>계획 제목</FormLabel>
+              <FormLabel>프로젝트 제목</FormLabel>
               <Input
                 placeholder="제목 입력"
                 value={title}
-                isDisabled={planStore.isLoading}
+                isDisabled={projectStore.isLoading}
                 onChange={e => handleTitleInput(e.target.value)}
                 onBlur={handleTitleSave}
               />
             </FormControl>
 
             <FormControl>
-              <FormLabel>계획 부제목</FormLabel>
+              <FormLabel>프로젝트 부제목</FormLabel>
               <Input
                 placeholder="부제목 입력"
                 value={subtitle}
-                isDisabled={planStore.isLoading}
+                isDisabled={projectStore.isLoading}
                 onChange={e => handleSubtitleInput(e.target.value)}
                 onBlur={handleSubtitleSave}
               />
             </FormControl>
 
             <FormControl>
-              <FormLabel>계획 유형</FormLabel>
+              <FormLabel>프로젝트 유형</FormLabel>
               <HStack>
                 <Tooltip label="네이버 지도">
                   <Button
                     placeholder="부제목 입력"
-                    isDisabled={planStore.isLoading}
-                    variant={planStore.mapType === 'naver' ? 'solid' : 'outline'}
+                    isDisabled={projectStore.isLoading}
+                    variant={projectStore.mapType === 'naver' ? 'solid' : 'outline'}
                     onClick={() => handleMapTypeChange('naver')}
                   >
                     🇰🇷 전국
@@ -88,8 +88,8 @@ export function PlanEditModal(props: Partial<ModalProps>) {
                 <Tooltip label="Google 지도">
                   <Button
                     placeholder="부제목 입력"
-                    isDisabled={planStore.isLoading}
-                    variant={planStore.mapType === 'google' ? 'solid' : 'outline'}
+                    isDisabled={projectStore.isLoading}
+                    variant={projectStore.mapType === 'google' ? 'solid' : 'outline'}
                     onClick={() => handleMapTypeChange('google')}
                   >
                     🌏 전세계
@@ -99,7 +99,11 @@ export function PlanEditModal(props: Partial<ModalProps>) {
             </FormControl>
 
             <Box>
-              <Button colorScheme="red" disabled={planStore.isLoading} onClick={handlePlanDelete}>
+              <Button
+                colorScheme="red"
+                disabled={projectStore.isLoading}
+                onClick={handleProjectDelete}
+              >
                 <Icon as={MdDeleteForever} boxSize="5" />
                 삭제
               </Button>

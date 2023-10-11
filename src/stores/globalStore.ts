@@ -6,8 +6,8 @@ export interface GlobalState {
   setUserLocation(value: GeolocationPosition): void;
   isSidebarOpen: boolean;
   setIsSidebarOpen(value: boolean): void;
-  isPlanEditModalOpen: boolean;
-  setIsPlanEditModalOpen(value: boolean): void;
+  isProjectEditModalOpen: boolean;
+  setIsProjectEditModalOpen(value: boolean): void;
   isEventEditModalOpen: boolean;
   setIsEventEditModalOpen(value: boolean): void;
 }
@@ -27,9 +27,9 @@ export const useGlobalStore = create<GlobalState>()(
       setIsEventEditModalOpen(value) {
         set({ isEventEditModalOpen: value });
       },
-      isPlanEditModalOpen: false,
-      setIsPlanEditModalOpen(value) {
-        set({ isPlanEditModalOpen: value });
+      isProjectEditModalOpen: false,
+      setIsProjectEditModalOpen(value) {
+        set({ isProjectEditModalOpen: value });
       },
     })),
     {

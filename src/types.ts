@@ -14,7 +14,7 @@ export type ColorType =
   | 'pink'
   | string;
 
-export interface IPlan {
+export interface IProject {
   _id: string;
   title: string;
   subtitle: string;
@@ -25,7 +25,7 @@ export interface IPlan {
   deletedAt: Date | null;
 }
 
-const planSchema = new Schema<IPlan>(
+const projectSchema = new Schema<IProject>(
   {
     title: { type: String, default: '', required: true },
     subtitle: { type: String, default: '', required: true },
@@ -35,11 +35,11 @@ const planSchema = new Schema<IPlan>(
   },
   { timestamps: true }
 );
-export const Plan = models.Plan ?? model<IPlan>('Plan', planSchema);
+export const Project = models.Project ?? model<IProject>('Project', projectSchema);
 
 export interface ICollection {
   _id: string;
-  planId: ObjectId | string;
+  projectId: ObjectId | string;
   title: string;
   color: ColorType;
   createdAt: Date;
@@ -49,7 +49,7 @@ export interface ICollection {
 
 const collectionSchema = new Schema<ICollection>(
   {
-    planId: { type: Schema.Types.ObjectId, ref: 'Plan', required: true },
+    projectId: { type: Schema.Types.ObjectId, ref: 'Project', required: true },
     title: { type: String, default: '', required: true },
     color: { type: String, default: '', required: true },
     deletedAt: { type: Date, default: null },
@@ -60,7 +60,7 @@ export const Collection = models.Collection ?? model<ICollection>('Collection', 
 
 export interface IEvent {
   _id: string;
-  planId: ObjectId;
+  projectId: ObjectId;
   collectionId: ObjectId;
   title: string;
   description: string;
@@ -74,7 +74,7 @@ export interface IEvent {
 
 const eventSchema = new Schema<IEvent>(
   {
-    planId: { type: Schema.Types.ObjectId, ref: 'Plan', required: true },
+    projectId: { type: Schema.Types.ObjectId, ref: 'Project', required: true },
     collectionId: { type: Schema.Types.ObjectId, ref: 'Collection', required: true },
     title: { type: String, default: '', required: true },
     description: { type: String, default: '', required: true },

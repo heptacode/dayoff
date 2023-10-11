@@ -1,7 +1,7 @@
-import { PlanCard } from '@/components/plans/PlanCard';
-import { usePlanQuery } from '@/hooks/queries/plan';
+import { ProjectCard } from '@/components/project/ProjectCard';
+import { useProjectQuery } from '@/hooks/queries/project';
 import { useCollectionStore } from '@/stores/collectionStore';
-import { usePlanStore } from '@/stores/planStore';
+import { useProjectStore } from '@/stores/projectStore';
 import {
   Box,
   Button,
@@ -17,22 +17,22 @@ import { useEffect } from 'react';
 import { MdAdd } from 'react-icons/md';
 
 export default function Home() {
-  const planStore = usePlanStore();
+  const projectStore = useProjectStore();
   const collectionStore = useCollectionStore();
-  const { plans, createPlan } = usePlanQuery({});
+  const { projects, createProject } = useProjectQuery({});
 
   useEffect(() => {
     collectionStore.clearCollections();
   }, []);
 
-  function renderPlanTiles() {
-    if (planStore.isLoading) {
+  function renderProjectTiles() {
+    if (projectStore.isLoading) {
       return [...Array(4).keys()].map(n => <Skeleton key={n} height="152px" borderRadius="md" />);
-    } else if (plans?.length) {
-      return plans.map(plan => (
-        <Fade key={plan._id} in>
-          <PlanCard
-            plan={plan}
+    } else if (projects?.length) {
+      return projects.map(project => (
+        <Fade key={project._id} in>
+          <ProjectCard
+            project={project}
             cursor="pointer"
             _hover={{
               boxShadow: 'md',
@@ -52,7 +52,7 @@ export default function Home() {
           <Container py={{ base: '4', lg: '5' }}>
             <HStack spacing="10" justify="space-between">
               <Heading size="lg">Dayoff</Heading>
-              <Button onClick={() => createPlan()}>
+              <Button onClick={() => createProject()}>
                 <Icon as={MdAdd} mr="1" />
                 만들기
               </Button>
@@ -63,7 +63,7 @@ export default function Home() {
 
       <Container>
         <SimpleGrid spacing={4} templateColumns="repeat(auto-fill, minmax(250px, 1fr))">
-          {renderPlanTiles()}
+          {renderProjectTiles()}
         </SimpleGrid>
       </Container>
     </>

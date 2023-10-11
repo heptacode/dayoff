@@ -1,13 +1,13 @@
 import { useCollectionStore } from '@/stores/collectionStore';
 import { useEventStore } from '@/stores/eventStore';
-import { usePlanStore } from '@/stores/planStore';
+import { useProjectStore } from '@/stores/projectStore';
 import { deleteRequest, getRequest, patchRequest, postRequest } from '@heptacode/http-request';
 import { useMutation, useQueries } from '@tanstack/react-query';
 import { useEffect, useMemo } from 'react';
 import type { IEvent } from '@/types';
 
 export function useEventQuery() {
-  const planStore = usePlanStore();
+  const projectStore = useProjectStore();
   const collectionStore = useCollectionStore();
   const eventStore = useEventStore();
 
@@ -18,14 +18,14 @@ export function useEventQuery() {
       queryMap.set(collectionId, index);
 
       return {
-        queryKey: ['plan.collection.events', collectionId],
+        queryKey: ['project.collection.events', collectionId],
         queryFn: async () =>
           (
             await getRequest<IEvent[]>(
-              `/api/plans/${planStore.planId}/collections/${collectionId}/events`
+              `/api/projects/${projectStore.projectId}/collections/${collectionId}/events`
             )
           ).data,
-        enabled: Boolean(planStore.planId) && Boolean(collectionId),
+        enabled: Boolean(projectStore.projectId) && Boolean(collectionId),
         onSuccess(data: IEvent[]) {
           data.forEach(event => eventStore.setEvent(event._id, event));
         },
@@ -62,7 +62,7 @@ export function useEventQuery() {
       date?: Date;
     }) => {
       await postRequest<IEvent>(
-        `/api/plans/${planStore.planId}/collections/${collectionId}/events`,
+        `/api/projects/${projectStore.projectId}/collections/${collectionId}/events`,
         {
           ...(title && { title }),
           ...(description && { description }),
@@ -98,7 +98,7 @@ export function useEventQuery() {
       collectionId?: string;
     }) => {
       await patchRequest(
-        `/api/plans/${planStore.planId}/collections/${collectionId}/events/${eventId}`,
+        `/api/projects/${projectStore.projectId}/collections/${collectionId}/events/${eventId}`,
         {
           ...(title && { title }),
           ...(description && { description }),
@@ -115,7 +115,7 @@ export function useEventQuery() {
   const { isLoading: isDeleting, mutateAsync: deleteEvent } = useMutation(
     async ({ collectionId, eventId }: { collectionId: string; eventId: string }) => {
       await deleteRequest(
-        `/api/plans/${planStore.planId}/collections/${collectionId}/events/${eventId}`
+        `/api/projects/${projectStore.projectId}/collections/${collectionId}/events/${eventId}`
       );
       if (collectionId) {
         refetchEvent(collectionId);

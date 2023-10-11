@@ -1,5 +1,5 @@
 import { useCollectionStore } from '@/stores/collectionStore';
-import { usePlanStore } from '@/stores/planStore';
+import { useProjectStore } from '@/stores/projectStore';
 import { ICollection } from '@/types';
 import { deleteRequest, getRequest, patchRequest, postRequest } from '@heptacode/http-request';
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -10,7 +10,7 @@ export function useCollectionQuery({
 }: {
   onFetchSuccess?(data: ICollection[]): void;
 }) {
-  const planStore = usePlanStore();
+  const projectStore = useProjectStore();
   const collectionStore = useCollectionStore();
 
   const {
@@ -18,10 +18,10 @@ export function useCollectionQuery({
     data: collections,
     refetch,
   } = useQuery<ICollection[]>(
-    ['plan.collections', planStore.planId],
-    async () => (await getRequest(`/api/plans/${planStore.planId}/collections`)).data,
+    ['project.collections', projectStore.projectId],
+    async () => (await getRequest(`/api/projects/${projectStore.projectId}/collections`)).data,
     {
-      enabled: Boolean(planStore.planId),
+      enabled: Boolean(projectStore.projectId),
       onSuccess(data) {
         data.forEach(collection => collectionStore.setCollection(collection._id, collection));
 
@@ -31,7 +31,7 @@ export function useCollectionQuery({
   );
 
   const { isLoading: isCreating, mutateAsync: createCollection } = useMutation(
-    () => postRequest(`/api/plans/${planStore.planId}/collections`),
+    () => postRequest(`/api/projects/${projectStore.projectId}/collections`),
     {
       onSuccess() {
         refetch();
@@ -41,7 +41,7 @@ export function useCollectionQuery({
 
   const { isLoading: isUpdating, mutateAsync: updateCollection } = useMutation(
     ({ collectionId, title, color }: { collectionId: string; title?: string; color?: string }) =>
-      patchRequest(`/api/plans/${planStore.planId}/collections/${collectionId}`, {
+      patchRequest(`/api/projects/${projectStore.projectId}/collections/${collectionId}`, {
         ...(title && { title }),
         ...(color && { color }),
       }),
@@ -54,7 +54,7 @@ export function useCollectionQuery({
 
   const { isLoading: isDeleting, mutateAsync: deleteCollection } = useMutation(
     (collectionId: string) =>
-      deleteRequest(`/api/plans/${planStore.planId}/collections/${collectionId}`),
+      deleteRequest(`/api/projects/${projectStore.projectId}/collections/${collectionId}`),
     {
       onSuccess() {
         collectionStore.clearCollections();

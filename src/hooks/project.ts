@@ -1,17 +1,17 @@
 import { useCollectionStore } from '@/stores/collectionStore';
 import { useEventStore } from '@/stores/eventStore';
-import { usePlanStore } from '@/stores/planStore';
+import { useProjectStore } from '@/stores/projectStore';
 import { useEffect, useState } from 'react';
 import { useCollectionQuery } from './queries/collections';
 import { useEventQuery } from './queries/event';
-import { usePlanQuery } from './queries/plan';
+import { useProjectQuery } from './queries/project';
 import type { MapType, Place } from '@/types';
 
-export function usePlan() {
+export function useProject() {
   const eventStore = useEventStore();
-  const planStore = usePlanStore();
+  const projectStore = useProjectStore();
   const collectionStore = useCollectionStore();
-  const { updatePlan, deletePlan } = usePlanQuery({});
+  const { updateProject, deleteProject } = useProjectQuery({});
   useCollectionQuery({
     onFetchSuccess(data) {
       if (data?.length) {
@@ -20,25 +20,25 @@ export function usePlan() {
     },
   });
   const { createEvent } = useEventQuery();
-  const [title, setTitle] = useState<string>(planStore.title);
-  const [subtitle, setSubtitle] = useState<string>(planStore.subtitle);
+  const [title, setTitle] = useState<string>(projectStore.title);
+  const [subtitle, setSubtitle] = useState<string>(projectStore.subtitle);
 
   useEffect(() => {
-    setTitle(planStore.title);
-  }, [planStore.title]);
+    setTitle(projectStore.title);
+  }, [projectStore.title]);
 
   useEffect(() => {
-    setSubtitle(planStore.subtitle);
-  }, [planStore.subtitle]);
+    setSubtitle(projectStore.subtitle);
+  }, [projectStore.subtitle]);
 
   function handleTitleInput(value: string) {
     setTitle(value);
   }
 
   function handleTitleSave() {
-    if (title !== planStore.title) {
-      planStore.setTitle(title);
-      updatePlan({ planId: planStore.planId!, title });
+    if (title !== projectStore.title) {
+      projectStore.setTitle(title);
+      updateProject({ projectId: projectStore.projectId!, title });
     }
   }
 
@@ -47,9 +47,9 @@ export function usePlan() {
   }
 
   function handleSubtitleSave() {
-    if (subtitle !== planStore.subtitle) {
-      planStore.setSubtitle(subtitle);
-      updatePlan({ planId: planStore.planId!, subtitle });
+    if (subtitle !== projectStore.subtitle) {
+      projectStore.setSubtitle(subtitle);
+      updateProject({ projectId: projectStore.projectId!, subtitle });
     }
   }
 
@@ -69,18 +69,18 @@ export function usePlan() {
   }
 
   function handleMapTypeChange(value: MapType) {
-    if (planStore.mapType !== value) {
-      planStore.setMapType(value);
-      updatePlan({ planId: planStore.planId!, mapType: value });
+    if (projectStore.mapType !== value) {
+      projectStore.setMapType(value);
+      updateProject({ projectId: projectStore.projectId!, mapType: value });
     }
   }
 
-  async function handlePlanDelete() {
+  async function handleProjectDelete() {
     if (Object.keys(collectionStore.collections).length) {
-      alert('계획을 삭제하려면 남아있는 컬렉션이 없어야 합니다.');
+      alert('프로젝트를 삭제하려면 남아있는 컬렉션이 없어야 합니다.');
       return;
-    } else if (confirm('계획이 영구적으로 삭제됩니다. 계속할까요?')) {
-      await deletePlan(planStore.planId!);
+    } else if (confirm('프로젝트가 영구적으로 삭제됩니다. 계속할까요?')) {
+      await deleteProject(projectStore.projectId!);
       collectionStore.clearCollections();
       collectionStore.setCollectionId(null);
       eventStore.clearEvents();
@@ -96,6 +96,6 @@ export function usePlan() {
     handleSubtitleSave,
     handlePlaceSelect,
     handleMapTypeChange,
-    handlePlanDelete,
+    handleProjectDelete,
   };
 }

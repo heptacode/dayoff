@@ -1,5 +1,5 @@
 import { useSearchQuery } from '@/hooks/queries/search';
-import { usePlanStore } from '@/stores/planStore';
+import { useProjectStore } from '@/stores/projectStore';
 import { useDebounceValue } from '@/utils/debounce';
 import { Button, Card, Input } from '@chakra-ui/react';
 import React, { DetailedHTMLProps, HTMLAttributes, useState } from 'react';
@@ -11,14 +11,14 @@ export function SearchInput({
 }: {
   handlePlaceSelect: (place: Place) => void;
 } & DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>) {
-  const planStore = usePlanStore();
+  const projectStore = useProjectStore();
   const [searchValue, setSearchValue] = useState<string>('');
   const [isComposing, setIsComposing] = useState<boolean>(false);
   const [hoveredIndex, setHoveredIndex] = useState<number>(-1);
   const debouncedSearchQuery = useDebounceValue(searchValue, 300);
   const { data: places, refetch: refetchSearch } = useSearchQuery({
     query: debouncedSearchQuery,
-    mapType: planStore.mapType!,
+    mapType: projectStore.mapType!,
   });
 
   async function handleSearchFormSubmit(event: React.FormEvent) {

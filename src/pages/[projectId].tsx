@@ -2,33 +2,33 @@ import { Sidebar } from '@/components/Sidebar';
 import { GoogleMap } from '@/components/maps/GoogleMap';
 import { NaverMap } from '@/components/maps/NaverMap';
 import { EventEditModal } from '@/components/modals/EventEditModal';
-import { PlanEditModal } from '@/components/modals/PlanEditModal';
-import { usePlanQuery } from '@/hooks/queries/plan';
+import { ProjectEditModal } from '@/components/modals/ProjectEditModal';
+import { useProjectQuery } from '@/hooks/queries/project';
 import { useGlobalStore } from '@/stores/globalStore';
-import { usePlanStore } from '@/stores/planStore';
+import { useProjectStore } from '@/stores/projectStore';
 import { Center, CircularProgress, Icon, IconButton } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { MdMenu } from 'react-icons/md';
 
-export default function Plan() {
+export default function Project() {
   const router = useRouter();
   const globalStore = useGlobalStore();
-  const planStore = usePlanStore();
-  usePlanQuery({
+  const projectStore = useProjectStore();
+  useProjectQuery({
     onFetchError() {
       router.replace('/');
     },
     onFetchSuccess(data) {
-      planStore.setTitle(data.title);
-      planStore.setSubtitle(data.subtitle);
-      planStore.setMapType(data.mapType);
-      planStore.setIsLoading(false);
+      projectStore.setTitle(data.title);
+      projectStore.setSubtitle(data.subtitle);
+      projectStore.setMapType(data.mapType);
+      projectStore.setIsLoading(false);
     },
   });
 
   function renderMap() {
-    switch (planStore.mapType) {
+    switch (projectStore.mapType) {
       case 'naver':
         return <NaverMap />;
       case 'google':
@@ -44,13 +44,13 @@ export default function Plan() {
 
   useEffect(() => {
     if (router.isReady) {
-      if (router.query.planId?.length === 24) {
-        planStore.setPlanId(String(router.query.planId));
+      if (router.query.projectId?.length === 24) {
+        projectStore.setProjectId(String(router.query.projectId));
       } else {
         router.replace('/');
       }
     }
-  }, [router.query.planId]);
+  }, [router.query.projectId]);
 
   return (
     <>
@@ -68,9 +68,9 @@ export default function Plan() {
       ) : null}
       {renderMap()}
       <Sidebar />
-      <PlanEditModal
-        isOpen={globalStore.isPlanEditModalOpen}
-        onClose={() => globalStore.setIsPlanEditModalOpen(false)}
+      <ProjectEditModal
+        isOpen={globalStore.isProjectEditModalOpen}
+        onClose={() => globalStore.setIsProjectEditModalOpen(false)}
       />
       <EventEditModal
         isOpen={globalStore.isEventEditModalOpen}

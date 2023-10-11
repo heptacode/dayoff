@@ -5,7 +5,7 @@ import type { NextApiResponse } from 'next';
 
 interface ApiRequest extends NextApiRequestWithMongoose {
   query: {
-    planId: string;
+    projectId: string;
     collectionId: string;
     eventId: string;
   };
@@ -13,7 +13,7 @@ interface ApiRequest extends NextApiRequestWithMongoose {
 
 export default withMongoose(async (req: ApiRequest, res: NextApiResponse<any>) => {
   if (
-    !isValidObjectId(req.query.planId) ||
+    !isValidObjectId(req.query.projectId) ||
     !isValidObjectId(req.query.collectionId) ||
     !isValidObjectId(req.query.eventId)
   ) {

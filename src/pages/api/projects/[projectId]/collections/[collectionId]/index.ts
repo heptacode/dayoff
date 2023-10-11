@@ -1,17 +1,17 @@
 import { NextApiRequestWithMongoose, withMongoose } from '@/hooks/mongoose';
-import { Collection, Event, Plan } from '@/types';
+import { Collection, Event, Project } from '@/types';
 import { isValidObjectId } from 'mongoose';
 import type { NextApiResponse } from 'next';
 
 interface ApiRequest extends NextApiRequestWithMongoose {
   query: {
-    planId: string;
+    projectId: string;
     collectionId: string;
   };
 }
 
 export default withMongoose(async (req: ApiRequest, res: NextApiResponse<any>) => {
-  if (!isValidObjectId(req.query.planId) || !isValidObjectId(req.query.collectionId)) {
+  if (!isValidObjectId(req.query.projectId) || !isValidObjectId(req.query.collectionId)) {
     return res.status(400).send('');
   }
 
@@ -30,7 +30,7 @@ export default withMongoose(async (req: ApiRequest, res: NextApiResponse<any>) =
       const session = await req.mongoose.startSession();
       session.startTransaction();
 
-      await Plan.findByIdAndUpdate(req.query.planId, {
+      await Project.findByIdAndUpdate(req.query.projectId, {
         $pull: { collectionIds: req.query.collectionId },
       }).session(session);
 
