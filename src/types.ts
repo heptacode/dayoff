@@ -19,6 +19,7 @@ export interface IPlan {
   title: string;
   subtitle: string;
   mapType: MapType;
+  collectionIds: Schema.Types.ObjectId[];
   createdAt: Date;
   updatedAt: Date;
   deletedAt: Date | null;
@@ -29,6 +30,7 @@ const planSchema = new Schema<IPlan>(
     title: { type: String, default: '', required: true },
     subtitle: { type: String, default: '', required: true },
     mapType: { type: String, default: 'google', required: true },
+    collectionIds: { type: [Schema.Types.ObjectId], default: [] },
     deletedAt: { type: Date, default: null },
   },
   { timestamps: true }
