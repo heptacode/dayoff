@@ -73,7 +73,8 @@ export function useEventQuery() {
       location,
       date,
       collectionId,
-    }: { eventId: string } & Partial<Event>) => {
+      newCollectionId,
+    }: { eventId: string; newCollectionId?: string } & Partial<Event>) => {
       await patchRequest(
         `/api/projects/${projectStore.projectId}/collections/${collectionId}/events/${eventId}`,
         {
@@ -81,7 +82,7 @@ export function useEventQuery() {
           ...(description && { description }),
           ...(location && { location }),
           ...(date && { date }),
-          ...(collectionId && { collectionId }),
+          ...(newCollectionId && { collectionId: newCollectionId }),
         }
       );
       refetchEvents();
