@@ -14,7 +14,7 @@ export type ColorType =
   | 'pink'
   | string;
 
-export interface IProject {
+export interface Project {
   _id: string;
   title: string;
   subtitle: string;
@@ -25,7 +25,7 @@ export interface IProject {
   deletedAt: Date | null;
 }
 
-const projectSchema = new Schema<IProject>(
+const projectSchema = new Schema<Project>(
   {
     title: { type: String, default: '', required: true },
     subtitle: { type: String, default: '', required: true },
@@ -35,9 +35,9 @@ const projectSchema = new Schema<IProject>(
   },
   { timestamps: true }
 );
-export const Project = models.Project ?? model<IProject>('Project', projectSchema);
+export const ProjectModel = models.Project ?? model<Project>('Project', projectSchema);
 
-export interface ICollection {
+export interface Collection {
   _id: string;
   projectId: ObjectId | string;
   title: string;
@@ -47,7 +47,7 @@ export interface ICollection {
   deletedAt: Date | null;
 }
 
-const collectionSchema = new Schema<ICollection>(
+const collectionSchema = new Schema<Collection>(
   {
     projectId: { type: Schema.Types.ObjectId, ref: 'Project', required: true },
     title: { type: String, default: '', required: true },
@@ -56,12 +56,13 @@ const collectionSchema = new Schema<ICollection>(
   },
   { timestamps: true }
 );
-export const Collection = models.Collection ?? model<ICollection>('Collection', collectionSchema);
+export const CollectionModel =
+  models.Collection ?? model<Collection>('Collection', collectionSchema);
 
-export interface IEvent {
+export interface Event {
   _id: string;
-  projectId: ObjectId;
-  collectionId: ObjectId;
+  projectId: ObjectId | string;
+  collectionId: ObjectId | string;
   title: string;
   description: string;
   location: { lat: number; lng: number };
@@ -71,7 +72,7 @@ export interface IEvent {
   deletedAt: Date | null;
 }
 
-const eventSchema = new Schema<IEvent>(
+const eventSchema = new Schema<Event>(
   {
     projectId: { type: Schema.Types.ObjectId, ref: 'Project', required: true },
     collectionId: { type: Schema.Types.ObjectId, ref: 'Collection', required: true },
@@ -83,7 +84,7 @@ const eventSchema = new Schema<IEvent>(
   },
   { timestamps: true }
 );
-export const Event = models.Event ?? model<IEvent>('Event', eventSchema);
+export const EventModel = models.Event ?? model<Event>('Event', eventSchema);
 
 enum SortBy {
   DISTANCE = 'distance',

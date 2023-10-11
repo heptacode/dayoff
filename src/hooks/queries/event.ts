@@ -3,8 +3,9 @@ import { useEventStore } from '@/stores/eventStore';
 import { useProjectStore } from '@/stores/projectStore';
 import { deleteRequest, getRequest, patchRequest, postRequest } from '@heptacode/http-request';
 import { useMutation, useQueries } from '@tanstack/react-query';
+import { ObjectId } from 'mongoose';
 import { useEffect, useMemo } from 'react';
-import type { IEvent } from '@/types';
+import type { Event } from '@/types';
 
 export function useEventQuery() {
   const projectStore = useProjectStore();
@@ -21,21 +22,21 @@ export function useEventQuery() {
         queryKey: ['project.collection.events', collectionId],
         queryFn: async () =>
           (
-            await getRequest<IEvent[]>(
+            await getRequest<Event[]>(
               `/api/projects/${projectStore.projectId}/collections/${collectionId}/events`
             )
           ).data,
         enabled: Boolean(projectStore.projectId) && Boolean(collectionId),
-        onSuccess(data: IEvent[]) {
+        onSuccess(data: Event[]) {
           data.forEach(event => eventStore.setEvent(event._id, event));
         },
       };
     }),
   });
 
-  function refetchEvent(collectionId: string) {
-    if (queryMap.has(collectionId)) {
-      eventQueries[queryMap.get(collectionId)!].refetch();
+  function refetchEvent(collectionId: ObjectId | string) {
+    if (queryMap.has(String(collectionId))) {
+      eventQueries[queryMap.get(String(collectionId))!].refetch();
     }
   }
 
@@ -46,20 +47,8 @@ export function useEventQuery() {
   }
 
   const { isLoading: isCreating, mutateAsync: createEvent } = useMutation(
-    async ({
-      collectionId,
-      title,
-      description,
-      location,
-      date,
-    }: {
-      collectionId: string;
-      title?: string;
-      description?: string;
-      location?: { lat: number; lng: number };
-      date?: Date;
-    }) => {
-      await postRequest<IEvent>(
+    async ({ collectionId, title, description, location, date }: Partial<Event>) => {
+      await postRequest<Event>(
         `/api/projects/${projectStore.projectId}/collections/${collectionId}/events`,
         {
           ...(title && { title }),
@@ -84,14 +73,7 @@ export function useEventQuery() {
       location,
       date,
       collectionId,
-    }: {
-      eventId: string;
-      title?: string;
-      description?: string;
-      location?: { lat: number; lng: number };
-      date?: string;
-      collectionId?: string;
-    }) => {
+    }: { eventId: string } & Partial<Event>) => {
       await patchRequest(
         `/api/projects/${projectStore.projectId}/collections/${collectionId}/events/${eventId}`,
         {

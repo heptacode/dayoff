@@ -1,4 +1,4 @@
-import type { ColorType } from './types';
+import type { ColorType } from '@/types';
 
 export const colors: Record<ColorType, string> = {
   red: '#F66161',

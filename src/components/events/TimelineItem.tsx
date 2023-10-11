@@ -16,7 +16,7 @@ import {
 } from '@chakra-ui/react';
 import dayjs from 'dayjs';
 import { MdEdit } from 'react-icons/md';
-import type { ICollection, IEvent } from '@/types';
+import type { Collection, Event } from '@/types';
 
 export function TimelineItem({
   collection,
@@ -24,8 +24,8 @@ export function TimelineItem({
   index,
   ...props
 }: {
-  collection: ICollection;
-  event: IEvent;
+  collection: Collection;
+  event: Event;
   index: number;
 }) {
   const globalStore = useGlobalStore();

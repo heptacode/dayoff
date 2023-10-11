@@ -1,5 +1,5 @@
 import { NextApiRequestWithMongoose, withMongoose } from '@/hooks/mongoose';
-import { Collection, ICollection, Project } from '@/types';
+import { Collection, CollectionModel, ProjectModel } from '@/types';
 import { isValidObjectId } from 'mongoose';
 import type { NextApiResponse } from 'next';
 
@@ -16,14 +16,17 @@ export default withMongoose(async (req: ApiRequest, res: NextApiResponse<any>) =
 
   switch (req.method) {
     case 'GET': {
-      const collection = await Collection.find({ projectId: req.query.projectId, deletedAt: null });
+      const collection = await CollectionModel.find({
+        projectId: req.query.projectId,
+        deletedAt: null,
+      });
       if (collection) {
         return res.status(200).json(collection);
       }
       return res.status(404).send('');
     }
     case 'POST': {
-      const documentCount = await Collection.countDocuments({
+      const documentCount = await CollectionModel.countDocuments({
         projectId: req.query.projectId,
         deletedAt: null,
       });
@@ -31,14 +34,14 @@ export default withMongoose(async (req: ApiRequest, res: NextApiResponse<any>) =
         return res.status(402).send('');
       }
 
-      const collection = await Collection.create({
+      const collection = await CollectionModel.create({
         projectId: req.query.projectId,
         title: req.body.title ?? '새 컬렉션',
         color: req.body.color ?? 'blue',
         deletedAt: null,
-      } satisfies Partial<ICollection>);
+      } satisfies Omit<Collection, '_id' | 'createdAt' | 'updatedAt'>);
 
-      await Project.findByIdAndUpdate(req.query.projectId, {
+      await ProjectModel.findByIdAndUpdate(req.query.projectId, {
         $push: { collectionIds: collection.id },
       });
 

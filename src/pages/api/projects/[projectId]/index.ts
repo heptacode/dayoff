@@ -1,5 +1,5 @@
 import { NextApiRequestWithMongoose, withMongoose } from '@/hooks/mongoose';
-import { Project } from '@/types';
+import { ProjectModel } from '@/types';
 import { isValidObjectId } from 'mongoose';
 import type { NextApiResponse } from 'next';
 
@@ -16,14 +16,14 @@ export default withMongoose(async (req: ApiRequest, res: NextApiResponse<any>) =
 
   switch (req.method) {
     case 'GET': {
-      const project = await Project.findOne({ _id: req.query.projectId, deletedAt: null });
+      const project = await ProjectModel.findOne({ _id: req.query.projectId, deletedAt: null });
       if (project) {
         return res.status(200).json(project);
       }
       return res.status(404).send('');
     }
     case 'PATCH': {
-      const project = await Project.findOneAndUpdate(
+      const project = await ProjectModel.findOneAndUpdate(
         { _id: req.query.projectId, deletedAt: null },
         {
           ...(req.body.title && { title: req.body.title }),
@@ -37,7 +37,7 @@ export default withMongoose(async (req: ApiRequest, res: NextApiResponse<any>) =
       return res.status(404).send('');
     }
     case 'DELETE': {
-      const project = await Project.findByIdAndUpdate(req.query.projectId, {
+      const project = await ProjectModel.findByIdAndUpdate(req.query.projectId, {
         deletedAt: new Date(),
       });
       if (project) {

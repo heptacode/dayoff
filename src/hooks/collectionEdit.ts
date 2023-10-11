@@ -1,5 +1,5 @@
 import { useCollectionStore } from '@/stores/collectionStore';
-import { ICollection } from '@/types';
+import { Collection } from '@/types';
 import { useState } from 'react';
 import { useCollectionQuery } from './queries/collections';
 
@@ -8,7 +8,7 @@ export function useCollectionEdit() {
 
   const { updateCollection, deleteCollection } = useCollectionQuery({});
 
-  const [collections, setCollections] = useState<Record<string, ICollection>>({});
+  const [collections, setCollections] = useState<Record<string, Collection>>({});
 
   function handleTitleInput(collectionId: string, value: string) {
     setCollections({

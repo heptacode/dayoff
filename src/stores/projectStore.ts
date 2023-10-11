@@ -1,16 +1,16 @@
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
-import type { IProject, MapType } from '@/types';
+import type { Project, MapType } from '@/types';
 
 export interface ProjectState {
   isLoading: boolean;
-  projects: IProject[];
+  projects: Project[];
   projectId: string | null;
   title: string;
   subtitle: string;
   mapType: MapType | null;
   setIsLoading(value: boolean): void;
-  setProjects(value: IProject[]): void;
+  setProjects(value: Project[]): void;
   setProjectId(value: string | null): void;
   setTitle(value: string): void;
   setSubtitle(value: string): void;

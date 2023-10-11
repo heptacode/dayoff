@@ -1,19 +1,19 @@
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 import { useCollectionStore } from './collectionStore';
-import type { IEvent } from '@/types';
+import type { Event } from '@/types';
 import type { ObjectId } from 'mongoose';
 
 export interface EventState {
   isLoading: boolean;
-  events: Record<string, IEvent>;
+  events: Record<string, Event>;
   selectedEventId: string | null;
   updatedAt: Date;
-  getEvents: () => IEvent[];
-  getActiveEvents: () => IEvent[];
-  getCollectionEvents(collectionIdResolvable: ObjectId | string): IEvent[];
+  getEvents: () => Event[];
+  getActiveEvents: () => Event[];
+  getCollectionEvents(collectionIdResolvable: ObjectId | string): Event[];
   setIsLoading(value: boolean): void;
-  setEvent(eventId: string, value: IEvent): void;
+  setEvent(eventId: string, value: Event): void;
   setEventTitle(eventId: string, value: string): void;
   setEventDescription(eventId: string, value: string): void;
   setEventDate(eventId: string, value: string): void;

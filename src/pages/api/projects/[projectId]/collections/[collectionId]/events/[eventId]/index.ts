@@ -1,5 +1,5 @@
 import { NextApiRequestWithMongoose, withMongoose } from '@/hooks/mongoose';
-import { Event } from '@/types';
+import { EventModel } from '@/types';
 import { isValidObjectId } from 'mongoose';
 import type { NextApiResponse } from 'next';
 
@@ -22,7 +22,7 @@ export default withMongoose(async (req: ApiRequest, res: NextApiResponse<any>) =
 
   switch (req.method) {
     case 'PATCH': {
-      const event = await Event.findByIdAndUpdate(req.query.eventId, {
+      const event = await EventModel.findByIdAndUpdate(req.query.eventId, {
         ...(req.body.title && { title: req.body.title }),
         ...(req.body.description && { description: req.body.description }),
         ...(req.body.location && { location: req.body.location }),
@@ -35,7 +35,9 @@ export default withMongoose(async (req: ApiRequest, res: NextApiResponse<any>) =
       return res.status(404).send('');
     }
     case 'DELETE': {
-      const event = await Event.findByIdAndUpdate(req.query.eventId, { deletedAt: new Date() });
+      const event = await EventModel.findByIdAndUpdate(req.query.eventId, {
+        deletedAt: new Date(),
+      });
       if (event) {
         return res.status(204).send('');
       }

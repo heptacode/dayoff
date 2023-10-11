@@ -1,6 +1,6 @@
 import { useCollectionStore } from '@/stores/collectionStore';
 import { useProjectStore } from '@/stores/projectStore';
-import { ICollection } from '@/types';
+import { Collection } from '@/types';
 import { deleteRequest, getRequest, patchRequest, postRequest } from '@heptacode/http-request';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
@@ -8,7 +8,7 @@ import { useEffect } from 'react';
 export function useCollectionQuery({
   onFetchSuccess,
 }: {
-  onFetchSuccess?(data: ICollection[]): void;
+  onFetchSuccess?(data: Collection[]): void;
 }) {
   const projectStore = useProjectStore();
   const collectionStore = useCollectionStore();
@@ -17,7 +17,7 @@ export function useCollectionQuery({
     isLoading: isFetching,
     data: collections,
     refetch,
-  } = useQuery<ICollection[]>(
+  } = useQuery<Collection[]>(
     ['project.collections', projectStore.projectId],
     async () => (await getRequest(`/api/projects/${projectStore.projectId}/collections`)).data,
     {
@@ -40,7 +40,7 @@ export function useCollectionQuery({
   );
 
   const { isLoading: isUpdating, mutateAsync: updateCollection } = useMutation(
-    ({ collectionId, title, color }: { collectionId: string; title?: string; color?: string }) =>
+    ({ collectionId, title, color }: { collectionId: string } & Partial<Collection>) =>
       patchRequest(`/api/projects/${projectStore.projectId}/collections/${collectionId}`, {
         ...(title && { title }),
         ...(color && { color }),

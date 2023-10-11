@@ -2,13 +2,13 @@ import { useEventStore } from '@/stores/eventStore';
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import { useEventQuery } from './queries/event';
-import type { IEvent } from '@/types';
+import type { Event } from '@/types';
 
 export function useEvent({ onClose }: { onClose?(): void }) {
   const eventStore = useEventStore();
   const { updateEvent, deleteEvent } = useEventQuery();
 
-  const [events, setEvents] = useState<Record<string, IEvent>>({});
+  const [events, setEvents] = useState<Record<string, Event>>({});
 
   useEffect(() => {
     setEvents(eventStore.events);

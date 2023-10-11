@@ -6,14 +6,14 @@ import { deleteRequest, getRequest, patchRequest, postRequest } from '@heptacode
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
-import type { IProject, MapType } from '@/types';
+import type { Project } from '@/types';
 
 export function useProjectQuery({
   onFetchError,
   onFetchSuccess,
 }: {
   onFetchError?(): void;
-  onFetchSuccess?(data: IProject): void;
+  onFetchSuccess?(data: Project): void;
 }) {
   const router = useRouter();
   const globalStore = useGlobalStore();
@@ -25,11 +25,11 @@ export function useProjectQuery({
     isFetching: isProjectsFetching,
     data: projects,
     refetch: refetchProjects,
-  } = useQuery(['projects'], async () => (await getRequest<IProject[]>(`/api/projects`)).data);
+  } = useQuery(['projects'], async () => (await getRequest<Project[]>(`/api/projects`)).data);
 
   const { isFetching: isProjectFetching, data: project } = useQuery(
     ['project', projectStore.projectId],
-    async () => (await getRequest<IProject>(`/api/projects/${projectStore.projectId}`)).data,
+    async () => (await getRequest<Project>(`/api/projects/${projectStore.projectId}`)).data,
     {
       enabled: router.isReady && projectStore.projectId?.length === 24,
       onError() {
@@ -42,7 +42,7 @@ export function useProjectQuery({
   );
 
   const { isLoading: isCreating, mutateAsync: createProject } = useMutation(
-    async () => (await postRequest<IProject>(`/api/projects`)).data,
+    async () => (await postRequest<Project>(`/api/projects`)).data,
     {
       onSuccess(data) {
         router.push(`/${data._id}`);
@@ -52,17 +52,7 @@ export function useProjectQuery({
   );
 
   const { isLoading: isUpdating, mutateAsync: updateProject } = useMutation(
-    ({
-      projectId,
-      title,
-      subtitle,
-      mapType,
-    }: {
-      projectId: string;
-      title?: string;
-      subtitle?: string;
-      mapType?: MapType;
-    }) =>
+    ({ projectId, title, subtitle, mapType }: { projectId: string } & Partial<Project>) =>
       patchRequest(`/api/projects/${projectId}`, {
         ...(title && { title }),
         ...(subtitle && { subtitle }),

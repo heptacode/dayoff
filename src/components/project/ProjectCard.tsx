@@ -1,8 +1,8 @@
 import { Card, CardBody, CardFooter, CardProps, Heading, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
-import type { IProject } from '@/types';
+import type { Project } from '@/types';
 
-export function ProjectCard({ project, ...props }: { project: IProject } & Partial<CardProps>) {
+export function ProjectCard({ project, ...props }: { project: Project } & Partial<CardProps>) {
   const router = useRouter();
 
   return (

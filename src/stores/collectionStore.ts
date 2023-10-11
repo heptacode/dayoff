@@ -1,19 +1,19 @@
 import { create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
-import type { ColorType, ICollection } from '@/types';
+import type { ColorType, Collection } from '@/types';
 
 export interface CollectionState {
   isLoading: boolean;
   isEditing: boolean;
-  collections: Record<string, ICollection>;
+  collections: Record<string, Collection>;
   collectionId: string | null;
   selectedCollectionIds: string[];
   updatedAt: Date;
-  getCollections: () => ICollection[];
-  getSelectedCollections: () => ICollection[];
+  getCollections: () => Collection[];
+  getSelectedCollections: () => Collection[];
   setIsLoading(value: boolean): void;
   setIsEditing(value: boolean): void;
-  setCollection(collectionId: string, value: ICollection): void;
+  setCollection(collectionId: string, value: Collection): void;
   setCollectionTitle(collectionId: string, value: string): void;
   setCollectionColor(collectionId: string, value: ColorType): void;
   clearCollections(): void;

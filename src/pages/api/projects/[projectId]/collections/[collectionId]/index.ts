@@ -1,5 +1,5 @@
 import { NextApiRequestWithMongoose, withMongoose } from '@/hooks/mongoose';
-import { Collection, Event, Project } from '@/types';
+import { CollectionModel, EventModel, ProjectModel } from '@/types';
 import { isValidObjectId } from 'mongoose';
 import type { NextApiResponse } from 'next';
 
@@ -17,7 +17,7 @@ export default withMongoose(async (req: ApiRequest, res: NextApiResponse<any>) =
 
   switch (req.method) {
     case 'PATCH': {
-      const collection = await Collection.findByIdAndUpdate(req.query.collectionId, {
+      const collection = await CollectionModel.findByIdAndUpdate(req.query.collectionId, {
         ...(req.body.title && { title: req.body.title }),
         ...(req.body.color && { color: req.body.color }),
       });
@@ -30,14 +30,15 @@ export default withMongoose(async (req: ApiRequest, res: NextApiResponse<any>) =
       const session = await req.mongoose.startSession();
       session.startTransaction();
 
-      await Project.findByIdAndUpdate(req.query.projectId, {
+      await ProjectModel.findByIdAndUpdate(req.query.projectId, {
         $pull: { collectionIds: req.query.collectionId },
       }).session(session);
 
-      await Collection.findByIdAndUpdate(req.query.collectionId, {
+      await CollectionModel.findByIdAndUpdate(req.query.collectionId, {
         deletedAt: new Date(),
       }).session(session);
-      await Event.updateMany(
+
+      await EventModel.updateMany(
         { collectionId: req.query.collectionId },
         { deletedAt: new Date() }
       ).session(session);
