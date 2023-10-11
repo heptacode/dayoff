@@ -62,8 +62,7 @@ export function useProject() {
         collectionId: collectionStore.collectionId,
         title: place.name,
         description: place.address,
-        lat: place.lat,
-        lng: place.lng,
+        location: place.location,
       });
     }
   }

@@ -78,11 +78,11 @@ export function useNaverMap() {
       let bounds: naver.maps.LatLngBounds | null = null;
       eventStore.getActiveEvents().forEach(event => {
         if (bounds) {
-          bounds.extend(new naver.maps.LatLng(event.lat, event.lng));
+          bounds.extend(new naver.maps.LatLng(event.location.lat, event.location.lng));
         } else {
           bounds = new naver.maps.LatLngBounds(
-            new naver.maps.LatLng(event.lat, event.lng),
-            new naver.maps.LatLng(event.lat, event.lng)
+            new naver.maps.LatLng(event.location.lat, event.location.lng),
+            new naver.maps.LatLng(event.location.lat, event.location.lng)
           );
         }
       });
@@ -106,7 +106,7 @@ export function useNaverMap() {
 
         const marker = new naver.maps.Marker({
           map,
-          position: new naver.maps.LatLng(event.lat, event.lng),
+          position: new naver.maps.LatLng(event.location.lat, event.location.lng),
           title: event.title,
           icon: {
             content: `<div class="marker" style="background:${
@@ -124,7 +124,7 @@ export function useNaverMap() {
       collectionStore.getSelectedCollections().forEach(collection => {
         const polyline = new naver.maps.Polyline({
           map,
-          path: eventStore.getCollectionEvents(collection._id),
+          path: eventStore.getCollectionEvents(collection._id).map(event => event.location),
           strokeColor: collection.color ? colors[collection.color] : '#3182CE',
         });
 

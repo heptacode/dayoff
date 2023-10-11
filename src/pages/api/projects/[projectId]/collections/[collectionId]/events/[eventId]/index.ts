@@ -25,8 +25,7 @@ export default withMongoose(async (req: ApiRequest, res: NextApiResponse<any>) =
       const event = await Event.findByIdAndUpdate(req.query.eventId, {
         ...(req.body.title && { title: req.body.title }),
         ...(req.body.description && { description: req.body.description }),
-        ...(req.body.lat && { lat: req.body.lat }),
-        ...(req.body.lng && { lng: req.body.lng }),
+        ...(req.body.location && { location: req.body.location }),
         ...(req.body.date && { date: new Date(req.body.date) }),
         ...(req.body.collectionId && { collectionId: req.body.collectionId }),
       });

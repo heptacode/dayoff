@@ -64,8 +64,7 @@ export interface IEvent {
   collectionId: ObjectId;
   title: string;
   description: string;
-  lat: number;
-  lng: number;
+  location: { lat: number; lng: number };
   date: Date | string;
   createdAt: Date;
   updatedAt: Date;
@@ -78,8 +77,7 @@ const eventSchema = new Schema<IEvent>(
     collectionId: { type: Schema.Types.ObjectId, ref: 'Collection', required: true },
     title: { type: String, default: '', required: true },
     description: { type: String, default: '', required: true },
-    lat: { type: Number },
-    lng: { type: Number },
+    location: { type: Object, default: { lat: 0, lng: 0 } },
     date: { type: Date, default: Date.now },
     deletedAt: { type: Date, default: null },
   },
@@ -143,8 +141,10 @@ export interface Place {
   id: string;
   name: string;
   address: string;
-  lat: number;
-  lng: number;
+  location: {
+    lat: number;
+    lng: number;
+  };
 }
 
 export interface SearchOptions extends KakaoSearchOptions {

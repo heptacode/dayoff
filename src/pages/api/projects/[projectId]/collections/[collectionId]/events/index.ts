@@ -35,8 +35,7 @@ export default withMongoose(async (req: ApiRequest, res: NextApiResponse<any>) =
         collectionId: req.query.collectionId,
         title: req.body.title ?? '이벤트 제목',
         description: req.body.description ?? '이벤트 설명',
-        lat: req.body.lat ?? 0,
-        lng: req.body.lng ?? 0,
+        location: req.body.location ?? { lat: 0, lng: 0 },
         date: req.body.date ?? new Date(),
         deletedAt: null,
       });

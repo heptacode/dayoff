@@ -50,15 +50,13 @@ export function useEventQuery() {
       collectionId,
       title,
       description,
-      lat,
-      lng,
+      location,
       date,
     }: {
       collectionId: string;
       title?: string;
       description?: string;
-      lat?: number;
-      lng?: number;
+      location?: { lat: number; lng: number };
       date?: Date;
     }) => {
       await postRequest<IEvent>(
@@ -66,8 +64,7 @@ export function useEventQuery() {
         {
           ...(title && { title }),
           ...(description && { description }),
-          ...(lat && { lat }),
-          ...(lng && { lng }),
+          ...(location && { location }),
           ...(date && { date }),
         }
       );
@@ -84,16 +81,14 @@ export function useEventQuery() {
       eventId,
       title,
       description,
-      lat,
-      lng,
+      location,
       date,
       collectionId,
     }: {
       eventId: string;
       title?: string;
       description?: string;
-      lat?: number;
-      lng?: number;
+      location?: { lat: number; lng: number };
       date?: string;
       collectionId?: string;
     }) => {
@@ -102,8 +97,7 @@ export function useEventQuery() {
         {
           ...(title && { title }),
           ...(description && { description }),
-          ...(lat && { lat }),
-          ...(lng && { lng }),
+          ...(location && { location }),
           ...(date && { date }),
           ...(collectionId && { collectionId }),
         }

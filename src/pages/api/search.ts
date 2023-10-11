@@ -33,8 +33,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
                 id: place.place_id,
                 name: place.name,
                 address: place.formatted_address,
-                lat: place.geometry.location.lat,
-                lng: place.geometry.location.lng,
+                location: { lat: place.geometry.location.lat, lng: place.geometry.location.lng },
               };
             }),
           } satisfies SearchResponse);
@@ -66,8 +65,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
                 address: place.road_address_name.length
                   ? place.road_address_name
                   : place.address_name,
-                lat: Number(place.y),
-                lng: Number(place.x),
+                location: {
+                  lat: Number(place.y),
+                  lng: Number(place.x),
+                },
               };
             }),
           } satisfies SearchResponse);

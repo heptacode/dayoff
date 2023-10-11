@@ -76,7 +76,7 @@ export function useGoogleMap() {
     ) {
       const bounds = new google.maps.LatLngBounds();
       eventStore.getActiveEvents().forEach(event => {
-        bounds.extend(new google.maps.LatLng(event.lat, event.lng));
+        bounds.extend(new google.maps.LatLng(event.location.lat, event.location.lng));
       });
 
       map.fitBounds(bounds);
@@ -96,7 +96,7 @@ export function useGoogleMap() {
 
         const marker = new google.maps.Marker({
           map,
-          position: new google.maps.LatLng(event.lat, event.lng),
+          position: new google.maps.LatLng(event.location.lat, event.location.lng),
           label: {
             color: '#fff',
             text: String(index + 1),
@@ -119,7 +119,7 @@ export function useGoogleMap() {
       collectionStore.getSelectedCollections().forEach(collection => {
         const polyline = new google.maps.Polyline({
           map,
-          path: eventStore.getCollectionEvents(collection._id),
+          path: eventStore.getCollectionEvents(collection._id).map(event => event.location),
           strokeColor: collection.color ? colors[collection.color] : '#3182CE',
         });
 
