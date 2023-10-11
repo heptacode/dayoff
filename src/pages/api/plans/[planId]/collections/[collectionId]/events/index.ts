@@ -3,7 +3,14 @@ import { Event } from '@/types';
 import { isValidObjectId } from 'mongoose';
 import type { NextApiResponse } from 'next';
 
-export default withMongoose(async (req: NextApiRequestWithMongoose, res: NextApiResponse<any>) => {
+interface ApiRequest extends NextApiRequestWithMongoose {
+  query: {
+    planId: string;
+    collectionId: string;
+  };
+}
+
+export default withMongoose(async (req: ApiRequest, res: NextApiResponse<any>) => {
   if (!isValidObjectId(req.query.planId) || !isValidObjectId(req.query.collectionId)) {
     return res.status(400).send('');
   }

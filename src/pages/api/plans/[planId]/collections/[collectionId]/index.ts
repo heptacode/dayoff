@@ -1,9 +1,16 @@
 import { NextApiRequestWithMongoose, withMongoose } from '@/hooks/mongoose';
-import { Collection, Event } from '@/types';
+import { Collection, Event, Plan } from '@/types';
 import { isValidObjectId } from 'mongoose';
 import type { NextApiResponse } from 'next';
 
-export default withMongoose(async (req: NextApiRequestWithMongoose, res: NextApiResponse<any>) => {
+interface ApiRequest extends NextApiRequestWithMongoose {
+  query: {
+    planId: string;
+    collectionId: string;
+  };
+}
+
+export default withMongoose(async (req: ApiRequest, res: NextApiResponse<any>) => {
   if (!isValidObjectId(req.query.planId) || !isValidObjectId(req.query.collectionId)) {
     return res.status(400).send('');
   }
@@ -22,6 +29,10 @@ export default withMongoose(async (req: NextApiRequestWithMongoose, res: NextApi
     case 'DELETE': {
       const session = await req.mongoose.startSession();
       session.startTransaction();
+
+      await Plan.findByIdAndUpdate(req.query.planId, {
+        $pull: { collectionIds: req.query.collectionId },
+      }).session(session);
 
       await Collection.findByIdAndUpdate(req.query.collectionId, {
         deletedAt: new Date(),

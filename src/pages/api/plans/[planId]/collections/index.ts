@@ -1,9 +1,15 @@
 import { NextApiRequestWithMongoose, withMongoose } from '@/hooks/mongoose';
-import { Collection } from '@/types';
+import { Collection, ICollection, Plan } from '@/types';
 import { isValidObjectId } from 'mongoose';
 import type { NextApiResponse } from 'next';
 
-export default withMongoose(async (req: NextApiRequestWithMongoose, res: NextApiResponse<any>) => {
+interface ApiRequest extends NextApiRequestWithMongoose {
+  query: {
+    planId: string;
+  };
+}
+
+export default withMongoose(async (req: ApiRequest, res: NextApiResponse<any>) => {
   if (!isValidObjectId(req.query.planId)) {
     return res.status(400).send('');
   }
@@ -30,7 +36,12 @@ export default withMongoose(async (req: NextApiRequestWithMongoose, res: NextApi
         title: req.body.title ?? '새 컬렉션',
         color: req.body.color ?? 'blue',
         deletedAt: null,
+      } satisfies Partial<ICollection>);
+
+      await Plan.findByIdAndUpdate(req.query.planId, {
+        $push: { collectionIds: collection.id },
       });
+
       return res.status(201).send(collection);
     }
     default:

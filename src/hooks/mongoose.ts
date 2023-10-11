@@ -4,6 +4,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 
 export interface NextApiRequestWithMongoose extends NextApiRequest {
   mongoose: typeof mongoose;
+  query: any;
 }
 
 export declare type NextApiHandlerWithMongoose<T = any> = (

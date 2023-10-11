@@ -39,7 +39,7 @@ export const Plan = models.Plan ?? model<IPlan>('Plan', planSchema);
 
 export interface ICollection {
   _id: string;
-  planId: ObjectId;
+  planId: ObjectId | string;
   title: string;
   color: ColorType;
   createdAt: Date;
