@@ -27,7 +27,7 @@ export function useEvent({ onClose }: { onClose?(): void }) {
   function handleTitleSave(eventId: string, value: string) {
     if (events[eventId].title !== eventStore.events[eventId].title) {
       eventStore.setEventTitle(eventId, value);
-      updateEvent({ collectionId: String(events[eventId].collectionId), eventId, title: value });
+      updateEvent({ collectionId: events[eventId].collectionId, eventId, title: value });
     }
   }
 
@@ -45,7 +45,7 @@ export function useEvent({ onClose }: { onClose?(): void }) {
     if (events[eventId].description !== eventStore.events[eventId].description) {
       eventStore.setEventDescription(eventId, value);
       updateEvent({
-        collectionId: String(events[eventId].collectionId),
+        collectionId: events[eventId].collectionId,
         eventId,
         description: value,
       });
@@ -72,7 +72,11 @@ export function useEvent({ onClose }: { onClose?(): void }) {
   function handleDateSave(eventId: string, value: string) {
     if (events[eventId].date && !dayjs(eventStore.events[eventId].date).isSame(dayjs(value))) {
       eventStore.setEventDate(eventId, value);
-      updateEvent({ eventId, date: value });
+      updateEvent({
+        collectionId: events[eventId].collectionId,
+        eventId,
+        date: value,
+      });
     }
   }
 
@@ -80,7 +84,8 @@ export function useEvent({ onClose }: { onClose?(): void }) {
     eventStore.clearEvents();
     await updateEvent({
       eventId,
-      collectionId,
+      collectionId: events[eventId].collectionId,
+      newCollectionId: collectionId,
     });
     onClose?.();
   }
