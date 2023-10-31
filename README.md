@@ -1,4 +1,4 @@
-# Dayoff - Travel Projectner ✈️
+# Dayoff - Travel Planner ✈️
 
 > Dayoff는 웹 여행 플래너 프로젝트입니다.
 
