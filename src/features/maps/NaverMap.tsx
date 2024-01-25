@@ -1,10 +1,13 @@
 import { Flex } from '@chakra-ui/react';
+import { motion } from 'framer-motion';
 import Script from 'next/script';
 import { useEffect } from 'react';
 import { useNaverMap } from '@/features/maps/useNaverMap';
+import { useGlobalStore } from '../global/useGlobalStore';
 
 export function NaverMap() {
   const { mapRef, initMap } = useNaverMap();
+  const globalStore = useGlobalStore();
 
   useEffect(() => {
     try {
@@ -23,7 +26,16 @@ export function NaverMap() {
         strategy="lazyOnload"
         onLoad={initMap}
       />
-      <Flex ref={mapRef} w="full" h="full" justifyContent="center" alignItems="center" />
+      <Flex w="full" h="full" justifyContent="center" alignItems="center">
+        <motion.div
+          hidden={!globalStore.isSidebarOpen}
+          animate={{
+            width: globalStore.isSidebarOpen ? '100%' : 0,
+            maxWidth: 'var(--chakra-sizes-xs)',
+          }}
+        />
+        <Flex ref={mapRef} w="100%" h="full" />
+      </Flex>
     </>
   );
 }
