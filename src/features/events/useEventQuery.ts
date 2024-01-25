@@ -2,9 +2,9 @@ import { deleteRequest, getRequest, patchRequest, postRequest } from '@heptacode
 import { useMutation, useQueries } from '@tanstack/react-query';
 import { ObjectId } from 'mongoose';
 import { useEffect, useMemo } from 'react';
-import { useCollectionStore } from '@/stores/collectionStore';
-import { useEventStore } from '@/stores/eventStore';
-import { useProjectStore } from '@/stores/projectStore';
+import { useCollectionStore } from '@/features/collections/useCollectionStore';
+import { useEventStore } from '@/features/events/useEventStore';
+import { useProjectStore } from '@/features/projects/useProjectStore';
 import type { Event } from '@/types';
 
 export function useEventQuery() {

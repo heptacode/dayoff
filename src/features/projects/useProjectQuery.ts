@@ -2,10 +2,10 @@ import { deleteRequest, getRequest, patchRequest, postRequest } from '@heptacode
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
-import { useCollectionStore } from '@/stores/collectionStore';
-import { useEventStore } from '@/stores/eventStore';
-import { useGlobalStore } from '@/stores/globalStore';
-import { useProjectStore } from '@/stores/projectStore';
+import { useCollectionStore } from '@/features/collections/useCollectionStore';
+import { useEventStore } from '@/features/events/useEventStore';
+import { useGlobalStore } from '@/features/global/useGlobalStore';
+import { useProjectStore } from '@/features/projects/useProjectStore';
 import type { Project } from '@/types';
 
 export function useProjectQuery({

@@ -2,14 +2,14 @@ import { Center, CircularProgress, Icon, IconButton } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { MdMenu } from 'react-icons/md';
-import { Sidebar } from '@/components/Sidebar';
-import { GoogleMap } from '@/components/maps/GoogleMap';
-import { NaverMap } from '@/components/maps/NaverMap';
-import { EventEditModal } from '@/components/modals/EventEditModal';
-import { ProjectEditModal } from '@/components/modals/ProjectEditModal';
-import { useProjectQuery } from '@/hooks/queries/project';
-import { useGlobalStore } from '@/stores/globalStore';
-import { useProjectStore } from '@/stores/projectStore';
+import { Sidebar } from '@/features/global/Sidebar';
+import { useGlobalStore } from '@/features/global/useGlobalStore';
+import { GoogleMap } from '@/features/maps/GoogleMap';
+import { NaverMap } from '@/features/maps/NaverMap';
+import { EventEditModal } from '@/features/modals/EventEditModal';
+import { ProjectEditModal } from '@/features/modals/ProjectEditModal';
+import { useProjectQuery } from '@/features/projects/useProjectQuery';
+import { useProjectStore } from '@/features/projects/useProjectStore';
 
 export default function Project() {
   const router = useRouter();

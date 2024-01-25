@@ -1,8 +1,8 @@
 import { deleteRequest, getRequest, patchRequest, postRequest } from '@heptacode/http-request';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
-import { useCollectionStore } from '@/stores/collectionStore';
-import { useProjectStore } from '@/stores/projectStore';
+import { useCollectionStore } from '@/features/collections/useCollectionStore';
+import { useProjectStore } from '@/features/projects/useProjectStore';
 import { Collection } from '@/types';
 
 export function useCollectionQuery({

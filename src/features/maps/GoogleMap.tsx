@@ -1,7 +1,7 @@
 import { Flex } from '@chakra-ui/react';
 import Script from 'next/script';
 import { useEffect } from 'react';
-import { useGoogleMap } from '@/hooks/googleMap';
+import { useGoogleMap } from '@/features/maps/useGoogleMap';
 
 export function GoogleMap() {
   const { mapRef, initMap } = useGoogleMap();

@@ -11,8 +11,8 @@ import {
 } from '@chakra-ui/react';
 import { useMemo } from 'react';
 import { colors } from '@/contants';
-import { useCollectionStore } from '@/stores/collectionStore';
-import { useEventStore } from '@/stores/eventStore';
+import { useCollectionStore } from '@/features/collections/useCollectionStore';
+import { useEventStore } from '@/features/events/useEventStore';
 import { TimelineItem } from './TimelineItem';
 
 export function Timeline(props: AccordionProps) {

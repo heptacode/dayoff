@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { colors } from '@/contants';
-import { useCollectionStore } from '@/stores/collectionStore';
-import { useEventStore } from '@/stores/eventStore';
-import { useGlobalStore } from '@/stores/globalStore';
+import { useCollectionStore } from '@/features/collections/useCollectionStore';
+import { useEventStore } from '@/features/events/useEventStore';
+import { useGlobalStore } from '@/features/global/useGlobalStore';
 import { getCurrentPosition, watchPosition } from '@/utils/geolocation';
 
 export function useNaverMap() {

@@ -12,8 +12,8 @@ import {
 } from '@chakra-ui/react';
 import { MdDeleteForever } from 'react-icons/md';
 import { colors } from '@/contants';
-import { useCollectionEdit } from '@/hooks/collectionEdit';
-import { useCollectionStore } from '@/stores/collectionStore';
+import { useCollectionEdit } from '@/features/collections/useCollectionEdit';
+import { useCollectionStore } from '@/features/collections/useCollectionStore';
 
 export function TimelineEdit(props: StackProps) {
   const collectionStore = useCollectionStore();

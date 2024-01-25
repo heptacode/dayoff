@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
-import { useCollectionStore } from '@/stores/collectionStore';
-import { useEventStore } from '@/stores/eventStore';
-import { useProjectStore } from '@/stores/projectStore';
-import { useCollectionQuery } from './queries/collections';
-import { useEventQuery } from './queries/event';
-import { useProjectQuery } from './queries/project';
+import { useCollectionStore } from '@/features/collections/useCollectionStore';
+import { useEventStore } from '@/features/events/useEventStore';
+import { useProjectStore } from '@/features/projects/useProjectStore';
+import { useCollectionQuery } from '../collections/useCollectionQuery';
+import { useEventQuery } from '../events/useEventQuery';
+import { useProjectQuery } from './useProjectQuery';
 import type { MapType, Place } from '@/types';
 
 export function useProject() {

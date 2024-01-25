@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
-import { useCollectionStore } from './collectionStore';
+import { useCollectionStore } from '../collections/useCollectionStore';
 import type { Event } from '@/types';
 import type { ObjectId } from 'mongoose';
 

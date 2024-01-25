@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
-import { useEventStore } from '@/stores/eventStore';
-import { useEventQuery } from './queries/event';
+import { useEventStore } from '@/features/events/useEventStore';
+import { useEventQuery } from './useEventQuery';
 import type { Event } from '@/types';
 
 export function useEvent({ onClose }: { onClose?(): void }) {

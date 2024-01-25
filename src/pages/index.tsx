@@ -11,10 +11,10 @@ import {
 } from '@chakra-ui/react';
 import { useEffect } from 'react';
 import { MdAdd } from 'react-icons/md';
-import { ProjectCard } from '@/components/project/ProjectCard';
-import { useProjectQuery } from '@/hooks/queries/project';
-import { useCollectionStore } from '@/stores/collectionStore';
-import { useProjectStore } from '@/stores/projectStore';
+import { useCollectionStore } from '@/features/collections/useCollectionStore';
+import { ProjectCard } from '@/features/projects/ProjectCard';
+import { useProjectQuery } from '@/features/projects/useProjectQuery';
+import { useProjectStore } from '@/features/projects/useProjectStore';
 
 export default function Home() {
   const projectStore = useProjectStore();

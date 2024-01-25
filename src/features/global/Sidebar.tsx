@@ -20,14 +20,14 @@ import {
 } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { MdAdd, MdCheck, MdEdit, MdGridView, MdSettings } from 'react-icons/md';
-import { Timeline } from '@/components/events/Timeline';
-import { TimelineEdit } from '@/components/events/TimelineEdit';
-import { SearchInput } from '@/components/interfaces/inputs/SearchInput';
-import { useProject } from '@/hooks/project';
-import { useCollectionQuery } from '@/hooks/queries/collections';
-import { useCollectionStore } from '@/stores/collectionStore';
-import { useGlobalStore } from '@/stores/globalStore';
-import { useProjectStore } from '@/stores/projectStore';
+import { useCollectionQuery } from '@/features/collections/useCollectionQuery';
+import { useCollectionStore } from '@/features/collections/useCollectionStore';
+import { Timeline } from '@/features/events/Timeline';
+import { TimelineEdit } from '@/features/events/TimelineEdit';
+import { useGlobalStore } from '@/features/global/useGlobalStore';
+import { useProject } from '@/features/projects/useProject';
+import { useProjectStore } from '@/features/projects/useProjectStore';
+import { SearchInput } from '@/features/search/SearchInput';
 
 export function Sidebar() {
   const router = useRouter();

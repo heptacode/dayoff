@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { useCollectionStore } from '@/stores/collectionStore';
+import { useCollectionStore } from '@/features/collections/useCollectionStore';
 import { Collection } from '@/types';
-import { useCollectionQuery } from './queries/collections';
+import { useCollectionQuery } from './useCollectionQuery';
 
 export function useCollectionEdit() {
   const collectionStore = useCollectionStore();

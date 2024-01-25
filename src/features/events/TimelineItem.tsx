@@ -13,9 +13,9 @@ import {
 import dayjs from 'dayjs';
 import { MdEdit } from 'react-icons/md';
 import { colors } from '@/contants';
-import { useEvent } from '@/hooks/event';
-import { useEventStore } from '@/stores/eventStore';
-import { useGlobalStore } from '@/stores/globalStore';
+import { useEvent } from '@/features/events/useEvent';
+import { useEventStore } from '@/features/events/useEventStore';
+import { useGlobalStore } from '@/features/global/useGlobalStore';
 import type { Collection, Event } from '@/types';
 
 export function TimelineItem({

@@ -20,8 +20,8 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import { MdDeleteForever } from 'react-icons/md';
-import { useProject } from '@/hooks/project';
-import { useProjectStore } from '@/stores/projectStore';
+import { useProject } from '@/features/projects/useProject';
+import { useProjectStore } from '@/features/projects/useProjectStore';
 
 export function ProjectEditModal(props: Partial<ModalProps>) {
   const projectStore = useProjectStore();
@@ -76,7 +76,6 @@ export function ProjectEditModal(props: Partial<ModalProps>) {
               <HStack>
                 <Tooltip label="네이버 지도">
                   <Button
-                    placeholder="부제목 입력"
                     isDisabled={projectStore.isLoading}
                     variant={projectStore.mapType === 'naver' ? 'solid' : 'outline'}
                     onClick={() => handleMapTypeChange('naver')}
@@ -87,7 +86,6 @@ export function ProjectEditModal(props: Partial<ModalProps>) {
 
                 <Tooltip label="Google 지도">
                   <Button
-                    placeholder="부제목 입력"
                     isDisabled={projectStore.isLoading}
                     variant={projectStore.mapType === 'google' ? 'solid' : 'outline'}
                     onClick={() => handleMapTypeChange('google')}

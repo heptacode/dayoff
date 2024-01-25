@@ -21,9 +21,9 @@ import {
 } from '@chakra-ui/react';
 import dayjs from 'dayjs';
 import { MdDeleteForever } from 'react-icons/md';
-import { useEvent } from '@/hooks/event';
-import { useCollectionStore } from '@/stores/collectionStore';
-import { useEventStore } from '@/stores/eventStore';
+import { useCollectionStore } from '@/features/collections/useCollectionStore';
+import { useEvent } from '@/features/events/useEvent';
+import { useEventStore } from '@/features/events/useEventStore';
 
 export function EventEditModal(props: Partial<ModalProps>) {
   const collectionStore = useCollectionStore();
