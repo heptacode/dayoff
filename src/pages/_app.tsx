@@ -1,12 +1,12 @@
-import { ErrorBoundary } from '@/components/interfaces/ErrorBoundary';
-import { ErrorOverlay } from '@/components/interfaces/ErrorOverlay';
-import { theme } from '@/plugins/chakra-ui/theme';
-import '@/styles/globals.css';
 import { ChakraProvider, Progress } from '@chakra-ui/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import Head from 'next/head';
 import { Suspense } from 'react';
+import { ErrorBoundary } from '@/components/interfaces/ErrorBoundary';
+import { ErrorOverlay } from '@/components/interfaces/ErrorOverlay';
+import { theme } from '@/plugins/chakra-ui/theme';
+import '@/styles/globals.css';
 import type { AppProps } from 'next/app';
 
 const queryClient = new QueryClient({

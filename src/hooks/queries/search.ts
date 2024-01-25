@@ -22,6 +22,6 @@ export function useSearchQuery({ mapType, query }: { mapType: MapType; query: st
         return [];
       }
     },
-    { enabled: Boolean(query.length) }
+    { enabled: Boolean(query.length) },
   );
 }

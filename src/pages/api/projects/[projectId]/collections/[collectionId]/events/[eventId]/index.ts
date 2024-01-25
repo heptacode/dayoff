@@ -1,6 +1,6 @@
+import { isValidObjectId } from 'mongoose';
 import { NextApiRequestWithMongoose, withMongoose } from '@/hooks/mongoose';
 import { EventModel } from '@/types';
-import { isValidObjectId } from 'mongoose';
 import type { NextApiResponse } from 'next';
 
 interface ApiRequest extends NextApiRequestWithMongoose {

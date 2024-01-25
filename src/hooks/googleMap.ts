@@ -1,9 +1,9 @@
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { colors } from '@/contants';
 import { useCollectionStore } from '@/stores/collectionStore';
 import { useEventStore } from '@/stores/eventStore';
 import { useGlobalStore } from '@/stores/globalStore';
 import { getCurrentPosition, watchPosition } from '@/utils/geolocation';
-import { useCallback, useEffect, useRef, useState } from 'react';
 
 export function useGoogleMap() {
   const globalStore = useGlobalStore();

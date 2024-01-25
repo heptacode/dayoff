@@ -1,6 +1,6 @@
+import { isValidObjectId } from 'mongoose';
 import { NextApiRequestWithMongoose, withMongoose } from '@/hooks/mongoose';
 import { ProjectModel } from '@/types';
-import { isValidObjectId } from 'mongoose';
 import type { NextApiResponse } from 'next';
 
 interface ApiRequest extends NextApiRequestWithMongoose {
@@ -29,7 +29,7 @@ export default withMongoose(async (req: ApiRequest, res: NextApiResponse<any>) =
           ...(req.body.title && { title: req.body.title }),
           ...(req.body.subtitle && { subtitle: req.body.subtitle }),
           ...(req.body.mapType && { mapType: req.body.mapType }),
-        }
+        },
       );
       if (project) {
         return res.status(202).send(project);

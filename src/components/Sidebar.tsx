@@ -1,11 +1,3 @@
-import { Timeline } from '@/components/events/Timeline';
-import { TimelineEdit } from '@/components/events/TimelineEdit';
-import { SearchInput } from '@/components/interfaces/inputs/SearchInput';
-import { useProject } from '@/hooks/project';
-import { useCollectionQuery } from '@/hooks/queries/collections';
-import { useCollectionStore } from '@/stores/collectionStore';
-import { useGlobalStore } from '@/stores/globalStore';
-import { useProjectStore } from '@/stores/projectStore';
 import {
   Box,
   Button,
@@ -28,6 +20,14 @@ import {
 } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { MdAdd, MdCheck, MdEdit, MdGridView, MdSettings } from 'react-icons/md';
+import { Timeline } from '@/components/events/Timeline';
+import { TimelineEdit } from '@/components/events/TimelineEdit';
+import { SearchInput } from '@/components/interfaces/inputs/SearchInput';
+import { useProject } from '@/hooks/project';
+import { useCollectionQuery } from '@/hooks/queries/collections';
+import { useCollectionStore } from '@/stores/collectionStore';
+import { useGlobalStore } from '@/stores/globalStore';
+import { useProjectStore } from '@/stores/projectStore';
 
 export function Sidebar() {
   const router = useRouter();

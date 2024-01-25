@@ -1,6 +1,6 @@
-import { useEventStore } from '@/stores/eventStore';
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
+import { useEventStore } from '@/stores/eventStore';
 import { useEventQuery } from './queries/event';
 import type { Event } from '@/types';
 
@@ -53,7 +53,7 @@ export function useEvent({ onClose }: { onClose?(): void }) {
   }
 
   function handleDescriptionResize(
-    e: React.ChangeEvent<HTMLTextAreaElement> | React.FocusEvent<HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLTextAreaElement> | React.FocusEvent<HTMLTextAreaElement>,
   ) {
     e.target.style.height = 'auto';
     e.target.style.height = `${e.target.scrollHeight}px`;

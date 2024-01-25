@@ -1,7 +1,7 @@
-import { useNaverMap } from '@/hooks/naverMap';
 import { Flex } from '@chakra-ui/react';
 import Script from 'next/script';
 import { useEffect } from 'react';
+import { useNaverMap } from '@/hooks/naverMap';
 
 export function NaverMap() {
   const { mapRef, initMap } = useNaverMap();

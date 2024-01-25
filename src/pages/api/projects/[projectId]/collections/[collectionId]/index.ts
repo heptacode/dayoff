@@ -1,6 +1,6 @@
+import { isValidObjectId } from 'mongoose';
 import { NextApiRequestWithMongoose, withMongoose } from '@/hooks/mongoose';
 import { CollectionModel, EventModel, ProjectModel } from '@/types';
-import { isValidObjectId } from 'mongoose';
 import type { NextApiResponse } from 'next';
 
 interface ApiRequest extends NextApiRequestWithMongoose {
@@ -40,7 +40,7 @@ export default withMongoose(async (req: ApiRequest, res: NextApiResponse<any>) =
 
       await EventModel.updateMany(
         { collectionId: req.query.collectionId },
-        { deletedAt: new Date() }
+        { deletedAt: new Date() },
       ).session(session);
 
       await session.commitTransaction();

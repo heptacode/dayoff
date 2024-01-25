@@ -1,6 +1,3 @@
-import { useEvent } from '@/hooks/event';
-import { useCollectionStore } from '@/stores/collectionStore';
-import { useEventStore } from '@/stores/eventStore';
 import {
   Box,
   Button,
@@ -24,6 +21,9 @@ import {
 } from '@chakra-ui/react';
 import dayjs from 'dayjs';
 import { MdDeleteForever } from 'react-icons/md';
+import { useEvent } from '@/hooks/event';
+import { useCollectionStore } from '@/stores/collectionStore';
+import { useEventStore } from '@/stores/eventStore';
 
 export function EventEditModal(props: Partial<ModalProps>) {
   const collectionStore = useCollectionStore();
@@ -91,7 +91,7 @@ export function EventEditModal(props: Partial<ModalProps>) {
                 onChange={e =>
                   handleDateInput(
                     eventStore.selectedEventId!,
-                    new Date(e.target.value).toISOString()
+                    new Date(e.target.value).toISOString(),
                   )
                 }
                 onBlur={e => handleDateSave(eventStore.selectedEventId!, e.target.value)}
@@ -106,7 +106,7 @@ export function EventEditModal(props: Partial<ModalProps>) {
                 onChange={e =>
                   handleEventMove(
                     eventStore.selectedEventId!,
-                    (e.target as HTMLSelectElement).value
+                    (e.target as HTMLSelectElement).value,
                   )
                 }
               >
@@ -131,7 +131,7 @@ export function EventEditModal(props: Partial<ModalProps>) {
                 onClick={() =>
                   handleEventDelete(
                     String(events[eventStore.selectedEventId!].collectionId),
-                    eventStore.selectedEventId!
+                    eventStore.selectedEventId!,
                   )
                 }
               >

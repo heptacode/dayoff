@@ -1,9 +1,9 @@
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { colors } from '@/contants';
 import { useCollectionStore } from '@/stores/collectionStore';
 import { useEventStore } from '@/stores/eventStore';
 import { useGlobalStore } from '@/stores/globalStore';
 import { getCurrentPosition, watchPosition } from '@/utils/geolocation';
-import { useCallback, useEffect, useRef, useState } from 'react';
 
 export function useNaverMap() {
   const globalStore = useGlobalStore();
@@ -82,7 +82,7 @@ export function useNaverMap() {
         } else {
           bounds = new naver.maps.LatLngBounds(
             new naver.maps.LatLng(event.location.lat, event.location.lng),
-            new naver.maps.LatLng(event.location.lat, event.location.lng)
+            new naver.maps.LatLng(event.location.lat, event.location.lng),
           );
         }
       });

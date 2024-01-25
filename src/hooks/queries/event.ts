@@ -1,10 +1,10 @@
-import { useCollectionStore } from '@/stores/collectionStore';
-import { useEventStore } from '@/stores/eventStore';
-import { useProjectStore } from '@/stores/projectStore';
 import { deleteRequest, getRequest, patchRequest, postRequest } from '@heptacode/http-request';
 import { useMutation, useQueries } from '@tanstack/react-query';
 import { ObjectId } from 'mongoose';
 import { useEffect, useMemo } from 'react';
+import { useCollectionStore } from '@/stores/collectionStore';
+import { useEventStore } from '@/stores/eventStore';
+import { useProjectStore } from '@/stores/projectStore';
 import type { Event } from '@/types';
 
 export function useEventQuery() {
@@ -23,7 +23,7 @@ export function useEventQuery() {
         queryFn: async () =>
           (
             await getRequest<Event[]>(
-              `/api/projects/${projectStore.projectId}/collections/${collectionId}/events`
+              `/api/projects/${projectStore.projectId}/collections/${collectionId}/events`,
             )
           ).data,
         enabled: Boolean(projectStore.projectId) && Boolean(collectionId),
@@ -55,14 +55,14 @@ export function useEventQuery() {
           ...(description && { description }),
           ...(location && { location }),
           ...(date && { date }),
-        }
+        },
       );
       if (collectionId) {
         refetchEvent(collectionId);
       } else {
         refetchEvents();
       }
-    }
+    },
   );
 
   const { isLoading: isUpdating, mutateAsync: updateEvent } = useMutation(
@@ -83,16 +83,16 @@ export function useEventQuery() {
           ...(location && { location }),
           ...(date && { date }),
           ...(newCollectionId && { collectionId: newCollectionId }),
-        }
+        },
       );
       refetchEvents();
-    }
+    },
   );
 
   const { isLoading: isDeleting, mutateAsync: deleteEvent } = useMutation(
     async ({ collectionId, eventId }: { collectionId: string; eventId: string }) => {
       await deleteRequest(
-        `/api/projects/${projectStore.projectId}/collections/${collectionId}/events/${eventId}`
+        `/api/projects/${projectStore.projectId}/collections/${collectionId}/events/${eventId}`,
       );
       if (collectionId) {
         refetchEvent(collectionId);
@@ -100,12 +100,12 @@ export function useEventQuery() {
         eventStore.clearEvents();
         refetchEvents();
       }
-    }
+    },
   );
 
   const isFetching = useMemo(
     () => eventQueries.findIndex(query => query.isLoading) !== -1,
-    [eventQueries]
+    [eventQueries],
   );
 
   useEffect(() => {

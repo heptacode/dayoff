@@ -33,7 +33,7 @@ export const useCollectionStore = create<CollectionState>()(
       getCollections: () => Object.values(get().collections),
       getSelectedCollections: () =>
         Object.values(get().collections).filter(collection =>
-          get().selectedCollectionIds.includes(collection._id)
+          get().selectedCollectionIds.includes(collection._id),
         ),
       setIsLoading(value) {
         set({ isLoading: value });
@@ -91,6 +91,6 @@ export const useCollectionStore = create<CollectionState>()(
       partialize: state => ({
         selectedCollectionIds: state.selectedCollectionIds,
       }),
-    }
-  )
+    },
+  ),
 );

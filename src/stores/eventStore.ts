@@ -31,7 +31,7 @@ export const useEventStore = create<EventState>()(
     getEvents: () => Object.values(get().events),
     getActiveEvents: () =>
       Object.values(get().events).filter(event =>
-        useCollectionStore.getState().selectedCollectionIds.includes(String(event.collectionId))
+        useCollectionStore.getState().selectedCollectionIds.includes(String(event.collectionId)),
       ),
     getCollectionEvents(collectionIdResolvable) {
       return get()
@@ -98,5 +98,5 @@ export const useEventStore = create<EventState>()(
     setSelectedEventId(value) {
       set({ selectedEventId: value });
     },
-  }))
+  })),
 );

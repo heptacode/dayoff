@@ -1,7 +1,3 @@
-import { ProjectCard } from '@/components/project/ProjectCard';
-import { useProjectQuery } from '@/hooks/queries/project';
-import { useCollectionStore } from '@/stores/collectionStore';
-import { useProjectStore } from '@/stores/projectStore';
 import {
   Box,
   Button,
@@ -15,6 +11,10 @@ import {
 } from '@chakra-ui/react';
 import { useEffect } from 'react';
 import { MdAdd } from 'react-icons/md';
+import { ProjectCard } from '@/components/project/ProjectCard';
+import { useProjectQuery } from '@/hooks/queries/project';
+import { useCollectionStore } from '@/stores/collectionStore';
+import { useProjectStore } from '@/stores/projectStore';
 
 export default function Home() {
   const projectStore = useProjectStore();

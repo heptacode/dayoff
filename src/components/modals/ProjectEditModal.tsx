@@ -1,5 +1,3 @@
-import { useProject } from '@/hooks/project';
-import { useProjectStore } from '@/stores/projectStore';
 import {
   Box,
   Button,
@@ -22,6 +20,8 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import { MdDeleteForever } from 'react-icons/md';
+import { useProject } from '@/hooks/project';
+import { useProjectStore } from '@/stores/projectStore';
 
 export function ProjectEditModal(props: Partial<ModalProps>) {
   const projectStore = useProjectStore();

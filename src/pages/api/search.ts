@@ -15,7 +15,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
             google.maps.GeocoderResult & {
               name: string;
               geometry: { location: google.maps.LatLngLiteral };
-            }
+            },
           ];
         }>(`https://maps.googleapis.com/maps/api/place/findplacefromtext/json`, {
           inputtype: 'textquery',
@@ -51,7 +51,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
             headers: {
               Authorization: `KakaoAK ${process.env.KAKAO_REST_KEY}`,
             },
-          }
+          },
         );
 
         return res

@@ -1,7 +1,3 @@
-import { colors } from '@/contants';
-import { useEvent } from '@/hooks/event';
-import { useEventStore } from '@/stores/eventStore';
-import { useGlobalStore } from '@/stores/globalStore';
 import {
   AccordionPanel,
   Editable,
@@ -16,6 +12,10 @@ import {
 } from '@chakra-ui/react';
 import dayjs from 'dayjs';
 import { MdEdit } from 'react-icons/md';
+import { colors } from '@/contants';
+import { useEvent } from '@/hooks/event';
+import { useEventStore } from '@/stores/eventStore';
+import { useGlobalStore } from '@/stores/globalStore';
 import type { Collection, Event } from '@/types';
 
 export function TimelineItem({
@@ -78,7 +78,7 @@ export function TimelineItem({
             onBlur={e =>
               handleDateSave(
                 event._id,
-                new Date((e.target as HTMLInputElement).value).toISOString()
+                new Date((e.target as HTMLInputElement).value).toISOString(),
               )
             }
           />

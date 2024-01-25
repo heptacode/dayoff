@@ -46,6 +46,6 @@ export const useGlobalStore = create<GlobalState>()(
           timestamp: state.userLocation?.timestamp,
         },
       }),
-    }
-  )
+    },
+  ),
 );

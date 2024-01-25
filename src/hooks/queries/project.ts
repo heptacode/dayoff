@@ -1,11 +1,11 @@
-import { useCollectionStore } from '@/stores/collectionStore';
-import { useEventStore } from '@/stores/eventStore';
-import { useGlobalStore } from '@/stores/globalStore';
-import { useProjectStore } from '@/stores/projectStore';
 import { deleteRequest, getRequest, patchRequest, postRequest } from '@heptacode/http-request';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
+import { useCollectionStore } from '@/stores/collectionStore';
+import { useEventStore } from '@/stores/eventStore';
+import { useGlobalStore } from '@/stores/globalStore';
+import { useProjectStore } from '@/stores/projectStore';
 import type { Project } from '@/types';
 
 export function useProjectQuery({
@@ -38,7 +38,7 @@ export function useProjectQuery({
       onSuccess(data) {
         onFetchSuccess?.(data);
       },
-    }
+    },
   );
 
   const { isLoading: isCreating, mutateAsync: createProject } = useMutation(
@@ -48,7 +48,7 @@ export function useProjectQuery({
         router.push(`/${data._id}`);
         refetchProjects();
       },
-    }
+    },
   );
 
   const { isLoading: isUpdating, mutateAsync: updateProject } = useMutation(
@@ -57,7 +57,7 @@ export function useProjectQuery({
         ...(title && { title }),
         ...(subtitle && { subtitle }),
         ...(mapType && { mapType }),
-      })
+      }),
   );
 
   const { isLoading: isDeleting, mutateAsync: deleteProject } = useMutation(
@@ -71,12 +71,12 @@ export function useProjectQuery({
         collectionStore.setCollectionId(null);
         eventStore.clearEvents();
       },
-    }
+    },
   );
 
   useEffect(() => {
     projectStore.setIsLoading(
-      isProjectsFetching || isProjectFetching || isCreating || isUpdating || isDeleting
+      isProjectsFetching || isProjectFetching || isCreating || isUpdating || isDeleting,
     );
   }, [isProjectsFetching, isProjectFetching, isCreating, isUpdating, isDeleting]);
 

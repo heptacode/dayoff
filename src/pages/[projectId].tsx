@@ -1,3 +1,7 @@
+import { Center, CircularProgress, Icon, IconButton } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
+import { MdMenu } from 'react-icons/md';
 import { Sidebar } from '@/components/Sidebar';
 import { GoogleMap } from '@/components/maps/GoogleMap';
 import { NaverMap } from '@/components/maps/NaverMap';
@@ -6,10 +10,6 @@ import { ProjectEditModal } from '@/components/modals/ProjectEditModal';
 import { useProjectQuery } from '@/hooks/queries/project';
 import { useGlobalStore } from '@/stores/globalStore';
 import { useProjectStore } from '@/stores/projectStore';
-import { Center, CircularProgress, Icon, IconButton } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
-import { useEffect } from 'react';
-import { MdMenu } from 'react-icons/md';
 
 export default function Project() {
   const router = useRouter();

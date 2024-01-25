@@ -43,5 +43,5 @@ export const useProjectStore = create<ProjectState>()(
     setMapType(value) {
       set({ mapType: value });
     },
-  }))
+  })),
 );

@@ -1,7 +1,7 @@
+import { useEffect, useState } from 'react';
 import { useCollectionStore } from '@/stores/collectionStore';
 import { useEventStore } from '@/stores/eventStore';
 import { useProjectStore } from '@/stores/projectStore';
-import { useEffect, useState } from 'react';
 import { useCollectionQuery } from './queries/collections';
 import { useEventQuery } from './queries/event';
 import { useProjectQuery } from './queries/project';

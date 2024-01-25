@@ -1,6 +1,3 @@
-import { colors } from '@/contants';
-import { useCollectionStore } from '@/stores/collectionStore';
-import { useEventStore } from '@/stores/eventStore';
 import {
   Accordion,
   AccordionButton,
@@ -13,6 +10,9 @@ import {
   Progress,
 } from '@chakra-ui/react';
 import { useMemo } from 'react';
+import { colors } from '@/contants';
+import { useCollectionStore } from '@/stores/collectionStore';
+import { useEventStore } from '@/stores/eventStore';
 import { TimelineItem } from './TimelineItem';
 
 export function Timeline(props: AccordionProps) {
@@ -25,10 +25,10 @@ export function Timeline(props: AccordionProps) {
         ? collectionStore.selectedCollectionIds.map(collectionId =>
             collectionStore
               .getCollections()
-              .findIndex(collection => collection._id === collectionId)
+              .findIndex(collection => collection._id === collectionId),
           )
         : [],
-    [collectionStore.collections, collectionStore.selectedCollectionIds]
+    [collectionStore.collections, collectionStore.selectedCollectionIds],
   );
 
   function handleIndiciesChange(indices: number[]) {

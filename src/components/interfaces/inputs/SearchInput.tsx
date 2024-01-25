@@ -1,8 +1,8 @@
+import { Button, Card, Input } from '@chakra-ui/react';
+import React, { DetailedHTMLProps, HTMLAttributes, useState } from 'react';
 import { useSearchQuery } from '@/hooks/queries/search';
 import { useProjectStore } from '@/stores/projectStore';
 import { useDebounceValue } from '@/utils/debounce';
-import { Button, Card, Input } from '@chakra-ui/react';
-import React, { DetailedHTMLProps, HTMLAttributes, useState } from 'react';
 import type { Place } from '@/types';
 
 export function SearchInput({

@@ -10,7 +10,7 @@ export async function getCurrentPosition(): Promise<GeolocationPosition> {
         enableHighAccuracy: true,
         timeout: 10000,
       });
-    }
+    },
   );
 }
 

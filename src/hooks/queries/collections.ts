@@ -1,9 +1,9 @@
-import { useCollectionStore } from '@/stores/collectionStore';
-import { useProjectStore } from '@/stores/projectStore';
-import { Collection } from '@/types';
 import { deleteRequest, getRequest, patchRequest, postRequest } from '@heptacode/http-request';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
+import { useCollectionStore } from '@/stores/collectionStore';
+import { useProjectStore } from '@/stores/projectStore';
+import { Collection } from '@/types';
 
 export function useCollectionQuery({
   onFetchSuccess,
@@ -27,7 +27,7 @@ export function useCollectionQuery({
 
         onFetchSuccess?.(data);
       },
-    }
+    },
   );
 
   const { isLoading: isCreating, mutateAsync: createCollection } = useMutation(
@@ -36,7 +36,7 @@ export function useCollectionQuery({
       onSuccess() {
         refetch();
       },
-    }
+    },
   );
 
   const { isLoading: isUpdating, mutateAsync: updateCollection } = useMutation(
@@ -49,7 +49,7 @@ export function useCollectionQuery({
       onSuccess() {
         refetch();
       },
-    }
+    },
   );
 
   const { isLoading: isDeleting, mutateAsync: deleteCollection } = useMutation(
@@ -60,7 +60,7 @@ export function useCollectionQuery({
         collectionStore.clearCollections();
         refetch();
       },
-    }
+    },
   );
 
   useEffect(() => {

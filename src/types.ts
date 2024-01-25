@@ -33,7 +33,7 @@ const projectSchema = new Schema<Project>(
     collectionIds: { type: [Schema.Types.ObjectId], default: [] },
     deletedAt: { type: Date, default: null },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 export const ProjectModel = models.Project ?? model<Project>('Project', projectSchema);
 
@@ -54,7 +54,7 @@ const collectionSchema = new Schema<Collection>(
     color: { type: String, default: '', required: true },
     deletedAt: { type: Date, default: null },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 export const CollectionModel =
   models.Collection ?? model<Collection>('Collection', collectionSchema);
@@ -82,7 +82,7 @@ const eventSchema = new Schema<Event>(
     date: { type: Date, default: Date.now },
     deletedAt: { type: Date, default: null },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 export const EventModel = models.Event ?? model<Event>('Event', eventSchema);
 

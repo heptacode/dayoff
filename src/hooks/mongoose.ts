@@ -9,7 +9,7 @@ export interface NextApiRequestWithMongoose extends NextApiRequest {
 
 export declare type NextApiHandlerWithMongoose<T = any> = (
   req: NextApiRequestWithMongoose,
-  res: NextApiResponse<T>
+  res: NextApiResponse<T>,
 ) => void | Promise<void>;
 
 // @ts-ignore
@@ -47,7 +47,7 @@ export async function useMongoose(options?: mongoose.ConnectOptions) {
 
 export function withMongoose(
   handler: NextApiHandlerWithMongoose,
-  options?: mongoose.ConnectOptions
+  options?: mongoose.ConnectOptions,
 ) {
   return async (req: NextApiRequestWithMongoose, res: NextApiResponse): Promise<void> => {
     try {
