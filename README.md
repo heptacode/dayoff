@@ -12,15 +12,15 @@
 
 ## 설치하기
 
-- `yarn`
+- `pnpm i`
 
 ## 개발하기
 
-- `yarn dev`
+- `pnpm dev`
 
 ## 빌드하기
 
-- `yarn build`
+- `pnpm build`
 
 ## 기여하기
 
