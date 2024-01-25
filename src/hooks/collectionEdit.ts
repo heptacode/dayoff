@@ -1,6 +1,6 @@
+import { useEffect, useState } from 'react';
 import { useCollectionStore } from '@/stores/collectionStore';
 import { Collection } from '@/types';
-import { useState } from 'react';
 import { useCollectionQuery } from './queries/collections';
 
 export function useCollectionEdit() {
@@ -9,6 +9,10 @@ export function useCollectionEdit() {
   const { updateCollection, deleteCollection } = useCollectionQuery({});
 
   const [collections, setCollections] = useState<Record<string, Collection>>({});
+
+  useEffect(() => {
+    setCollections(collectionStore.collections);
+  }, [collectionStore.collections]);
 
   function handleTitleInput(collectionId: string, value: string) {
     setCollections({
@@ -42,6 +46,7 @@ export function useCollectionEdit() {
   }
 
   return {
+    collections,
     handleTitleInput,
     handleTitleSave,
     handleColorChange,

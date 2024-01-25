@@ -1,6 +1,3 @@
-import { colors } from '@/contants';
-import { useCollectionEdit } from '@/hooks/collectionEdit';
-import { useCollectionStore } from '@/stores/collectionStore';
 import {
   Box,
   Button,
@@ -14,12 +11,20 @@ import {
   StackProps,
 } from '@chakra-ui/react';
 import { MdDeleteForever } from 'react-icons/md';
+import { colors } from '@/contants';
+import { useCollectionEdit } from '@/hooks/collectionEdit';
+import { useCollectionStore } from '@/stores/collectionStore';
 
 export function TimelineEdit(props: StackProps) {
   const collectionStore = useCollectionStore();
 
-  const { handleTitleInput, handleTitleSave, handleColorChange, handleCollectionDelete } =
-    useCollectionEdit();
+  const {
+    collections,
+    handleTitleInput,
+    handleTitleSave,
+    handleColorChange,
+    handleCollectionDelete,
+  } = useCollectionEdit();
 
   return (
     <Stack {...props}>
@@ -29,7 +34,7 @@ export function TimelineEdit(props: StackProps) {
             <Box key={collection._id}>
               <HStack>
                 <Input
-                  value={collection.title}
+                  value={collections[collection._id]?.title}
                   fontWeight="semibold"
                   onChange={e => handleTitleInput(collection._id, e.target.value)}
                   onBlur={e => handleTitleSave(collection._id, e.target.value)}
