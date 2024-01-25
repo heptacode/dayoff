@@ -3,7 +3,7 @@ import { colors } from '@/contants';
 import { useCollectionStore } from '@/features/collections/useCollectionStore';
 import { useEventStore } from '@/features/events/useEventStore';
 import { useGlobalStore } from '@/features/global/useGlobalStore';
-import { getCurrentPosition, watchPosition } from '@/utils/geolocation';
+import { getCurrentPosition, watchPosition } from '@/utils/geolocation.util';
 
 export function useNaverMap() {
   const globalStore = useGlobalStore();
