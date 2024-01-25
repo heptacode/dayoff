@@ -46,6 +46,7 @@ export function Sidebar() {
   const { isOpen, onClose } = useDisclosure({
     isOpen: globalStore.isSidebarOpen,
     onClose() {
+      globalStore.setIsSidebarOpen(false);
       collectionStore.setIsEditing(false);
     },
   });
@@ -62,7 +63,7 @@ export function Sidebar() {
     >
       {collectionStore.isEditing ? <DrawerOverlay /> : null}
       <DrawerContent>
-        <DrawerCloseButton onClick={() => globalStore.setIsSidebarOpen(false)} />
+        <DrawerCloseButton />
         {projectStore.isLoading || collectionStore.isLoading ? (
           <Progress size="xs" isIndeterminate />
         ) : (
