@@ -22,7 +22,7 @@ export default withMongoose(async (req: ApiRequest, res: NextApiResponse<any>) =
         deletedAt: null,
       });
 
-      if (!collection) {
+      if (!collection || !collection.eventIds?.length) {
         return res.status(404).send('');
       }
 

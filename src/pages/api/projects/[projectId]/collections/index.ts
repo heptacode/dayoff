@@ -21,7 +21,7 @@ export default withMongoose(async (req: ApiRequest, res: NextApiResponse<any>) =
         deletedAt: null,
       });
 
-      if (!project) {
+      if (!project || !project.collectionIds?.length) {
         return res.status(404).send('');
       }
 
