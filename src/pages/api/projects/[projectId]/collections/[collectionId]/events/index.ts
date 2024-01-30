@@ -22,7 +22,7 @@ export default withMongoose(async (req: ApiRequest, res: NextApiResponse<any>) =
         deletedAt: null,
       });
 
-      if (!collection || !collection.eventIds?.length) {
+      if (!collection) {
         return res.status(404).send('');
       }
 
@@ -32,9 +32,11 @@ export default withMongoose(async (req: ApiRequest, res: NextApiResponse<any>) =
       } satisfies Partial<Event>);
 
       if (events) {
-        events.sort((a, b) => {
-          return collection.eventIds.indexOf(a._id) - collection.eventIds.indexOf(b._id);
-        });
+        if (collection.eventIds.length > 1) {
+          events.sort((a, b) => {
+            return collection.eventIds.indexOf(a._id) - collection.eventIds.indexOf(b._id);
+          });
+        }
         return res.status(200).json(events);
       }
       return res.status(404).send('');

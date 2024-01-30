@@ -21,7 +21,7 @@ export default withMongoose(async (req: ApiRequest, res: NextApiResponse<any>) =
         deletedAt: null,
       });
 
-      if (!project || !project.collectionIds?.length) {
+      if (!project) {
         return res.status(404).send('');
       }
 
@@ -31,9 +31,11 @@ export default withMongoose(async (req: ApiRequest, res: NextApiResponse<any>) =
       });
 
       if (collections) {
-        collections.sort((a, b) => {
-          return project.collectionIds.indexOf(a._id) - project.collectionIds.indexOf(b._id);
-        });
+        if (project.collectionIds.length > 1) {
+          collections.sort((a, b) => {
+            return project.collectionIds.indexOf(a._id) - project.collectionIds.indexOf(b._id);
+          });
+        }
 
         return res.status(200).json(collections);
       }
