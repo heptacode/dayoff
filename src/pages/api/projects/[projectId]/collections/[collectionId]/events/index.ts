@@ -57,6 +57,11 @@ export default withMongoose(async (req: ApiRequest, res: NextApiResponse<any>) =
         date: req.body.date ?? new Date(),
         deletedAt: null,
       } satisfies Omit<Event, '_id' | 'createdAt' | 'updatedAt'>);
+
+      await CollectionModel.findByIdAndUpdate(req.query.collectionId, {
+        $push: { eventIds: event.id },
+      });
+
       return res.status(201).send(event);
     }
     default:

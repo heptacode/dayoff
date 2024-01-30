@@ -52,6 +52,7 @@ export default withMongoose(async (req: ApiRequest, res: NextApiResponse<any>) =
         projectId: req.query.projectId,
         title: req.body.title ?? '새 컬렉션',
         color: req.body.color ?? 'blue',
+        eventIds: [],
         deletedAt: null,
       } satisfies Omit<Collection, '_id' | 'createdAt' | 'updatedAt'>);
 
