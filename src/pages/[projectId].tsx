@@ -2,6 +2,7 @@ import { Center, CircularProgress, Icon, IconButton } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { MdMenu } from 'react-icons/md';
+import { useCollectionStore } from '@/features/collections/useCollectionStore';
 import { Sidebar } from '@/features/global/Sidebar';
 import { useGlobalStore } from '@/features/global/useGlobalStore';
 import { GoogleMap } from '@/features/maps/GoogleMap';
@@ -15,6 +16,8 @@ export default function Project() {
   const router = useRouter();
   const globalStore = useGlobalStore();
   const projectStore = useProjectStore();
+  const collecionStore = useCollectionStore();
+
   useProjectQuery({
     onFetchError() {
       router.replace('/');
@@ -50,6 +53,11 @@ export default function Project() {
         router.replace('/');
       }
     }
+
+    return () => {
+      projectStore.setProjectId(null);
+      collecionStore.setCollectionId(null);
+    };
   }, [router.query.projectId]);
 
   return (
