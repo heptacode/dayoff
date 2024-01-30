@@ -19,7 +19,7 @@ export function useEventQuery() {
       queryMap.set(collectionId, index);
 
       return {
-        queryKey: ['project.collection.events', collectionId],
+        queryKey: ['project', projectStore.projectId, 'collection', collectionId, 'events'],
         queryFn: async () =>
           (
             await getRequest<Event[]>(

@@ -18,7 +18,7 @@ export function useCollectionQuery({
     data: collections,
     refetch,
   } = useQuery<Collection[]>(
-    ['project.collections', projectStore.projectId],
+    ['project', projectStore.projectId, 'collections'],
     async () => (await getRequest(`/api/projects/${projectStore.projectId}/collections`)).data,
     {
       enabled: Boolean(projectStore.projectId),
