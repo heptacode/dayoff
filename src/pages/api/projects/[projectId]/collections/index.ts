@@ -1,6 +1,6 @@
 import { isValidObjectId } from 'mongoose';
 import { NextApiRequestWithMongoose, withMongoose } from '@/hooks/mongoose';
-import { Collection, CollectionModel, ProjectModel } from '@/types';
+import { Collection, CollectionModel, Project, ProjectModel } from '@/types';
 import type { NextApiResponse } from 'next';
 
 interface ApiRequest extends NextApiRequestWithMongoose {
@@ -16,12 +16,26 @@ export default withMongoose(async (req: ApiRequest, res: NextApiResponse<any>) =
 
   switch (req.method) {
     case 'GET': {
-      const collection = await CollectionModel.find({
+      const project = await ProjectModel.findOne<Project>({
+        _id: req.query.projectId,
+        deletedAt: null,
+      });
+
+      if (!project) {
+        return res.status(404).send('');
+      }
+
+      const collections = await CollectionModel.find({
         projectId: req.query.projectId,
         deletedAt: null,
       });
-      if (collection) {
-        return res.status(200).json(collection);
+
+      if (collections) {
+        collections.sort((a, b) => {
+          return project.collectionIds.indexOf(a._id) - project.collectionIds.indexOf(b._id);
+        });
+
+        return res.status(200).json(collections);
       }
       return res.status(404).send('');
     }
