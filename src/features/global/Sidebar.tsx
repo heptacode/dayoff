@@ -17,6 +17,7 @@ import {
   Progress,
   Skeleton,
   useDisclosure,
+  useMediaQuery,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { MdAdd, MdCheck, MdEdit, MdGridView, MdSettings } from 'react-icons/md';
@@ -52,11 +53,12 @@ export function Sidebar() {
   });
 
   const { createCollection } = useCollectionQuery({});
+  const [isLargerThan800] = useMediaQuery('(min-width: 800px)', { ssr: true, fallback: false });
 
   return (
     <Drawer
       isOpen={isOpen}
-      placement="left"
+      placement={isLargerThan800 ? 'left' : 'bottom'}
       trapFocus={false}
       variant="transparent"
       onClose={onClose}
