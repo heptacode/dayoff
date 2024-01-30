@@ -1,6 +1,6 @@
 import { isValidObjectId } from 'mongoose';
 import { NextApiRequestWithMongoose, withMongoose } from '@/hooks/mongoose';
-import { Event, EventModel } from '@/types';
+import { Collection, CollectionModel, Event, EventModel } from '@/types';
 import type { NextApiResponse } from 'next';
 
 interface ApiRequest extends NextApiRequestWithMongoose {
@@ -17,12 +17,25 @@ export default withMongoose(async (req: ApiRequest, res: NextApiResponse<any>) =
 
   switch (req.method) {
     case 'GET': {
-      const event = await EventModel.find({
+      const collection = await CollectionModel.findOne<Collection>({
+        _id: req.query.collectionId,
+        deletedAt: null,
+      });
+
+      if (!collection) {
+        return res.status(404).send('');
+      }
+
+      const events = await EventModel.find({
         collectionId: req.query.collectionId,
         deletedAt: null,
       } satisfies Partial<Event>);
-      if (event) {
-        return res.status(200).json(event);
+
+      if (events) {
+        events.sort((a, b) => {
+          return collection.eventIds.indexOf(a._id) - collection.eventIds.indexOf(b._id);
+        });
+        return res.status(200).json(events);
       }
       return res.status(404).send('');
     }

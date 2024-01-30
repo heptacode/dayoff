@@ -42,6 +42,7 @@ export interface Collection {
   projectId: ObjectId | string;
   title: string;
   color: ColorType;
+  eventIds: Schema.Types.ObjectId[];
   createdAt: Date;
   updatedAt: Date;
   deletedAt: Date | null;
@@ -52,6 +53,7 @@ const collectionSchema = new Schema<Collection>(
     projectId: { type: Schema.Types.ObjectId, ref: 'Project', required: true },
     title: { type: String, default: '', required: true },
     color: { type: String, default: '', required: true },
+    eventIds: { type: [Schema.Types.ObjectId], default: [] },
     deletedAt: { type: Date, default: null },
   },
   { timestamps: true },
