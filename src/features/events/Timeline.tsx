@@ -7,6 +7,7 @@ import {
   Box,
   Button,
   HStack,
+  Heading,
   Progress,
 } from '@chakra-ui/react';
 import { useMemo } from 'react';
@@ -68,7 +69,9 @@ export function Timeline(props: AccordionProps) {
               >
                 {collectionStore.collectionId === collection._id ? <>&#10003;</> : null}
               </Button>
-              <h2>{collection.title}</h2>
+              <Heading as="h3" size="sm" fontWeight="semibold">
+                {collection.title}
+              </Heading>
             </HStack>
             <AccordionIcon />
           </AccordionButton>
