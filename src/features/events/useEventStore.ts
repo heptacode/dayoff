@@ -36,8 +36,7 @@ export const useEventStore = create<EventState>()(
     getCollectionEvents(collectionIdResolvable) {
       return get()
         .getEvents()
-        .filter(event => String(event.collectionId) === String(collectionIdResolvable))
-        .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+        .filter(event => String(event.collectionId) === String(collectionIdResolvable));
     },
     setIsLoading(value) {
       set({ isLoading: value });
